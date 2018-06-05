@@ -1,24 +1,36 @@
 from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
 
-from django.db import models
-from rest_framework import serializers
-from django.contrib.auth.models import User
+class Test(models.Model):
+    Tname = models.CharField(max_length=100, blank=False)
+    duration = models.PositiveIntegerField(blank = False)
 
-
-# class User_details(User):
-#     name = models.CharField(max_length=100, blank=True, default='')
-#     email = models.EmailField(max_length=70,blank=False)
-#     # password = models.CharField(max_legnth=250, widget=serializers.PasswordInput)
-#     Token = models.CharField(max_length=200,blank=False)
-
-class Payment_details(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    payment_amount = models.IntegerField(blank=False)
-    order_id = models.CharField(max_length=100, blank=False)
+class Category(models.Model):
+    Tname = models.ForeignKey(Test, on_delete=models.CASCADE)
+    Cname = models.CharField(max_length=100, blank=False)
     
-class Customer(models.Model):
-    customer_id = models.CharField(max_length=100, blank=False)
+class Questions(models.Model):
+    Cname = models.ForeignKey(Category, on_delete=models.CASCADE)
+    Question = RichTextUploadingField()
+    Choice1 = RichTextUploadingField()
+    Choice2 = RichTextUploadingField()
+    Choice3 = RichTextUploadingField()
+    Choice4 = RichTextUploadingField()
+    right_choice = RichTextUploadingField()
 
-# class Meter_details(models.Model):
-#     meter_no = models.IntegerField(blank=False)
-#     elec_remain = models.IntegerField(blank=False, default = 0)
+class Instructions(models.Model):
+    Tname = models.ForeignKey(Test, on_delete=models.CASCADE)
+    Instruction = RichTextUploadingField()
+
+class Student_details(models.Model):
+    Name = models.CharField(max_length=100, blank=True)
+    Father_name = models.CharField(max_length=100, blank=True)
+    Email = models.EmailField(blank = False)
+    Phone_number = models.CharField(max_length=100, blank=True)
+    
+class Questions_Answer(models.Model):
+    Email = models.ForeignKey(Student_details, on_delete=models.CASCADE)
+    Question = models.ForeignKey(Questions, on_delete=models.CASCADE)
+    selected_choice = RichTextUploadingField()
+
+

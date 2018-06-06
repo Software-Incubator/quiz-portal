@@ -22,7 +22,7 @@ class AdminAuth(ListView):
         return render(request, self.template_name, {"form": form})
 
     def post(self, *args, **kwargs):
-        form = self.form_class[self.request.POST]
+        form = self.form_class(self.request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username', '')
             password = form.cleaned_data.get('password', '')
@@ -38,7 +38,6 @@ class AdminAuth(ListView):
 class ControlOperation(ListView):
 
     def get(self, request, *args, **kwargs):
-
-        return HttpResponse("fjcjc")
+        return HttpResponse("gfjhhr")
 
 

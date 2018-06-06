@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Question, QuestionChoice, CorrectChoice
+from core.models import Category, Question, Test, Instruction
 
 
 class QuestionInLine(admin.TabularInline):
@@ -36,7 +36,7 @@ class ChoiceAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(QuestionChoice, ChoiceAdmin)
-admin.site.register(CorrectChoice)
+admin.site.register(Test)
+admin.site.register(Instruction)
 
 

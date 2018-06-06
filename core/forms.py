@@ -1,5 +1,5 @@
 from django import forms
-from core.models import Test, Question, QuestionChoice, Category, CorrectChoice, Instruction
+from core.models import Test, Question, Category, Instruction
 from ckeditor.widgets import CKEditorWidget 
 
 class AdminLoginForm(forms.Form):

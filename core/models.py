@@ -1,41 +1,36 @@
 from django.db import models
-from django.contrib.auth.models import User
+from ckeditor_uploader.fields import RichTextUploadingField
 
+class Test(models.Model):
+    Tname = models.CharField(max_length=100, blank=False)
+    duration = models.PositiveIntegerField(blank = False)
 
 class Category(models.Model):
-    category = models.CharField(max_length=225)
+    Tname = models.ForeignKey(Test, on_delete=models.CASCADE)
+    Cname = models.CharField(max_length=100, blank=False)
 
-    class Meta:
-        verbose_name_plural = "Categories"
+class Questions(models.Model):
+    Cname = models.ForeignKey(Category, on_delete=models.CASCADE)
+    Question = RichTextUploadingField()
+    Choice1 = RichTextUploadingField()
+    Choice2 = RichTextUploadingField()
+    Choice3 = RichTextUploadingField()
+    Choice4 = RichTextUploadingField()
+    right_choice = RichTextUploadingField()
 
-    def __str__(self):
-        return "Category = %s" % self.category
+class Instructions(models.Model):
+    Tname = models.ForeignKey(Test, on_delete=models.CASCADE)
+    Instruction = RichTextUploadingField()
 
+class Student_details(models.Model):
+    Name = models.CharField(max_length=100, blank=True)
+    Father_name = models.CharField(max_length=100, blank=True)
+    Email = models.EmailField(blank = False)
+    Phone_number = models.CharField(max_length=100, blank=True)
 
-class Question(models.Model):
-    question_text = models.CharField(max_length=5000)
-    negative = models.BooleanField()
-    negative_marks = models.IntegerField(null=True, blank=True)
-    marks = models.IntegerField(null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+class Questions_Answer(models.Model):
+    Email = models.ForeignKey(Student_details, on_delete=models.CASCADE)
+    Question = models.ForeignKey(Questions, on_delete=models.CASCADE)
+    selected_choice = RichTextUploadingField()
 
-    def __str__(self):
-        return "<Question: %s>" % self.question_text
-
-
-class QuestionChoice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice = models.CharField(max_length=2000)
-
-    def __str__(self):
-        return "<Choice = %s>" % self.choice
-
-
-class CorrectChoice(models.Model):
-    question_id = models.ForeignKey(Question, on_delete=models.CASCADE,
-                                    db_column='question_id')
-    correct_choice = models.ForeignKey(QuestionChoice, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "<Correct choice = %s>" % self.correct_choice
 

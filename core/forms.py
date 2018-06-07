@@ -4,6 +4,17 @@ from ckeditor.widgets import CKEditorWidget
 from .models import Candidate
 import re
 
+def category_name_list():
+    categories = Category.objects.all()
+    CATEGORY_CHOICE = ()
+
+    for category in categories:
+        data = ((category.category, category.category),)
+        CATEGORY_CHOICE = CATEGORY_CHOICE + data
+
+    return CATEGORY_CHOICE
+
+
 class AdminLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput())
@@ -28,11 +39,15 @@ class CategoryForm(forms.ModelForm):
 
 class QuestionForm(forms.Form):
     question_text = forms.CharField(widget=CKEditorWidget())
-    category = forms.CharField(max_length=500,required=True)
-    choice = forms.CharField(widget=CKEditorWidget())
-    correct_choice = forms.CharField(widget=CKEditorWidget())
+    category = forms.category = forms.ChoiceField(choices=category_name_list,label="Question Category")
+    choice1 = forms.CharField(widget=CKEditorWidget())
+    choice2 = forms.CharField(widget=CKEditorWidget())
+    choice3 = forms.CharField(widget=CKEditorWidget())
+    choice4 = forms.CharField(widget=CKEditorWidget())
+    correct_choice = forms.IntegerField()
+
     class Meta:
-        fields = ['category', 'question_text','choice', 'correct_choice']
+        fields = ['category', 'question_text','choice1','choice2','choice3','choice4', 'correct_choice']
 
 
 class CandidateRegistration(forms.ModelForm):

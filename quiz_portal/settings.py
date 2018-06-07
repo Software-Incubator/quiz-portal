@@ -112,6 +112,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# from http://django-ckeditor.readthedocs.io/en/latest/
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        "removePlugins": "stylesheetparser",
+        'extraPlugins': ','.join([
+            # 'eqneditor',
+            'mathjax',
+        ]),
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

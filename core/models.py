@@ -5,8 +5,14 @@ class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False)
     duration = models.PositiveIntegerField(blank = False)
 
+    def __str__(self):
+        return self.test_name
+
 class Instruction(models.Model):
     instruction = RichTextUploadingField()
+
+    def __str__(self):
+        return self.instruction
 
 class Category(models.Model):
     category = models.CharField(max_length=225)
@@ -15,7 +21,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return "Category = %s" % self.category
+        return self.category
 
 
 class Question(models.Model):
@@ -31,7 +37,7 @@ class Question(models.Model):
     marks = models.IntegerField(null=True)
 
     def __str__(self):
-        return "<Question: %s>" % self.question_text
+        return self.question_text
 
 
 # class QuestionChoice(models.Model):

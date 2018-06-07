@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Category, Question, Test, Instruction
+from core.models import Category, Question, Instruction,Test
 
 
 class QuestionInLine(admin.TabularInline):

@@ -69,10 +69,13 @@ class EditTestName(View):
         return render(request, 'core/signup.html', {'form': form})
 
 
+# class Instruction():
+
+
 
 @login_required
 def instruction(request):
-    form = forms.RegisterForm(None)
+    form = forms.CandidateRegistration(None)
     name = form.cleaned_data.get('name')
     return render('core/instructions.html',{'name': name})
 

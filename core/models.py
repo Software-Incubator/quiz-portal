@@ -70,7 +70,7 @@ class Question(models.Model):
 
 class Candidate(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     father_name = models.CharField(max_length=100)
     phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)

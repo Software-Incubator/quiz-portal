@@ -121,7 +121,7 @@ class EditTestName(View):
 def instruction(request):
     form =  RegisterForm(None)
     name = form.cleaned_data.get('name')
-    return render(request, 'instructions.html',{'name': name})
+    return render(request, 'Core/instructions.html',{'name': name})
 
 
 def signup(request):
@@ -140,4 +140,4 @@ def signup(request):
             return redirect('home')
     else:
         form = RegisterForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'core/signup.html', {'form': form})

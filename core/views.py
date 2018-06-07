@@ -66,13 +66,11 @@ class TestName(View):
     def get(self, request):
         form = self.form_class()
         Tname = Test.objects.get(pk=1)
-        print(Tname)
         return render(request,  self.template_name, {'form': form, 'Tname':Tname,})
 
     def post(self,request):
         Tname = Test.objects.get(pk=1)
         form = self.form_class(request.POST)
-        print(dict(request.POST))
         if form.is_valid():
             Test.objects.filter(pk=1).update(test_name=request.POST['test_name'],
              duration=request.POST['duration'])
@@ -109,18 +107,6 @@ class InstructionView(View):
         return render(request, self.template_name, {'form': form, 'Iname':Iname,})
 
 
-# class signup(View):
-#     form_class = SignUpPage
-
-#     def dispatch(self, request, *args, **kwargs):
-#         if request.user.is_authenticated:
-#             return redirect('newsfeed')
-#         return super(signup, self).dispatch(request, *args, **kwargs)
-
-#     def get(self, request):
-#         form = self.form_class()
-#         return render(request, 'learn/signup.html', {'form': form})
-
 @login_required
 def instruction(request):
     form = forms.CandidateRegistration(None)
@@ -128,7 +114,7 @@ def instruction(request):
     return render('core/instructions.html',{'name': name})
 
 
-class CandidateRegistration(generic.ListView):
+class CandidateRegistration(ListView):
     form_class = forms.CandidateRegistration
     template_name = 'core/signup.html'
 

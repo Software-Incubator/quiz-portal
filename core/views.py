@@ -81,6 +81,11 @@ class CandidateRegistration(generic.ListView):
     form_class = forms.CandidateRegistration
     template_name = 'core/signup.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.session:
+            return redirect('home')
+        return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         form = self.form_class
         return render(request, self.template_name, {'form': form})

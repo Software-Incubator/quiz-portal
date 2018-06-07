@@ -69,15 +69,27 @@ class EditTestName(View):
         return render(request, 'core/signup.html', {'form': form})
 
 
-# class Instruction():
+class Instruction(generic.ListView):
+    template_name = 'core/instructions.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(Instruction, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
 
 
-@login_required
-def instruction(request):
-    form = forms.CandidateRegistration(None)
-    name = form.cleaned_data.get('name')
-    return render('core/instructions.html',{'name': name})
+
+
+
+# @login_required
+# def instruction(request):
+#     form = forms.CandidateRegistration(None)
+#     name = form.cleaned_data.get('name')
+#     return render('core/instructions.html',{'name': name})
 
 
 class CandidateRegistration(generic.ListView):
@@ -85,7 +97,7 @@ class CandidateRegistration(generic.ListView):
     template_name = 'core/signup.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.session:
+        if request.session.has_key("email"):
             return redirect('home')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
@@ -102,5 +114,15 @@ class CandidateRegistration(generic.ListView):
             candidate = Candidate.objects.get(name=name, email=email)
             if candidate:
                 self.request.session['email'] = email
+                self.request.session['name'] = name
                 return redirect('home')
         return redirect('signup')
+
+
+def logout(request):
+    try:
+        del request.session['email']
+        del request.session['name']
+    except:
+        pass
+    return redirect('signup')

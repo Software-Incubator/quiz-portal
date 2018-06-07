@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1> INSTRUCTIONS</h1>
+
+{% block login %}
+    {% if request.session.name %}
+    <span>Hello {{ request.session.name }}</span>
+    {% else %}
+        <a href="signup" >Signup</a>
+    {% endif %}
+{% endblock %}
+
+{% endblock %}

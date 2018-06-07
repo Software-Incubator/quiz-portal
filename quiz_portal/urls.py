@@ -17,6 +17,10 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, include
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from django.views.generic.base import TemplateView
+from core import views as core_views
 
 
 urlpatterns = [
@@ -24,4 +28,6 @@ urlpatterns = [
     path('admin/', include('core.urls_admin')),
     # path('', include('core.urls_candidate'))
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('', TemplateView.as_view(template_name='instructions.html'), name='home'),
+    path('signup/', core_views.signup, name='signup'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

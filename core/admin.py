@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Category, Question, Test, Instruction
+from core.models import Category, Question, Test, Instruction, Candidate
 
 
 class QuestionInLine(admin.TabularInline):
@@ -33,10 +33,18 @@ class ChoiceAdmin(admin.ModelAdmin):
     class Meta:
         model = Category
 
+class CandidateAdmin(admin.ModelAdmin):
+    search_fields = ['name','email','phone_number','father_name']
+    list_display = ('name','email','phone_number','father_name',)
+
+    class Meta:
+        model = Candidate
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Test)
 admin.site.register(Instruction)
+admin.site.register(Candidate, CandidateAdmin)
 
 

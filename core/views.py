@@ -7,6 +7,12 @@ from . import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from .models import  Candidate
+
+from core.forms import RegisterForm
 
 
 class AdminAuth(ListView):
@@ -111,3 +117,27 @@ class EditTestName(View):
 #         else:
 #             form = SignUpPage()
 #         return render(request, 'learn/signup.html', {'form': form})
+@login_required
+def instruction(request):
+    form =  RegisterForm(None)
+    name = form.cleaned_data.get('name')
+    return render(request, 'instructions.html',{'name': name})
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get('name')
+            email = form.cleaned_data.get('email')
+            data = Candidate.objects.create(name=name, email=email)
+            if data:
+                request.session['name'] = name
+                request.session['email'] = email
+                request.session['post_data'] = request.POST
+
+            return redirect('home')
+    else:
+        form = RegisterForm()
+    return render(request, 'signup.html', {'form': form})

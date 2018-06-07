@@ -121,7 +121,7 @@ class EditTestName(View):
 def instruction(request):
     form =  RegisterForm(None)
     name = form.cleaned_data.get('name')
-    return render(request, 'Core/instructions.html',{'name': name})
+    return render('core/instructions.html',{'name': name})
 
 
 def signup(request):

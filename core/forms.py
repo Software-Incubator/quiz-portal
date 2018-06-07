@@ -75,16 +75,4 @@ class RegisterForm(forms.ModelForm):
 
         return name
 
-    # def clean_Contact(self):
-    #     contact = self.cleaned_data.get('Contact')
-    #     patt = "^[7-9][0-9]{9}"
-    #     pro = re.compile(patt)
-    #     result = pro.match(str(contact))
-    #
-    #     if not bool(result):
-    #         raise forms.ValidationError("Invalid Contact number format ")
-    #
-    #     if len(str(contact)) != 10:
-    #         raise forms.ValidationError("Invalid Contact number format ")
-    #     return contact
 

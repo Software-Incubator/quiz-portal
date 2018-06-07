@@ -35,44 +35,9 @@ class QuestionForm(forms.Form):
         fields = ['category', 'question_text','choice', 'correct_choice']
 
 
+class CandidateRegistration(forms.ModelForm):
 
-class RegisterForm(forms.ModelForm):
     class Meta:
         model = Candidate
         fields = '__all__'
-
-
-    def clean_email(self):
-        email = self.cleaned_data.get("email")
-        # print(email)
-        pattern = "^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
-        prog = re.compile(pattern)
-        result = prog.match(email)
-
-        if not bool(result):
-            raise forms.ValidationError("Invalid Email address. Use a valid email address.")
-
-        if len(str(email)) > 60:
-            raise forms.ValidationError("Invalid Length")
-
-        return email
-
-
-    def clean_name(self):
-        name = self.cleaned_data.get('name')
-        # print(name)
-
-        pat = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$"
-        pro = re.compile(pat)
-        result = pro.match(name)
-
-        if not bool(result):
-            raise forms.ValidationError("Invalid Nameformat")
-
-
-        if len(str(name)) > 100:
-            raise forms.ValidationError("Invalid length ")
-
-        return name
-
 

@@ -5,12 +5,15 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False)
     duration = models.PositiveIntegerField(blank = False)
 
+
 class Instruction(models.Model):
     instruction = RichTextUploadingField()
+
 
 class Category(models.Model):
     category = models.CharField(max_length=225)

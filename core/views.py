@@ -83,12 +83,7 @@ class InstructionView(View):
     template_name = 'core/instruction.html'
 
     def dispatch(self, request, *args, **kwargs):
-        t = Instruction.objects.all()
-        print(1)
-        print(Instruction.objects.all())
-        print(2)
-        print(t)
-        if Instruction.objects.all() == []:
+        if len(Instruction.objects.all()) == 0:
             Instruction.objects.create(instruction='')
 
         if not request.user.is_superuser:
@@ -109,7 +104,6 @@ class InstructionView(View):
         else:
             form = self.form_class()
         return render(request, self.template_name, {'form': form, 'Iname':Iname,})
-
 
 
 # class signup(View):

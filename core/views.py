@@ -80,22 +80,30 @@ class TestName(View):
             form = self.form_class()
         return render(request, self.template_name, {'form': form, 'Tname':Tname,})
 
-class InstructionView(View):
-    form_class = forms.InstructionForm
-    template_name = 'core/instruction.html'
+
+class StartTest(generic.ListView):
+    template_name = 'core/start_test.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if len(Instruction.objects.all()) == 0:
-            Instruction.objects.create(instruction='')
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(StartTest, self).dispatch(request, *args, **kwargs)
 
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+
+class InstructionView(generic.ListView):
+    template_name = 'core/instructions.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
-        form = self.form_class()
-        Iname = Instruction.objects.latest('instruction')
-        return render(request,  self.template_name, {'form': form, 'Iname':Iname.instruction,})
+    def get(self, request, *args, **kwargs):
+        instruction = Instruction.objects.all()
+        return render(request, self.template_name, {'instruction': instruction})
 
     def post(self,request):
         Iname = Instruction.objects.latest('instruction')
@@ -129,7 +137,7 @@ class AddQuestionView(View):
             num = len(Question.objects.filter(category = c))+1
             Question.objects.create(category = c, question_number = num,
                 question_text = (dict(request.POST)['question_text'])[0],choice1 = (dict(request.POST)['choice1'])[0],
-                choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0], 
+                choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
                 choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
             return redirect('admin_auth')
         else:
@@ -164,7 +172,7 @@ class AddCategoryView(View):
 
 
 class editcategory(View):
-    
+
     def get(self,request):
         img_id = 0
         img_id = request.GET['imgid']
@@ -216,8 +224,8 @@ class EditQuestionView(View):
             else:
                 c = Category.objects.get(category = (dict(request.POST)['category'])[0])
                 Question.objects.filter(pk=pk).update(category = c,  question_number = num,
-                    question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0], 
-                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0], 
+                    question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
+                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
                     choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
                 return redirect('admin_auth')
         else:
@@ -237,7 +245,7 @@ class DeleteQuestionView(View):
 
 
 class DeleteCategoryView(View):
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('admin_auth')
@@ -255,11 +263,12 @@ def instruction(request):
 
 
 class CandidateRegistration(ListView):
+class CandidateRegistration(generic.ListView):
     form_class = forms.CandidateRegistration
     template_name = 'core/signup.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.session:
+        if request.session.has_key("email"):
             return redirect('home')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
@@ -276,5 +285,15 @@ class CandidateRegistration(ListView):
             candidate = Candidate.objects.get(name=name, email=email)
             if candidate:
                 self.request.session['email'] = email
+                self.request.session['name'] = name
                 return redirect('home')
-        return redirect('signup')
+        return render(self.request, self.template_name, {'form':form })
+
+
+def logout(request):
+    try:
+        del request.session['email']
+        del request.session['name']
+    except:
+        pass
+    return redirect('signup')

@@ -26,13 +26,13 @@ class TestForm(forms.ModelForm):
         fields = ['test_name','duration',]
 
 class InstructionForm(forms.ModelForm):
-    
+
     class Meta:
         model = Instruction
         fields = ['instruction']
 
 class CategoryForm(forms.ModelForm):
-    
+
     class Meta:
         model = Category
         fields = ['category']
@@ -55,4 +55,14 @@ class CandidateRegistration(forms.ModelForm):
     class Meta:
         model = Candidate
         fields = '__all__'
+
+    def unique_email(self):
+
+        email = self.cleaned_data.get('email')
+
+        if Candidate.objects.all().filter(email=email).exists():
+            raise forms.ValidationError("Email already exist in data base")
+        return email
+
+
 

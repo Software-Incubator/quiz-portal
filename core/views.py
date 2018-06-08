@@ -107,7 +107,7 @@ class CandidateRegistration(generic.ListView):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
 
-    def post(self, request,*args, **kwargs):
+    def post(self, *args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
             form.save()
@@ -118,7 +118,7 @@ class CandidateRegistration(generic.ListView):
                 self.request.session['email'] = email
                 self.request.session['name'] = name
                 return redirect('home')
-        return render(request,self.template_name,{'form':form })
+        return render(self.request, self.template_name, {'form':form })
 
 
 def logout(request):

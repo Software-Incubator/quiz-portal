@@ -7,5 +7,10 @@
     <span>Hello {{ request.session.name}}</span>
         <a href={% url 'session_out' %} >Logout</a>
 {% endblock %}
+    {% for instr in instruction %}
+        {% autoescape off %}
+        {{ instr.instruction }}
+        {% endautoescape %}
+    {% endfor %}
 
 {% endblock %}

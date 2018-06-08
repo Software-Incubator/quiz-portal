@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-from .models import Candidate
+from .models import Candidate, Instruction
 
 
 class AdminAuth(generic.ListView):
@@ -44,7 +44,7 @@ class ControlOperation(View):
 
     def get(self, request):
         return render(request, self.template_name)
-        
+
 
 # @user_passes_test(lambda u: u.is_superuser)
 class EditTestName(View):
@@ -69,27 +69,17 @@ class EditTestName(View):
         return render(request, 'core/signup.html', {'form': form})
 
 
-class Instruction(generic.ListView):
+class InstructionView(generic.ListView):
     template_name = 'core/instructions.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.session.has_key("email"):
             return redirect('signup')
-        return super(Instruction, self).dispatch(request, *args, **kwargs)
+        return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
-
-
-
-
-
-
-# @login_required
-# def instruction(request):
-#     form = forms.CandidateRegistration(None)
-#     name = form.cleaned_data.get('name')
-#     return render('core/instructions.html',{'name': name})
+        instruction = Instruction.objects.all()
+        return render(request, self.template_name, {'instruction': instruction})
 
 
 class CandidateRegistration(generic.ListView):

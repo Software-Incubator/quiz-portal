@@ -8,11 +8,17 @@ from django.dispatch import receiver
 
 class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False)
-    duration = models.PositiveIntegerField(blank = False)
+    duration = models.PositiveIntegerField(blank=False)
 
 
 class Instruction(models.Model):
     instruction = RichTextUploadingField()
+
+    class Meta:
+        verbose_name_plural = "Instructions"
+
+    def __str__(self):
+        return "Instruction = %s" % self.instruction
 
 
 class Category(models.Model):
@@ -41,6 +47,19 @@ class Question(models.Model):
         return "<Question: %s>" % self.question_text
 
 
+
+class Candidate(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    father_name = models.CharField(max_length=100)
+    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
+    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
+
+    def __str__(self):
+        return "{}".format(self.email)
+
+
+
 # class QuestionChoice(models.Model):
 #     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 #     choice = RichTextUploadingField()
@@ -67,15 +86,4 @@ class Question(models.Model):
 #     choice3 = RichTextUploadingField()
 #     choice4 = RichTextUploadingField()
 #     right_choice = RichTextUploadingField()
-
-class Candidate(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    father_name = models.CharField(max_length=100)
-    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
-    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
-
-
-    def __str__(self):
-        return "{}".format(self.email)
 

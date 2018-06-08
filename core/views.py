@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from .models import Candidate
 from core.models import Category, Question, Instruction, Test
+import json
 
 
 class AdminAuth(ListView):
@@ -105,6 +106,78 @@ class InstructionView(View):
         else:
             form = self.form_class()
         return render(request, self.template_name, {'form': form, 'Iname':Iname,})
+
+
+class AddQuestionView(View):
+    form_class = forms.QuestionForm
+    template_name = 'core/addquestion.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(AddQuestionView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request,  self.template_name, {'form': form})
+
+    def post(self,request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            if int((dict(request.POST)['correct_choice'])[0]) > 4:
+                return HttpResponse("Not a valid choice")
+            else:
+                c = Category.objects.get(category = (dict(request.POST)['category'])[0])
+                Question.objects.create(category = c, question_text = (dict(request.POST)['question_text'])[0],
+                    choice1 = (dict(request.POST)['choice1'])[0], choice2 = (dict(request.POST)['choice2'])[0],
+                    choice3 = (dict(request.POST)['choice3'])[0], choice4 = (dict(request.POST)['choice4'])[0],
+                    correct_choice = (dict(request.POST)['correct_choice'])[0] )
+                return redirect('admin_auth')
+        else:
+            form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+
+class AddCategoryView(View):
+    form_class = forms.CategoryForm
+    template_name = 'core/addcategory.html'
+
+    def dispatch(self, request, *args, **kwargs):
+
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(AddCategoryView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        cats = Category.objects.all()
+        form = self.form_class()
+        return render(request,  self.template_name, {'form': form, 'cats':cats})
+
+    def post(self,request):
+        form = self.form_class(request.POST)
+        cats = Category.objects.all()
+        if form.is_valid():
+            form.save()
+            return redirect('admin_auth')
+        else:
+            form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'cats':cats})
+
+
+class editcategory(View):
+    
+    def get(self,request):
+        img_id = 0
+        img_id = request.GET['imgid']
+
+        if img_id:
+            d = dict()
+            name = request.GET['name']
+            Category.objects.filter(pk=img_id).update(category=name)
+            c = Category.objects.get(pk=img_id)
+            d['name'] = c.category
+            x = json.dumps(d)
+            return HttpResponse(x)
 
 
 @login_required

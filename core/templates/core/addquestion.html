@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instruction</title>
+    <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+</head>
+<body>
+    <form name="TestForm" method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <ul>
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {{ form.media }}
+        {{ form.as_p }}<br>
+        <button type="submit">submit</button>
+
+        <!-- <label for="name">{{ form.test_name.label_tag }}</label><br>
+        {{ form.test_name }}<br>
+        <input type="text" name="test_name"  value={{ Tname.test_name }}><br>
+        <label for="name">{{ form.duration.label_tag }}</label><br>
+        {{ form.duration }}<br>
+        <input type="text" name="duration" value={{ Tname.duration }}><br>
+        <button type="submit">ADD</button> -->
+    </form>
+</body>
+</html>

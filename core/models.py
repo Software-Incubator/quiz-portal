@@ -34,7 +34,7 @@ class Question(models.Model):
     question_text = RichTextUploadingField()
     choice1 = RichTextUploadingField()
     choice2 = RichTextUploadingField()
-    choice3= RichTextUploadingField()
+    choice3 = RichTextUploadingField()
     choice4 = RichTextUploadingField()
     correct_choice = models.IntegerField(blank=False)
     negative = models.BooleanField(default=False)

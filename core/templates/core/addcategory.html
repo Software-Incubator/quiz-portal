@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        console.log(1);
+        $(document).ready(function(){
+            console.log(2);
+            $(".change").on('click', function(event) {
+                console.log(3);
+                var imgid;
+                var name;
+                imgid = $(this).attr("cat_data");
+                name = $('#cat' + imgid).val();
+                if (name != ''){
+                    $.get('/admin/editcategory/', {'imgid': imgid, 'name': name}, function (data) {
+                })
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+    {% for cat in cats %}
+        <input id="cat{{cat.pk}}" type="text" name="category"  value={{ cat.category }}>
+        <button class="change" cat_data="{{cat.pk}}" >Save after editing</button><br>
+    {% empty %}
+        <p>No category available</p>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <b>{{ form }}</b><br>
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>

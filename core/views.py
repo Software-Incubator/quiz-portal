@@ -108,7 +108,7 @@ class CandidateRegistration(generic.ListView):
     template_name = 'core/signup.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.session:
+        if request.session.has_key("email"):
             return redirect('home')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 

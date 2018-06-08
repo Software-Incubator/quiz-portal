@@ -24,13 +24,13 @@ class Instruction(models.Model):
 
 
 class Category(models.Model):
-    category = models.CharField(max_length=225)
+    name = models.CharField(max_length=225)
 
     class Meta:
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return self.category
+        return self.name
 
 
 class Question(models.Model):

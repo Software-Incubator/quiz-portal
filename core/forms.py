@@ -41,3 +41,13 @@ class CandidateRegistration(forms.ModelForm):
         model = Candidate
         fields = '__all__'
 
+    def unique_email(self):
+
+        email = self.cleaned_data.get('email')
+
+        if Candidate.objects.all().filter(email=email).exists():
+            raise forms.ValidationError("Email already exist in data base")
+        return email
+
+
+

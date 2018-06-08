@@ -81,7 +81,7 @@ class TestName(View):
         return render(request, self.template_name, {'form': form, 'Tname':Tname,})
 
 
-class StartTest(generic.ListView):
+class StartTest(ListView):
     template_name = 'core/start_test.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -93,7 +93,7 @@ class StartTest(generic.ListView):
         return render(request, self.template_name)
 
 
-class InstructionView(generic.ListView):
+class InstructionView(ListView):
     template_name = 'core/instructions.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -105,15 +105,6 @@ class InstructionView(generic.ListView):
         instruction = Instruction.objects.all()
         return render(request, self.template_name, {'instruction': instruction})
 
-    def post(self,request):
-        Iname = Instruction.objects.latest('instruction')
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_auth')
-        else:
-            form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'Iname':Iname,})
 
 
 class AddQuestionView(View):
@@ -263,7 +254,6 @@ def instruction(request):
 
 
 class CandidateRegistration(ListView):
-class CandidateRegistration(generic.ListView):
     form_class = forms.CandidateRegistration
     template_name = 'core/signup.html'
 
@@ -288,6 +278,33 @@ class CandidateRegistration(generic.ListView):
                 self.request.session['name'] = name
                 return redirect('home')
         return render(self.request, self.template_name, {'form':form })
+
+class AdminInstructionView(View):
+    form_class = forms.InstructionForm
+    template_name = 'core/instruction.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if len(Instruction.objects.all()) == 0:
+            Instruction.objects.create(instruction='')
+
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(AdminInstructionView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        form = self.form_class()
+        Iname = Instruction.objects.latest('instruction')
+        return render(request,  self.template_name, {'form': form, 'Iname':Iname.instruction,})
+
+    def post(self,request):
+        Iname = Instruction.objects.latest('instruction')
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_auth')
+        else:
+            form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'Iname':Iname,})
 
 
 def logout(request):

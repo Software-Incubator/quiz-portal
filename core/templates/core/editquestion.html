@@ -1,17 +1,19 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Instruction</title>
+    <meta charset="utf-8">
+    <title>Show Questions</title>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 </head>
 <body>
-    <p>Previously Stored</p>
-    {{ Iname|safe|escape }}<br><br>
-
-
+    <p>Q{{ question.question_number }}</p>{{ question.question_text|safe|escape }}
+    <p>1.</p>{{ question.choice1|safe|escape }}
+    <p>2.</p>{{ question.choice2|safe|escape }}
+    <p>3.</p>{{ question.choice3|safe|escape }}
+    <p>4.</p>{{ question.choice4|safe|escape }}
+    <p>Correct Choice</p>{{ question.correct_choice|safe|escape }}<br>
     <form name="TestForm" method="post">
         {% csrf_token %}
 

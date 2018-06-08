@@ -21,7 +21,9 @@
         <label for="name">{{ form.duration.label_tag }}</label><br>
         <!-- {{ form.duration }}<br> -->
         <input type="text" name="duration" value={{ Tname.duration }}><br>
-        <button type="submit">ADD</button>
+        <button type="submit">ADD</button><br>
     </form>
+    <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
+    <a href="{% url 'logout' %}" ><button>Logout</button></a>
 </body>
 </html>

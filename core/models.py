@@ -31,12 +31,13 @@ class Category(models.Model):
 
 class Question(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    question_number = models.PositiveIntegerField(blank=False)
     question_text = RichTextUploadingField()
     choice1 = RichTextUploadingField()
     choice2 = RichTextUploadingField()
     choice3 = RichTextUploadingField()
     choice4 = RichTextUploadingField()
-    correct_choice = models.IntegerField(blank=False)
+    correct_choice = models.PositiveIntegerField(blank=False)
     negative = models.BooleanField(default=False)
     negative_marks = models.IntegerField(null=True)
     marks = models.IntegerField(null=True)

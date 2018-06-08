@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Login</title>
+    <title>Add Category</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
         console.log(1);
@@ -25,7 +25,8 @@
 <body>
     {% for cat in cats %}
         <input id="cat{{cat.pk}}" type="text" name="category"  value={{ cat.category }}>
-        <button class="change" cat_data="{{cat.pk}}" >Save after editing</button><br>
+        <button class="change" cat_data="{{cat.pk}}" >Save after editing</button>
+        <a href="{% url "Delete Category" cat.pk %}" ><button>Delete</button></a><br>
     {% empty %}
         <p>No category available</p>
     {% endfor %}
@@ -33,6 +34,8 @@
         {% csrf_token %}
         <b>{{ form }}</b><br>
         <button type="submit">Add</button>
-    </form>
+    </form><br>
+    <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
+    <a href="{% url 'logout' %}" ><button>Logout</button></a>
 </body>
 </html>

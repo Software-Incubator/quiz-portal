@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Show Questions</title>
+</head>
+<body>
+    {% for que in ques %}
+        <p>Q{{ que.question_number }}</p>{{ que.question_text|safe|escape }}
+        <p>1.</p>{{ que.choice1|safe|escape }}
+        <p>2.</p>{{ que.choice2|safe|escape }}
+        <p>3.</p>{{ que.choice3|safe|escape }}
+        <p>4.</p>{{ que.choice4|safe|escape }}
+        <p>Correct Choice</p>{{ que.correct_choice|safe|escape }}
+        <a href="{% url "Edit Question" que.pk %}" ><button>Edit</button></a>
+        <a href="{% url "Delete Question" que.pk %}" ><button>Delete</button></a>
+    {% empty %}
+        <p>No Questions present</p>
+    {% endfor %}<br>
+    <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
+    <a href="{% url 'logout' %}" ><button>Logout</button></a>
+</body>
+</html>

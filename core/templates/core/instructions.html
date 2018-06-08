@@ -4,11 +4,15 @@
   <h1> INSTRUCTIONS</h1>
 
 {% block login %}
-    {% if request.session.name %}
-    <span>Hello {{ request.session.name }}</span>
-    {% else %}
-        <a href="signup" >Signup</a>
-    {% endif %}
+    <span>Hello {{ request.session.name}}</span>
+        <a href={% url 'session_out' %} >Logout</a>
 {% endblock %}
+    {% for instr in instruction %}
+        {% autoescape off %}
+        {{ instr.instruction }}
+        {% endautoescape %}
+    {% endfor %}
+
+    <a href={% url 'start_test' %}>OK </a>
 
 {% endblock %}

@@ -1,19 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
-from django.views.generic import ListView, DetailView, FormView, TemplateView
-from django.views import View
+from django.views import generic, View
 from . import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-from .models import Candidate
-from core.models import Category, Question, Instruction, Test
+from .models import Candidate, Instruction
 
 
-class AdminAuth(ListView):
+class AdminAuth(generic.ListView):
     form_class = forms.AdminLoginForm
     template_name = 'core/admin_login.html'
     model = User
@@ -30,8 +28,8 @@ class AdminAuth(ListView):
     def post(self, *args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username', '')
-            password = form.cleaned_data.get('password', '')
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
             user = auth.authenticate(username=username, password=password)
             if user is not None:
                 auth.login(self.request, user)
@@ -61,7 +59,7 @@ class TestName(View):
 
         if not request.user.is_superuser:
             return redirect('admin_auth')
-        return super(TestName, self).dispatch(request, *args, **kwargs)
+        return super(EditTestName, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
         form = self.form_class()
@@ -76,45 +74,36 @@ class TestName(View):
              duration=request.POST['duration'])
             return redirect('admin_auth')
         else:
-            form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'Tname':Tname,})
+            form = self.form_class
+        return render(request, 'core/signup.html', {'form': form})
 
-class InstructionView(View):
-    form_class = forms.InstructionForm
-    template_name = 'core/instruction.html'
+
+class StartTest(generic.ListView):
+    template_name = 'core/start_test.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if len(Instruction.objects.all()) == 0:
-            Instruction.objects.create(instruction='')
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(StartTest, self).dispatch(request, *args, **kwargs)
 
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+
+class InstructionView(generic.ListView):
+    template_name = 'core/instructions.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
-        form = self.form_class()
-        Iname = Instruction.objects.latest('instruction')
-        return render(request,  self.template_name, {'form': form, 'Iname':Iname.instruction,})
-
-    def post(self,request):
-        Iname = Instruction.objects.latest('instruction')
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_auth')
-        else:
-            form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'Iname':Iname,})
+    def get(self, request, *args, **kwargs):
+        instruction = Instruction.objects.all()
+        return render(request, self.template_name, {'instruction': instruction})
 
 
-@login_required
-def instruction(request):
-    form = forms.CandidateRegistration(None)
-    name = form.cleaned_data.get('name')
-    return render('core/instructions.html',{'name': name})
-
-
-class CandidateRegistration(ListView):
+class CandidateRegistration(generic.ListView):
     form_class = forms.CandidateRegistration
     template_name = 'core/signup.html'
 
@@ -136,5 +125,15 @@ class CandidateRegistration(ListView):
             candidate = Candidate.objects.get(name=name, email=email)
             if candidate:
                 self.request.session['email'] = email
+                self.request.session['name'] = name
                 return redirect('home')
-        return redirect('signup')
+        return render(self.request, self.template_name, {'form':form })
+
+
+def logout(request):
+    try:
+        del request.session['email']
+        del request.session['name']
+    except:
+        pass
+    return redirect('signup')

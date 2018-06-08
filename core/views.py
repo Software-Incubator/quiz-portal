@@ -69,6 +69,18 @@ class EditTestName(View):
         return render(request, 'core/signup.html', {'form': form})
 
 
+class StartTest(generic.ListView):
+    template_name = 'core/start_test.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(StartTest, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+
 class InstructionView(generic.ListView):
     template_name = 'core/instructions.html'
 

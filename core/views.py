@@ -16,7 +16,7 @@ from core.models import Category, Question, Instruction, Test
 import json
 
 
-class AdminAuth(ListView):
+class AdminAuth(generic.ListView):
     form_class = forms.AdminLoginForm
     template_name = 'core/admin_login.html'
     model = User

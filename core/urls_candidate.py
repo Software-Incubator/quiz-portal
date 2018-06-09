@@ -9,7 +9,7 @@ urlpatterns = [
     # path('start_test/', views.StartTest.as_view(), name='start_test'),
     # path('question/<category>/', view=views.QuestionByCategory.as_view(), name='question'),
     # re_path( r'^(?P<category>\d+)$',view=views.QuestionByCategory.as_view(), name='question'),
-    re_path(r'^category/(?P<category_name_url>\w+)/$', views.QuestionByCategory.as_view(), name='category'),
+    path('category/<category_name>/', views.QuestionByCategory.as_view(), name='category'),
 
 
 ]

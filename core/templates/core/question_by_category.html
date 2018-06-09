@@ -10,19 +10,17 @@
      <h1>{{ category_name }}</h1>
         {% if category %}
             {% if questions %}
-            <ul>
+                {% autoescape off %}
                 {% for question in questions %}
-                <li>{{ question.question_text }}
+                {{ question.question_text }}
                  <ul>
                      <li>{{ question.choice1 }}</li>
                       <li>{{ question.choice2 }}</li>
                       <li>{{ question.choice3 }}</li>
                       <li>{{ question.choice4 }}</li>
-
                  </ul>
-                </li>
                 {% endfor %}
-            </ul>
+                {% endautoescape %}
             {% else %}
                 <strong>No questions currently in category.</strong>
             {% endif %}

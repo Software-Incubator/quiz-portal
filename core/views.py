@@ -51,7 +51,6 @@ class ControlOperation(View):
         return render(request, self.template_name)
         
 
-# @user_passes_test(lambda u: u.is_superuser)
 class TestName(View):
     form_class = forms.TestForm
     template_name = 'core/test.html'
@@ -92,13 +91,9 @@ class StartTest(generic.ListView):
         return super(StartTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # context = RequestContext(request)
-        # print(context)
         category_list = Category.objects.all()
         context_dict = {'categories': category_list}
-        for category in category_list:
-            category.url = category.category.replace(' ', '_')
-        return render(request , self.template_name, context_dict)
+        return render(request, self.template_name, context_dict)
 
 
 class QuestionByCategory(generic.DetailView):
@@ -109,10 +104,8 @@ class QuestionByCategory(generic.DetailView):
             return redirect('signup')
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, category_name_url,*args, **kwargs):
-        # context = RequestContext(request)
-        # print(context)
-        category_name = category_name_url.replace('_', ' ')
+    def get(self, *args, **kwargs):
+        category_name = kwargs["category_name"]
         context_dict = {'category_name': category_name}
 
         try:
@@ -122,7 +115,7 @@ class QuestionByCategory(generic.DetailView):
             context_dict['category'] = category
         except Category.DoesNotExist:
             pass
-        return render(request,self.template_name, context_dict)
+        return render(self.request, self.template_name, context_dict)
 
 
 class InstructionView(generic.ListView):

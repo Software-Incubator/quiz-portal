@@ -8,16 +8,26 @@
     {{ cand.father_name }}<br>
     {{ cand.email }}<br>
     {{ cand.phone_number }}<br>
-
-
     <table>
         <tr>
             <td>Subject</td>
             <td>Total questions</td>
             <td>Answered correctly</td>
+            <td>Percentage</td>
+        </tr>
+        {% for i in l %}
+            <tr>
+                {% for j in i %}
+                    <td>{{ j }}</td>
+                {% empty %}
+                    <p>Nothing for this section</p>
+                {% endfor %}
+            </tr>
+        {% empty %}
+            <p>Nothing attempted</p>> 
+        {% endfor %}
         </tr>
     </table>
-
 
 
     {% for select in selects %}

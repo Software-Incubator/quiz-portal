@@ -210,24 +210,49 @@ class ViewResultView(View):
         return super(ViewResultView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, pk):
-        d = {}
+        l1=[]
+        overall_total = 0
+        overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
         cats = Category.objects.all()
         selects = SelectedAnswer.objects.filter(email = cand)
-        for cat in cats:
+        if len(selects) != 0:
+            for cat in cats:
+                total = 0
+                correct = 0
+                l=[]
+                l.append(cat.category)
+                percent = 0.0
+                for select in selects:
+                    if cat.category == select.question_text.category.category:
+                        total = total + 1
+                        overall_total = overall_total + 1
+                        if select.question_text.correct_choice == select.selected_choice:
+                            correct = correct + 1
+                            overall_correct = overall_correct + 1
+                l.append(total)
+                l.append(correct)
+                if total == 0:
+                    percent = 0.0
+                else:
+                    percent =(correct/float(total))*100
+                l.append(percent)
+                l1.extend([l])
             total = 0
             correct = 0
             l=[]
-            for select in selects:
-                if cat.category == select.question_text.category.category:
-                    total = total + 1
-                    if select.question_text.correct_choice == select.selected_choice:
-                        correct = correct + 1
-            l.append(total)
-            l.append(correct)
-            d[cat.category] = l
-            print(d)
-        return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand})
+            percent = 0.0
+            if overall_total == 0:
+                percent = 0.0
+            else:
+                percent = (overall_correct/float(overall_total))*100
+                l.append("Total")
+            l.append(overall_total)
+            l.append(overall_correct)
+            l.append(percent)
+            l1.extend([l])
+            print(l1)
+        return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1})
 
 
 class EditQuestionView(View):

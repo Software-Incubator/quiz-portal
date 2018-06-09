@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ category }}{% endblock %}
+{% block content %}
+
+{% block login %}
+    <span>Hello {{ request.session.name}}</span>
+        <a href={% url 'session_out' %} >Logout</a>
+{% endblock %}
+
+     <h1>{{ category_name }}</h1>
+        {% if category %}
+            {% if questions %}
+            <ul>
+                {% for question in questions %}
+                <li>{{ question.question_text }}
+                 <ul>
+                     <li>{{ question.choice1 }}</li>
+                      <li>{{ question.choice2 }}</li>
+                      <li>{{ question.choice3 }}</li>
+                      <li>{{ question.choice4 }}</li>
+
+                 </ul>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <strong>No questions currently in category.</strong>
+            {% endif %}
+        {% else %}
+            The specified category {{ category_name }} does not exist!
+        {% endif %}
+
+{% endblock %}

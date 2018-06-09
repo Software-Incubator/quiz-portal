@@ -25,17 +25,20 @@ class TestForm(forms.ModelForm):
         model = Test
         fields = ['test_name','duration',]
 
+
 class InstructionForm(forms.ModelForm):
 
     class Meta:
         model = Instruction
         fields = ['instruction']
 
+
 class CategoryForm(forms.ModelForm):
 
     class Meta:
         model = Category
-        fields = ['category']
+        fields = ['name']
+
 
 class QuestionForm(forms.Form):
     question_text = forms.CharField(widget=CKEditorWidget())

@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <p>test start now</p>
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+{% block login %}
+    <span>Hello {{ request.session.name}}</span>
+        <a href={% url 'session_out' %} >Logout</a>
+{% endblock %}
+     {% if categories %}
+            <ul>
+                {% for category in categories %}
+                <li><a href="/category/{{ category.url }}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+       {% else %}
+            <strong>There are no categories present.</strong>
+       {% endif %}
+
+{% endblock %}

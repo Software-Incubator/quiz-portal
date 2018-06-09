@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
-from django.views.generic import ListView, DetailView, FormView, TemplateView
-from django.views import View
+from django.views import generic, View
 from . import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from .models import Candidate, Instruction, Category, Test, Question
 from .models import Candidate
 from core.models import Category, Question, Instruction, Test
 import json
@@ -31,8 +33,8 @@ class AdminAuth(ListView):
     def post(self, *args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username', '')
-            password = form.cleaned_data.get('password', '')
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
             user = auth.authenticate(username=username, password=password)
             if user is not None:
                 auth.login(self.request, user)
@@ -77,11 +79,11 @@ class TestName(View):
              duration=request.POST['duration'])
             return redirect('admin_auth')
         else:
-            form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'Tname':Tname,})
+            form = self.form_class
+        return render(request, 'core/signup.html', {'form': form})
 
 
-class StartTest(ListView):
+class StartTest(generic.ListView):
     template_name = 'core/start_test.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -90,10 +92,40 @@ class StartTest(ListView):
         return super(StartTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        # context = RequestContext(request)
+        # print(context)
+        category_list = Category.objects.all()
+        context_dict = {'categories': category_list}
+        for category in category_list:
+            category.url = category.name.replace(' ', '_')
+        return render(request , self.template_name, context_dict)
 
 
-class InstructionView(ListView):
+class QuestionByCategory(generic.DetailView):
+    template_name = 'core/question_by_category.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, category_name_url,*args, **kwargs):
+        # context = RequestContext(request)
+        # print(context)
+        category_name = category_name_url.replace('_', ' ')
+        context_dict = {'category_name': category_name}
+
+        try:
+            category = Category.objects.get(name=category_name)
+            questions = Question.objects.filter(category=category)
+            context_dict['questions'] = questions
+            context_dict['category'] = category
+        except Category.DoesNotExist:
+            pass
+        return render(request,self.template_name, context_dict)
+
+
+class InstructionView(generic.ListView):
     template_name = 'core/instructions.html'
 
     def dispatch(self, request, *args, **kwargs):

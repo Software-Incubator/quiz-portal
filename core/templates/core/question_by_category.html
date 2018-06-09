@@ -12,11 +12,19 @@
             {% if questions %}
             <ul>
                 {% for question in questions %}
-                <li>{{ question }}</li>
+                <li>{{ question.question_text }}
+                 <ul>
+                     <li>{{ question.choice1 }}</li>
+                      <li>{{ question.choice2 }}</li>
+                      <li>{{ question.choice3 }}</li>
+                      <li>{{ question.choice4 }}</li>
+
+                 </ul>
+                </li>
                 {% endfor %}
             </ul>
             {% else %}
-                <strong>No pages currently in category.</strong>
+                <strong>No questions currently in category.</strong>
             {% endif %}
         {% else %}
             The specified category {{ category_name }} does not exist!

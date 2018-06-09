@@ -89,12 +89,13 @@ class StartTest(generic.ListView):
         return super(StartTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        context = RequestContext(request)
+        # context = RequestContext(request)
+        # print(context)
         category_list = Category.objects.all()
         context_dict = {'categories': category_list}
         for category in category_list:
             category.url = category.name.replace(' ', '_')
-        return render(request , self.template_name, context_dict, context)
+        return render(request , self.template_name, context_dict)
 
 
 class QuestionByCategory(generic.DetailView):
@@ -106,7 +107,8 @@ class QuestionByCategory(generic.DetailView):
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, category_name_url,*args, **kwargs):
-        context = RequestContext(request)
+        # context = RequestContext(request)
+        # print(context)
         category_name = category_name_url.replace('_', ' ')
         context_dict = {'category_name': category_name}
 
@@ -117,7 +119,7 @@ class QuestionByCategory(generic.DetailView):
             context_dict['category'] = category
         except Category.DoesNotExist:
             pass
-        return render(request,self.template_name, context_dict, context)
+        return render(request,self.template_name, context_dict)
 
 
 class InstructionView(generic.ListView):

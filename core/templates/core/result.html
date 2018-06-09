@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+    {{ cand.name }}<br>
+    {{ cand.father_name }}<br>
+    {{ cand.email }}<br>
+    {{ cand.phone_number }}<br>
+
+
+    <table>
+        <tr>
+            <td>Subject</td>
+            <td>Total questions</td>
+            <td>Answered correctly</td>
+        </tr>
+    </table>
+
+
+
+    {% for select in selects %}
+        {% if select.question_text.correct_choice == select.selected_choice %}
+            <p>Q</p>{{ select.question_text|safe|escape }}
+            <p>1.</p>{{ select.question_text.choice1|safe|escape }}
+            {% if select.selected_choice == 1 %}
+                <P>#</P>
+            {% endif %}
+            <p>2.</p>{{ select.question_text.choice2|safe|escape }}
+            {% if select.selected_choice == 2 %}
+                <P>#</P>
+            {% endif %}
+            <p>3.</p>{{ select.question_text.choice3|safe|escape }}
+            {% if select.selected_choice == 3 %}
+                <P>#</P>
+            {% endif %}
+            <p>4.</p>{{ select.question_text.choice4|safe|escape }}
+            {% if select.selected_choice == 4 %}
+                <P>#</P>
+            {% endif %}
+            <p>Correct choice</p>{{ select.question_text.correct_choice }}
+        {% else %}
+            <p>Q</p>{{ select.question_text|safe|escape }}
+            <p>1.</p>{{ select.question_text.choice1|safe|escape }}
+            {% if select.selected_choice == 1 %}
+                <P>---#</P>
+            {% endif %}
+            <p>2.</p>{{ select.question_text.choice2|safe|escape }}
+            {% if select.selected_choice == 2 %}
+                <P>---#</P>
+            {% endif %}
+            <p>3.</p>{{ select.question_text.choice3|safe|escape }}
+            {% if select.selected_choice == 3 %}
+                <P>---#</P>
+            {% endif %}
+            <p>4.</p>{{ select.question_text.choice4|safe|escape }}
+            {% if select.selected_choice == 4 %}
+                <P>---#</P>
+            {% endif %}
+            <p>Correct choice</p>{{ select.question_text.correct_choice }}
+        {% endif %}
+    {% empty %}
+        <p>No questions attempted.</p>
+    {% endfor %}
+</body>
+</html>

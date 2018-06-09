@@ -11,9 +11,11 @@ urlpatterns = [
     path('addcategory/', views.AddCategoryView.as_view(), name='Add Category'),
     path('editcategory/', views.editcategory.as_view(), name='Edit Category'),
     path('showquestions/', views.ShowQuestionsView.as_view(), name='Show Questions'),
+    path('showcandidates/', views.ShowCandidateListView.as_view(), name='Show Candidates'),
     path('editquestion/(?P<pk>\d+)', views.EditQuestionView.as_view(), name='Edit Question'),
     path('deletequestion/(?P<pk>\d+)', views.DeleteQuestionView.as_view(), name='Delete Question'),
     path('deletecategory/(?P<pk>\d+)', views.DeleteCategoryView.as_view(), name='Delete Category'),
+    path('viewresult/(?P<pk>\d+)', views.ViewResultView.as_view(), name='View result'),
     path('logout/$', built_views.logout, {'next_page': 'admin_auth'}, name='logout'),
 
 ]

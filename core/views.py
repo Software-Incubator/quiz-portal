@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from .models import Candidate
-from core.models import Category, Question, Instruction, Test
+from core.models import Category, Question, Instruction, Test, SelectedAnswer
 import json
 
 
@@ -124,7 +124,6 @@ class AddQuestionView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             c = Category.objects.get(category = (dict(request.POST)['category'])[0])
-            print((dict(request.POST)['category'])[0])
             num = len(Question.objects.filter(category = c))+1
             Question.objects.create(category = c, question_number = num,
                 question_text = (dict(request.POST)['question_text'])[0],choice1 = (dict(request.POST)['choice1'])[0],
@@ -188,6 +187,47 @@ class ShowQuestionsView(View):
     def get(self, request):
         ques = Question.objects.all()
         return render(request,  self.template_name, {'ques':ques})
+
+class ShowCandidateListView(View):
+    template_name = 'core/candidatelist.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ShowCandidateListView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        cands = Candidate.objects.all()
+        return render(request,  self.template_name, {'cands':cands})
+
+
+class ViewResultView(View):
+    template_name = 'core/result.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ViewResultView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        d = {}
+        cand = Candidate.objects.get(pk=pk)
+        cats = Category.objects.all()
+        selects = SelectedAnswer.objects.filter(email = cand)
+        for cat in cats:
+            total = 0
+            correct = 0
+            l=[]
+            for select in selects:
+                if cat.category == select.question_text.category.category:
+                    total = total + 1
+                    if select.question_text.correct_choice == select.selected_choice:
+                        correct = correct + 1
+            l.append(total)
+            l.append(correct)
+            d[cat.category] = l
+            print(d)
+        return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand})
 
 
 class EditQuestionView(View):

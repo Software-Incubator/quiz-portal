@@ -97,7 +97,7 @@ class StartTest(generic.ListView):
         category_list = Category.objects.all()
         context_dict = {'categories': category_list}
         for category in category_list:
-            category.url = category.name.replace(' ', '_')
+            category.url = category.category.replace(' ', '_')
         return render(request , self.template_name, context_dict)
 
 
@@ -116,7 +116,7 @@ class QuestionByCategory(generic.DetailView):
         context_dict = {'category_name': category_name}
 
         try:
-            category = Category.objects.get(name=category_name)
+            category = Category.objects.get(category=category_name)
             questions = Question.objects.filter(category=category)
             context_dict['questions'] = questions
             context_dict['category'] = category
@@ -285,7 +285,7 @@ def instruction(request):
     return render('core/instructions.html',{'name': name})
 
 
-class CandidateRegistration(ListView):
+class CandidateRegistration(generic.ListView):
     form_class = forms.CandidateRegistration
     template_name = 'core/signup.html'
 

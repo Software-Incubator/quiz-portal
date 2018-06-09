@@ -37,7 +37,7 @@ class CategoryForm(forms.ModelForm):
 
     class Meta:
         model = Category
-        fields = ['name']
+        fields = ['category']
 
 
 class QuestionForm(forms.Form):

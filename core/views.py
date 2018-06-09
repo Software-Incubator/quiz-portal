@@ -12,6 +12,28 @@ from django.contrib.auth import login, authenticate
 from .models import Candidate
 from core.models import Category, Question, Instruction, Test, SelectedAnswer
 import json
+import os
+from django.conf import settings
+from django.template import Context
+from django.template.loader import get_template
+import datetime
+from xhtml2pdf import pisa 
+
+
+def generate_PDF(request):
+    data = {}
+
+    template = get_template('template_testing.html')
+    html  = template.render(Context(data))
+
+    file = open('test.pdf', "w+b")
+    pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
+            encoding='utf-8')
+
+    file.seek(0)
+    pdf = file.read()
+    file.close()            
+    return HttpResponse(pdf, 'application/pdf')
 
 
 class AdminAuth(ListView):
@@ -203,7 +225,7 @@ class ShowCandidateListView(View):
 
 class ViewResultView(View):
     template_name = 'core/result.html'
-
+    data = {}
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('admin_auth')
@@ -251,8 +273,25 @@ class ViewResultView(View):
             l.append(overall_correct)
             l.append(percent)
             l1.extend([l])
-            print(l1)
+            global data
+            data = {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1}
         return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1})
+
+    def post(self, request, pk):
+        cand = Candidate.objects.get(pk=pk)
+        template = get_template(self.template_name)
+        html  = template.render(data)
+        st1 = str(cand.name) +" - " + str(cand.email) + ".pdf"
+        print(st1)
+        st =  'core/' + 'media/' + st1      
+        file = open(st, "w+b")
+        pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
+                encoding='utf-8')            
+        file.seek(0)
+        pdf = file.read()
+        file.close()            
+        return render(request,  self.template_name, data)
+
 
 
 class EditQuestionView(View):

@@ -80,64 +80,44 @@ class TestName(View):
         return render(request, 'core/signup.html', {'form': form})
 
 
-# class StartTest(generic.ListView):
-#     template_name = 'core/start_test.html'
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.session.has_key("email"):
-#             return redirect('signup')
-#         return super(StartTest, self).dispatch(request, *args, **kwargs)
-#
-#     def get(self, request, *args, **kwargs):
-#         category = Category.objects.all()
-#         return render(request, self.template_name,{'category': category})
+class StartTest(generic.ListView):
+    template_name = 'core/start_test.html'
 
-def index(request):
-    context = RequestContext(request)
-    category_list = Category.objects.all()
-    context_dict = {'categories': category_list}
-    for category in category_list:
-        category.url = category.name.replace(' ', '_')
-    return render_to_response('core/start_test.html', context_dict, context)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(StartTest, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        context = RequestContext(request)
+        category_list = Category.objects.all()
+        context_dict = {'categories': category_list}
+        for category in category_list:
+            category.url = category.name.replace(' ', '_')
+        return render(request , self.template_name, context_dict, context)
 
 
-def category(request, category_name_url):
-    context = RequestContext(request)
-    category_name = category_name_url.replace('_', ' ')
-    context_dict = {'category_name': category_name}
+class QuestionByCategory(generic.DetailView):
+    template_name = 'core/question_by_category.html'
 
-    try:
-        category = Category.objects.get(name=category_name)
-        questions = Question.objects.filter(category=category)
-        context_dict['questions'] = questions
-        context_dict['category'] = category
-    except Category.DoesNotExist:
-        pass
-    return render_to_response('core/question_by_category.html', context_dict, context)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
+    def get(self, request, category_name_url,*args, **kwargs):
+        context = RequestContext(request)
+        category_name = category_name_url.replace('_', ' ')
+        context_dict = {'category_name': category_name}
 
-
-
-
-# class QuestionByCategory(generic.DetailView):
-#     model = Category
-#     template_name = 'core/question_by_category.html'
-#     context_object_name = 'category'
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.session.has_key("email"):
-#             return redirect('signup')
-#         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
-#
-#     def get_object(self, queryset=None):
-#         return get_object_or_404(Category, category=self.kwargs['category'])
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(QuestionByCategory, self).get_context_data(**kwargs)
-#         context['questions'] = Question.objects.filter(category=self.get_object())
-#         return context
-
-
+        try:
+            category = Category.objects.get(name=category_name)
+            questions = Question.objects.filter(category=category)
+            context_dict['questions'] = questions
+            context_dict['category'] = category
+        except Category.DoesNotExist:
+            pass
+        return render(request,self.template_name, context_dict, context)
 
 
 class InstructionView(generic.ListView):

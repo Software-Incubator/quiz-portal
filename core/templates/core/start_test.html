@@ -3,13 +3,13 @@
 {% block content %}
 
 {% block login %}
-    <span>Hello {{ request.session.name}}</span>
+    <span>Hello {{ request.session.email}}</span>
         <a href={% url 'session_out' %} >Logout</a>
 {% endblock %}
      {% if categories %}
             <ul>
                 {% for category in categories %}
-                <li><a href="/category/{{ category.category }}">{{ category.category }}</a></li>
+                <li><a href="/category/{{ category.category }}/1">{{ category.category }}</a></li>
                 {% endfor %}
             </ul>
        {% else %}

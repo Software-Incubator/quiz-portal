@@ -33,9 +33,10 @@ class ChoiceAdmin(admin.ModelAdmin):
     class Meta:
         model = Category
 
+
 class CandidateAdmin(admin.ModelAdmin):
-    search_fields = ['name','email','phone_number','father_name']
-    list_display = ('name','email','phone_number','father_name',)
+    search_fields = ['name', 'email', 'phone_number', 'father_name']
+    list_display = ('id', 'name', 'email', 'phone_number', 'father_name',)
 
     class Meta:
         model = Candidate

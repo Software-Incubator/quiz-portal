@@ -66,7 +66,6 @@ class SelectedAnswer(models.Model):
     email = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     question_text = models.ForeignKey(Question, on_delete=models.CASCADE)
     selected_choice = models.PositiveIntegerField(blank=False)
-    coreect_or_not = models.BinaryField()
 
     def __str__(self):
         st = str(self.question_text) + ' - ' + str(self.selected_choice)

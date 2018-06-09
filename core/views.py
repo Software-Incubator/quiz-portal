@@ -12,8 +12,30 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from .models import Candidate, Instruction, Category, Test, Question
 from .models import Candidate
-from core.models import Category, Question, Instruction, Test
+from core.models import Category, Question, Instruction, Test, SelectedAnswer
 import json
+import os
+from django.conf import settings
+from django.template import Context
+from django.template.loader import get_template
+import datetime
+from xhtml2pdf import pisa 
+
+
+def generate_PDF(request):
+    data = {}
+
+    template = get_template('template_testing.html')
+    html  = template.render(Context(data))
+
+    file = open('test.pdf', "w+b")
+    pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
+            encoding='utf-8')
+
+    file.seek(0)
+    pdf = file.read()
+    file.close()            
+    return HttpResponse(pdf, 'application/pdf')
 
 
 class AdminAuth(generic.ListView):
@@ -149,7 +171,6 @@ class AddQuestionView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             c = Category.objects.get(category = (dict(request.POST)['category'])[0])
-            print((dict(request.POST)['category'])[0])
             num = len(Question.objects.filter(category = c))+1
             Question.objects.create(category = c, question_number = num,
                 question_text = (dict(request.POST)['question_text'])[0],choice1 = (dict(request.POST)['choice1'])[0],
@@ -213,6 +234,89 @@ class ShowQuestionsView(View):
     def get(self, request):
         ques = Question.objects.all()
         return render(request,  self.template_name, {'ques':ques})
+
+class ShowCandidateListView(View):
+    template_name = 'core/candidatelist.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ShowCandidateListView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        cands = Candidate.objects.all()
+        return render(request,  self.template_name, {'cands':cands})
+
+
+class ViewResultView(View):
+    template_name = 'core/result.html'
+    data = {}
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ViewResultView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        l1=[]
+        overall_total = 0
+        overall_correct = 0
+        cand = Candidate.objects.get(pk=pk)
+        cats = Category.objects.all()
+        selects = SelectedAnswer.objects.filter(email = cand)
+        if len(selects) != 0:
+            for cat in cats:
+                total = 0
+                correct = 0
+                l=[]
+                l.append(cat.category)
+                percent = 0.0
+                for select in selects:
+                    if cat.category == select.question_text.category.category:
+                        total = total + 1
+                        overall_total = overall_total + 1
+                        if select.question_text.correct_choice == select.selected_choice:
+                            correct = correct + 1
+                            overall_correct = overall_correct + 1
+                l.append(total)
+                l.append(correct)
+                if total == 0:
+                    percent = 0.0
+                else:
+                    percent =(correct/float(total))*100
+                l.append(percent)
+                l1.extend([l])
+            total = 0
+            correct = 0
+            l=[]
+            percent = 0.0
+            if overall_total == 0:
+                percent = 0.0
+            else:
+                percent = (overall_correct/float(overall_total))*100
+                l.append("Total")
+            l.append(overall_total)
+            l.append(overall_correct)
+            l.append(percent)
+            l1.extend([l])
+            global data
+            data = {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1}
+        return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1})
+
+    def post(self, request, pk):
+        cand = Candidate.objects.get(pk=pk)
+        template = get_template(self.template_name)
+        html  = template.render(data)
+        st1 = str(cand.name) +" - " + str(cand.email) + ".pdf"
+        print(st1)
+        st =  'core/' + 'media/' + st1      
+        file = open(st, "w+b")
+        pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
+                encoding='utf-8')            
+        file.seek(0)
+        pdf = file.read()
+        file.close()            
+        return render(request,  self.template_name, data)
+
 
 
 class EditQuestionView(View):

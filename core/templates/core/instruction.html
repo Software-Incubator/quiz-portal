@@ -9,7 +9,11 @@
 </head>
 <body>
     <p>Previously Stored</p>
-    {{ Iname|safe|escape }}<br><br>
+    {% if Iname == '' %}
+        <p>No instructions Feeded</p>
+    {% else %}
+        {{ Iname|safe|escape }}<br><br>
+    {% endif %}
 
 
     <form name="TestForm" method="post">

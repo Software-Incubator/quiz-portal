@@ -63,9 +63,8 @@ class TestName(View):
     template_name = 'core/test.html'
 
     def dispatch(self, request, *args, **kwargs):
-        try:
-            Test.objects.get(pk=1)
-        except:
+        
+        if (Test.objects.all()).count() == 0:
             Test.objects.create(test_name='', duration = 0)
 
         if not request.user.is_superuser:
@@ -74,14 +73,14 @@ class TestName(View):
 
     def get(self, request):
         form = self.form_class()
-        Tname = Test.objects.get(pk=1)
+        Tname = Test.objects.latest('test_name')
         return render(request,  self.template_name, {'form': form, 'Tname':Tname,})
 
     def post(self,request):
-        Tname = Test.objects.get(pk=1)
+        Tname = Test.objects.latest('test_name')
         form = self.form_class(request.POST)
         if form.is_valid():
-            Test.objects.filter(pk=1).update(test_name=request.POST['test_name'],
+            Test.objects.filter(pk=Tname.pk).update(test_name=request.POST['test_name'],
              duration=request.POST['duration'])
             return redirect('admin_auth')
         else:
@@ -198,11 +197,15 @@ class AddCategoryView(View):
         return super(AddCategoryView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        cats = Category.objects.all()
-        form = self.form_class()
-        return render(request,  self.template_name, {'form': form, 'cats':cats})
+        if (Test.objects.all()).count() == 0:
+            return redirect('Test name')
+        else:
+            cats = Category.objects.all()
+            form = self.form_class()
+            return render(request,  self.template_name, {'form': form, 'cats':cats})
 
     def post(self,request):
+        (dict(request.POST))['category'][0] = ((dict(request.POST))['category'][0]).lower()
         form = self.form_class(request.POST)
         cats = Category.objects.all()
         if form.is_valid():
@@ -255,6 +258,7 @@ class ShowCandidateListView(View):
 
 class ViewResultView(View):
     template_name = 'core/result.html'
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('admin_auth')
@@ -347,13 +351,16 @@ class ViewResultView(View):
             l.append(overall_correct)
             l.append(percent)
             l1.extend([l])
+            try:
+                os.mkdir(os.path.join('core', 'media'))
+            except:
+                pass
             data = {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1}
             template = get_template(self.template_name)
             html  = template.render(data)
             print(cand.name)
             st1 = str(cand.name) +" - " + str(cand.email) + ".pdf"
-            st =  'core/' + 'media/' + st1
-            file = open(st, "w+b")
+            file = open('core/' + 'media/' + st1, "w+b")
             pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
                     encoding='utf-8')
             file.seek(0)

@@ -176,11 +176,14 @@ class AddQuestionView(View):
         if form.is_valid():
             c = Category.objects.get(category = (dict(request.POST)['category'])[0])
             num = len(Question.objects.filter(category = c))+1
-            Question.objects.create(category = c, question_number = num,
-                question_text = (dict(request.POST)['question_text'])[0],choice1 = (dict(request.POST)['choice1'])[0],
-                choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
-                choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
-            return redirect('admin_auth')
+            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+                Question.objects.create(category = c, question_number = num,
+                    question_text = (dict(request.POST)['question_text'])[0],choice1 = (dict(request.POST)['choice1'])[0],
+                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
+                    choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
+                return redirect('admin_auth')
+            else:
+                return HttpResponse("Choices cannot be same")
         else:
             form = self.form_class()
         return render(request, self.template_name, {'form': form})
@@ -396,12 +399,15 @@ class EditQuestionView(View):
             if int((dict(request.POST)['correct_choice'])[0]) > 4:
                 return HttpResponse("Not a valid choice")
             else:
-                c = Category.objects.get(category = (dict(request.POST)['category'])[0])
-                Question.objects.filter(pk=pk).update(category = c,  question_number = num,
-                    question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
-                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
-                    choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
-                return redirect('admin_auth')
+                if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+                    c = Category.objects.get(category = (dict(request.POST)['category'])[0])
+                    Question.objects.filter(pk=pk).update(category = c,  question_number = num,
+                        question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
+                        choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
+                        choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
+                    return redirect('admin_auth')
+                else:
+                    return HttpResponse("Choices cannot be same")
         else:
             form = self.form_class()
         return render(request, self.template_name, {'form': form, 'question':question})

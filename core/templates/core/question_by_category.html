@@ -9,17 +9,15 @@
 
      <h1>{{ category_name }}</h1>
         {% if category %}
-            {% if questions %}
+            {% if question %}
                 {% autoescape off %}
-                {% for question in questions %}
                 {{ question.question_text }}
                  <ul>
-                     <li>{{ question.choice1 }}</li>
+                      <li>{{ question.choice1 }}</li>
                       <li>{{ question.choice2 }}</li>
                       <li>{{ question.choice3 }}</li>
                       <li>{{ question.choice4 }}</li>
                  </ul>
-                {% endfor %}
                 {% endautoescape %}
             {% else %}
                 <strong>No questions currently in category.</strong>
@@ -27,5 +25,4 @@
         {% else %}
             The specified category {{ category_name }} does not exist!
         {% endif %}
-
 {% endblock %}

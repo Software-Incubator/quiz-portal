@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.views import generic, View
@@ -14,6 +14,7 @@ from .models import Candidate, Instruction, Category, Test, Question
 from .models import Candidate
 from core.models import Category, Question, Instruction, Test, SelectedAnswer
 import json
+import itertools
 import os
 from django.conf import settings
 from django.template import Context
@@ -102,6 +103,15 @@ class StartTest(generic.ListView):
         return render(request, self.template_name, context_dict)
 
 
+def random_question(n, can_id, ques_id):
+    a = [x for x in range(1, n+1)]
+    a = list(itertools.permutations(a))
+    print(n, can_id, ques_id)
+    print(a)
+    l = len(a)
+    return a[can_id % l][ques_id % n]
+
+
 class QuestionByCategory(generic.DetailView):
     template_name = 'core/question_by_category.html'
 
@@ -110,14 +120,25 @@ class QuestionByCategory(generic.DetailView):
             return redirect('signup')
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
-    def get(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         category_name = kwargs["category_name"]
         context_dict = {'category_name': category_name}
 
         try:
             category = Category.objects.get(category=category_name)
-            questions = Question.objects.filter(category=category)
-            context_dict['questions'] = questions
+            total_question = Question.objects.filter(category=category).count()
+            email = request.session["email"]
+            id = kwargs["id"]
+
+            if id not in range(1,total_question+1):
+                return redirect(reverse('category', kwargs={"category_name": category_name,
+                                                     "id": 1}))
+            candidate_id = Candidate.objects.get(email=email).id
+            which_question = random_question(total_question, int(candidate_id), id)
+            print("which question -> ", which_question)
+            question = Question.objects.filter(category=category)[which_question-1]
+            context_dict["which_question"] = which_question
+            context_dict['question'] = question
             context_dict['category'] = category
         except Category.DoesNotExist:
             pass
@@ -331,13 +352,13 @@ class ViewResultView(View):
             html  = template.render(data)
             print(cand.name)
             st1 = str(cand.name) +" - " + str(cand.email) + ".pdf"
-            st =  'core/' + 'media/' + st1      
+            st =  'core/' + 'media/' + st1
             file = open(st, "w+b")
             pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
-                    encoding='utf-8')            
+                    encoding='utf-8')
             file.seek(0)
             pdf = file.read()
-            file.close()            
+            file.close()
         return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1})
 
 
@@ -430,6 +451,7 @@ class CandidateRegistration(generic.ListView):
                 self.request.session['name'] = name
                 return redirect('home')
         return render(self.request, self.template_name, {'form':form })
+
 
 class AdminInstructionView(View):
     form_class = forms.InstructionForm

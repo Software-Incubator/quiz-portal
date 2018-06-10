@@ -14,6 +14,8 @@ def category_name_list():
 
     return CATEGORY_CHOICE
 
+answer_choice = ((1,1),(2,2),(3,3),(4,4))
+
 
 class AdminLoginForm(forms.Form):
     username = forms.CharField(max_length=30)
@@ -47,7 +49,7 @@ class QuestionForm(forms.Form):
     choice2 = forms.CharField(widget=CKEditorWidget())
     choice3 = forms.CharField(widget=CKEditorWidget())
     choice4 = forms.CharField(widget=CKEditorWidget())
-    correct_choice = forms.IntegerField()
+    correct_choice = forms.ChoiceField(choices=answer_choice, label="Select answer")
 
     class Meta:
         fields = ['category', 'question_text','choice1','choice2','choice3','choice4', 'correct_choice']

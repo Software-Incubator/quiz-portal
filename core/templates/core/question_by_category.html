@@ -16,12 +16,12 @@
             {% if question %}
                 {% autoescape off %}
                 {{ question.question_text }}
-                 <ul>
+                 <ol>
                       <li>{{ question.choice1 }}</li>
                       <li>{{ question.choice2 }}</li>
                       <li>{{ question.choice3 }}</li>
                       <li>{{ question.choice4 }}</li>
-                 </ul>
+                 </ol>
                 {% endautoescape %}
             {% else %}
                 <strong>No questions currently in category.</strong>

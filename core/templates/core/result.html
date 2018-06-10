@@ -78,5 +78,8 @@
     {% empty %}
         <p>No questions attempted.</p>
     {% endfor %}
+
+    <br><a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
+    <a href="{% url 'logout' %}" ><button>Logout</button></a>
 </body>
 </html>

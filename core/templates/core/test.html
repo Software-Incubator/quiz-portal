@@ -8,18 +8,23 @@
     <form name="TestForm" method="post">
         {% csrf_token %}
 
-        {% if form.non_field_errors %}
-        <ul>
-            {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
             {% endfor %}
-        </ul>
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
         {% endif %}
         <label for="name">{{ form.test_name.label_tag }}</label><br>
-        <!-- {{ form.test_name }}<br> -->
         <input type="text" name="test_name"  value={{ Tname.test_name }}><br>
         <label for="name">{{ form.duration.label_tag }}</label><br>
-        <!-- {{ form.duration }}<br> -->
         <input type="text" name="duration" value={{ Tname.duration }}><br>
         <button type="submit">ADD</button><br>
     </form>

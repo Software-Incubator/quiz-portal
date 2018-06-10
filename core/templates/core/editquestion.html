@@ -8,21 +8,33 @@
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 </head>
 <body>
-    <p>Q{{ question.question_number }}</p>{{ question.question_text|safe|escape }}
-    <p>1.</p>{{ question.choice1|safe|escape }}
-    <p>2.</p>{{ question.choice2|safe|escape }}
-    <p>3.</p>{{ question.choice3|safe|escape }}
-    <p>4.</p>{{ question.choice4|safe|escape }}
-    <p>Correct Choice</p>{{ question.correct_choice|safe|escape }}<br>
+    <ol>
+        <div style="display: flex;">
+            <p>Q.{{ question.question_number }} &nbsp;</p>
+            <P>{{ question.question_text|safe|escape }}</p>
+        </div>
+        <li>{{ question.choice1|safe|escape }}</li>
+        <li>{{ question.choice2|safe|escape }}</li>
+        <li>{{ question.choice3|safe|escape }}</li>
+        <li>{{ question.choice4|safe|escape }}</li>
+        <p>Correct Choice  -  {{ question.correct_choice|safe|escape }}</p>
+    </ol>
     <form name="TestForm" method="post">
         {% csrf_token %}
 
-        {% if form.non_field_errors %}
-        <ul>
-            {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
             {% endfor %}
-        </ul>
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
         {% endif %}
         {{ form.media }}
         {{ form.as_p }}<br>

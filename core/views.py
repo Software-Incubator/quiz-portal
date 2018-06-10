@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render_to_response
-from django.template import RequestContext
 from .models import Candidate, Instruction, Category, Test, Question
 from .models import Candidate
 from core.models import Category, Question, Instruction, Test, SelectedAnswer
@@ -89,19 +88,6 @@ class TestName(View):
         return render(request, 'core/signup.html', {'form': form})
 
 
-class StartTest(generic.ListView):
-    template_name = 'core/start_test.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.has_key("email"):
-            return redirect('signup')
-        return super(StartTest, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        category_list = Category.objects.all()
-        context_dict = {'categories': category_list}
-        return render(request, self.template_name, context_dict)
-
 
 def random_question(n, can_id, ques_id):
     a = [x for x in range(1, n+1)]
@@ -140,6 +126,7 @@ class QuestionByCategory(generic.DetailView):
             context_dict["which_question"] = which_question
             context_dict['question'] = question
             context_dict['category'] = category
+            context_dict["all_category"] = Category.objects.all()
         except Category.DoesNotExist:
             pass
         return render(self.request, self.template_name, context_dict)
@@ -155,8 +142,9 @@ class InstructionView(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         instruction = Instruction.objects.all()
-        return render(request, self.template_name, {'instruction': instruction})
-
+        category = Category.objects.all()[0]
+        return render(request, self.template_name, {'instruction': instruction,
+                                                    'category': category})
 
 
 class AddQuestionView(View):
@@ -218,7 +206,6 @@ class editcategory(View):
     def get(self,request):
         img_id = 0
         img_id = request.GET['imgid']
-
         if img_id:
             d = dict()
             name = request.GET['name']
@@ -227,6 +214,7 @@ class editcategory(View):
             d['name'] = c.category
             x = json.dumps(d)
             return HttpResponse(x)
+
 
 class ShowQuestionsView(View):
     template_name = 'core/showquestion.html'
@@ -239,6 +227,7 @@ class ShowQuestionsView(View):
     def get(self, request):
         ques = Question.objects.all()
         return render(request,  self.template_name, {'ques':ques})
+
 
 class ShowCandidateListView(View):
     template_name = 'core/candidatelist.html'

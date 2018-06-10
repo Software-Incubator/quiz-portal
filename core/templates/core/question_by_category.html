@@ -6,7 +6,11 @@
     <span>Hello {{ request.session.name}}</span>
         <a href={% url 'session_out' %} >Logout</a>
 {% endblock %}
-
+    <ul>
+        {% for category in all_category %}
+            <li><a href={% url 'category' category.category 1 %}>{{ category.category }}</a></li>
+        {% endfor %}
+    </ul>
      <h1>{{ category_name }}</h1>
         {% if category %}
             {% if question %}

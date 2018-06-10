@@ -1,8 +1,9 @@
 from django import forms
 from core.models import Test, Question, Category, Instruction
-from ckeditor.widgets import CKEditorWidget
+from ckeditor.fields import CKEditorWidget
 from .models import Candidate
 import re
+
 
 def category_name_list():
     categories = Category.objects.all()

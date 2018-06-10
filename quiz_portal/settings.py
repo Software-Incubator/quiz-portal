@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'ckeditor_uploader',
     'core',
 ]
 
@@ -115,15 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # from http://django-ckeditor.readthedocs.io/en/latest/
 
-CKEDITOR_CONFIGS = {
-    'default': {
-        "removePlugins": "stylesheetparser",
-        'extraPlugins': ','.join([
-            # 'eqneditor',
-            'mathjax',
-        ]),
-    }
-}
 
 
 # Internationalization
@@ -151,6 +143,14 @@ LOGIN_REDIRECT_URL ='signup'
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_ALLOW_NONIMAGE_FILES = False
-CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_RESTRICT_BY_USER = True
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 200,
+        'width': 700,
+    },
+}

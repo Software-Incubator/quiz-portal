@@ -87,7 +87,6 @@ class TestName(View):
         return render(request, 'core/signup.html', {'form': form})
 
 
-
 def random_question(n, can_id, ques_id):
     a = [x for x in range(1, n+1)]
     a = list(itertools.permutations(a))

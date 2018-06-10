@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 /quiz_portal/static/
 /quiz_portal/media/
+db.sqlite3

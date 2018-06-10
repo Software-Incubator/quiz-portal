@@ -325,6 +325,7 @@ class CandidateRegistration(generic.ListView):
                 return redirect('home')
         return render(self.request, self.template_name, {'form':form })
 
+
 class AdminInstructionView(View):
     form_class = forms.InstructionForm
     template_name = 'core/instruction.html'

@@ -208,12 +208,15 @@ class AddCategoryView(View):
         (dict(request.POST))['category'][0] = ((dict(request.POST))['category'][0]).lower()
         form = self.form_class(request.POST)
         cats = Category.objects.all()
-        if form.is_valid():
-            form.save()
-            return redirect('admin_auth')
+        if (Category.objects.filter(category=((dict(request.POST))['category'][0]).lower())).count() > 0:
+            return HttpResponse('ALL READY EXIST')
         else:
-            form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'cats':cats})
+            if form.is_valid():
+                form.save()
+                return redirect('admin_auth')
+            else:
+                form = self.form_class()
+            return render(request, self.template_name, {'form': form, 'cats':cats})
 
 
 class editcategory(View):

@@ -4,12 +4,16 @@
   <meta charset="utf-8">
 </head>
 <body>
-    {% for cand in cands %}
-        {{ cand }}
-        <a href="{% url "View result" cand.pk %}" ><button>View result</button></a><br>
-    {% empty %}
-        <p>No candidate present.</p>
-    {% endfor %}
+    <ol>
+        {% for cand in cands %}
+            <li>
+                {{ cand }}
+                <a href="{% url "View result" cand.pk %}" ><button>View result</button></a>
+            </li>
+        {% empty %}
+            <p>No candidate present.</p>
+        {% endfor %}
+    </ol>
     <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
     <a href="{% url 'logout' %}" ><button>Logout</button></a>
 </body>

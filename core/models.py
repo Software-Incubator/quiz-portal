@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -15,7 +15,7 @@ class Test(models.Model):
 
 
 class Instruction(models.Model):
-    instruction = RichTextUploadingField()
+    instruction = RichTextField()
 
     class Meta:
         verbose_name_plural = "Instructions"
@@ -37,11 +37,11 @@ class Category(models.Model):
 class Question(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     question_number = models.PositiveIntegerField(blank=False)
-    question_text = RichTextUploadingField()
-    choice1 = RichTextUploadingField()
-    choice2 = RichTextUploadingField()
-    choice3= RichTextUploadingField()
-    choice4 = RichTextUploadingField()
+    question_text = RichTextField()
+    choice1 = RichTextField()
+    choice2 = RichTextField()
+    choice3= RichTextField()
+    choice4 = RichTextField()
     correct_choice = models.PositiveIntegerField(blank=False)
     negative = models.BooleanField(default=False)
     negative_marks = models.IntegerField(null=True)

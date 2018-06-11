@@ -10,7 +10,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render_to_response
 from .models import Candidate, Instruction, Category, Test, Question
-from .models import Candidate
 from core.models import Category, Question, Instruction, Test, SelectedAnswer
 import json
 import itertools
@@ -24,7 +23,7 @@ from xhtml2pdf import pisa
 
 class AdminAuth(generic.ListView):
     form_class = forms.AdminLoginForm
-    template_name = 'core/admin_login.html'
+    template_name = 'admin/admin_login.html'
     model = User
 
     def dispatch(self, request, *args, **kwargs):
@@ -51,20 +50,20 @@ class AdminAuth(generic.ListView):
 
 
 class ControlOperation(View):
-    template_name = 'core/control.html'
+    template_name = 'admin/control.html'
 
     def get(self, request):
         return render(request, self.template_name)
-        
+
 
 class TestName(View):
     form_class = forms.TestForm
-    template_name = 'core/test.html'
+    template_name = 'admin/test.html'
 
     def dispatch(self, request, *args, **kwargs):
-        
+
         if (Test.objects.all()).count() == 0:
-            Test.objects.create(test_name='', duration = 0)
+            Test.objects.create(test_name='', duration=0)
 
         if not request.user.is_superuser:
             return redirect('admin_auth')
@@ -73,81 +72,24 @@ class TestName(View):
     def get(self, request):
         form = self.form_class()
         Tname = Test.objects.latest('test_name')
-        return render(request,  self.template_name, {'form': form, 'Tname':Tname,})
+        return render(request, self.template_name, {'form': form, 'Tname': Tname, })
 
-    def post(self,request):
+    def post(self, request):
         Tname = Test.objects.latest('test_name')
         form = self.form_class(request.POST)
         if form.is_valid():
             Test.objects.filter(pk=Tname.pk).update(test_name=request.POST['test_name'],
-             duration=request.POST['duration'])
+                                                    duration=request.POST['duration'])
             return redirect('admin_auth')
         else:
             form = self.form_class
-        return render(request, 'core/signup.html', {'form': form})
+        return render(request, 'core/templates/candidate/signup.html', {'form': form})
 
-
-def random_question(n, can_id, ques_id):
-    a = [x for x in range(1, n+1)]
-    a = list(itertools.permutations(a))
-    print(n, can_id, ques_id)
-    print(a)
-    l = len(a)
-    return a[can_id % l][ques_id % n]
-
-
-class QuestionByCategory(generic.DetailView):
-    template_name = 'core/question_by_category.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.has_key("email"):
-            return redirect('signup')
-        return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        category_name = kwargs["category_name"]
-        context_dict = {'category_name': category_name}
-
-        try:
-            category = Category.objects.get(category=category_name)
-            total_question = Question.objects.filter(category=category).count()
-            email = request.session["email"]
-            id = kwargs["id"]
-
-            if id not in range(1,total_question+1):
-                return redirect(reverse('category', kwargs={"category_name": category_name,
-                                                     "id": 1}))
-            candidate_id = Candidate.objects.get(email=email).id
-            which_question = random_question(total_question, int(candidate_id), id)
-            print("which question -> ", which_question)
-            question = Question.objects.filter(category=category)[which_question-1]
-            context_dict["which_question"] = which_question
-            context_dict['question'] = question
-            context_dict['category'] = category
-            context_dict["all_category"] = Category.objects.all()
-        except Category.DoesNotExist:
-            pass
-        return render(self.request, self.template_name, context_dict)
-
-
-class InstructionView(generic.ListView):
-    template_name = 'core/instructions.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.has_key("email"):
-            return redirect('signup')
-        return super(InstructionView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        instruction = Instruction.objects.all()
-        category = Category.objects.all()[0]
-        return render(request, self.template_name, {'instruction': instruction,
-                                                    'category': category})
 
 
 class AddQuestionView(View):
     form_class = forms.QuestionForm
-    template_name = 'core/addquestion.html'
+    template_name = 'admin/addquestion.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -156,18 +98,22 @@ class AddQuestionView(View):
 
     def get(self, request):
         form = self.form_class()
-        return render(request,  self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form})
 
-    def post(self,request):
+    def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            c = Category.objects.get(category = (dict(request.POST)['category'])[0])
-            num = len(Question.objects.filter(category = c))+1
-            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                Question.objects.create(category = c, question_number = num,
-                    question_text = (dict(request.POST)['question_text'])[0],choice1 = (dict(request.POST)['choice1'])[0],
-                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
-                    choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
+            c = Category.objects.get(category=(dict(request.POST)['category'])[0])
+            num = len(Question.objects.filter(category=c)) + 1
+            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != \
+                    (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+                Question.objects.create(category=c, question_number=num,
+                                        question_text=(dict(request.POST)['question_text'])[0],
+                                        choice1=(dict(request.POST)['choice1'])[0],
+                                        choice2=(dict(request.POST)['choice2'])[0],
+                                        choice3=(dict(request.POST)['choice3'])[0],
+                                        choice4=(dict(request.POST)['choice4'])[0],
+                                        correct_choice=(dict(request.POST)['correct_choice'])[0])
                 return redirect('admin_auth')
             else:
                 return HttpResponse("Choices cannot be same")
@@ -178,7 +124,7 @@ class AddQuestionView(View):
 
 class AddCategoryView(View):
     form_class = forms.CategoryForm
-    template_name = 'core/addcategory.html'
+    template_name = 'admin/addcategory.html'
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -192,9 +138,9 @@ class AddCategoryView(View):
         else:
             cats = Category.objects.all()
             form = self.form_class()
-            return render(request,  self.template_name, {'form': form, 'cats':cats})
+            return render(request, self.template_name, {'form': form, 'cats': cats})
 
-    def post(self,request):
+    def post(self, request):
         (dict(request.POST))['category'][0] = ((dict(request.POST))['category'][0]).lower()
         form = self.form_class(request.POST)
         cats = Category.objects.all()
@@ -206,12 +152,12 @@ class AddCategoryView(View):
                 return redirect('admin_auth')
             else:
                 form = self.form_class()
-            return render(request, self.template_name, {'form': form, 'cats':cats})
+            return render(request, self.template_name, {'form': form, 'cats': cats})
 
 
-class editcategory(View):
+class Editcategory(View):
 
-    def get(self,request):
+    def get(self, request):
         img_id = 0
         img_id = request.GET['imgid']
         if img_id:
@@ -225,7 +171,7 @@ class editcategory(View):
 
 
 class ShowQuestionsView(View):
-    template_name = 'core/showquestion.html'
+    template_name = 'admin/showquestion.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -234,11 +180,11 @@ class ShowQuestionsView(View):
 
     def get(self, request):
         ques = Question.objects.all()
-        return render(request,  self.template_name, {'ques':ques})
+        return render(request, self.template_name, {'ques': ques})
 
 
 class ShowCandidateListView(View):
-    template_name = 'core/candidatelist.html'
+    template_name = 'admin/candidatelist.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -247,11 +193,11 @@ class ShowCandidateListView(View):
 
     def get(self, request):
         cands = Candidate.objects.all()
-        return render(request,  self.template_name, {'cands':cands})
+        return render(request, self.template_name, {'cands': cands})
 
 
 class ViewResultView(View):
-    template_name = 'core/result.html'
+    template_name = 'admin/result.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -259,17 +205,17 @@ class ViewResultView(View):
         return super(ViewResultView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, pk):
-        l1=[]
+        l1 = []
         overall_total = 0
         overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
         cats = Category.objects.all()
-        selects = SelectedAnswer.objects.filter(email = cand)
+        selects = SelectedAnswer.objects.filter(email=cand)
         if len(selects) != 0:
             for cat in cats:
                 total = 0
                 correct = 0
-                l=[]
+                l = []
                 l.append(cat.category)
                 percent = 0.0
                 for select in selects:
@@ -284,37 +230,37 @@ class ViewResultView(View):
                 if total == 0:
                     percent = 0.0
                 else:
-                    percent =(correct/float(total))*100
+                    percent = (correct / float(total)) * 100
                 l.append(percent)
                 l1.extend([l])
             total = 0
             correct = 0
-            l=[]
+            l = []
             percent = 0.0
             if overall_total == 0:
                 percent = 0.0
             else:
-                percent = (overall_correct/float(overall_total))*100
+                percent = (overall_correct / float(overall_total)) * 100
                 l.append("Total")
             l.append(overall_total)
             l.append(overall_correct)
             l.append(percent)
             l1.extend([l])
-        return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1})
+        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
 
     def post(self, request, pk):
-        l1=[]
+        l1 = []
         data = {}
         overall_total = 0
         overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
         cats = Category.objects.all()
-        selects = SelectedAnswer.objects.filter(email = cand)
+        selects = SelectedAnswer.objects.filter(email=cand)
         if len(selects) != 0:
             for cat in cats:
                 total = 0
                 correct = 0
-                l=[]
+                l = []
                 l.append(cat.category)
                 percent = 0.0
                 for select in selects:
@@ -329,17 +275,17 @@ class ViewResultView(View):
                 if total == 0:
                     percent = 0.0
                 else:
-                    percent =(correct/float(total))*100
+                    percent = (correct / float(total)) * 100
                 l.append(percent)
                 l1.extend([l])
             total = 0
             correct = 0
-            l=[]
+            l = []
             percent = 0.0
             if overall_total == 0:
                 percent = 0.0
             else:
-                percent = (overall_correct/float(overall_total))*100
+                percent = (overall_correct / float(overall_total)) * 100
                 l.append("Total")
             l.append(overall_total)
             l.append(overall_correct)
@@ -349,24 +295,23 @@ class ViewResultView(View):
                 os.mkdir(os.path.join('core', 'media'))
             except:
                 pass
-            data = {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1}
+            data = {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1}
             template = get_template(self.template_name)
-            html  = template.render(data)
+            html = template.render(data)
             print(cand.name)
-            st1 = str(cand.name) +" - " + str(cand.email) + ".pdf"
+            st1 = str(cand.name) + " - " + str(cand.email) + ".pdf"
             file = open('core/' + 'media/' + st1, "w+b")
             pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
-                    encoding='utf-8')
+                                        encoding='utf-8')
             file.seek(0)
             pdf = file.read()
             file.close()
-        return render(request,  self.template_name, {'selects':selects, 'cats':cats, 'cand':cand, 'l':l1})
-
+        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
 
 
 class EditQuestionView(View):
     form_class = forms.QuestionForm
-    template_name = 'core/editquestion.html'
+    template_name = 'admin/editquestion.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -377,9 +322,9 @@ class EditQuestionView(View):
         question = Question.objects.get(pk=pk)
         print(question)
         form = self.form_class()
-        return render(request,  self.template_name, {'form': form, 'question':question})
+        return render(request, self.template_name, {'form': form, 'question': question})
 
-    def post(self,request, pk):
+    def post(self, request, pk):
         question = Question.objects.get(pk=pk)
         num = question.question_number
         form = self.form_class(request.POST)
@@ -387,18 +332,23 @@ class EditQuestionView(View):
             if int((dict(request.POST)['correct_choice'])[0]) > 4:
                 return HttpResponse("Not a valid choice")
             else:
-                if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                    c = Category.objects.get(category = (dict(request.POST)['category'])[0])
-                    Question.objects.filter(pk=pk).update(category = c,  question_number = num,
-                        question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
-                        choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
-                        choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
+                if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != \
+                        (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+                    c = Category.objects.get(category=(dict(request.POST)['category'])[0])
+                    Question.objects.filter(pk=pk).update(category=c, question_number=num,
+                                                          question_text=(dict(request.POST)['question_text'])[0],
+                                                          choice1=(dict(request.POST)['choice1'])[0],
+                                                          choice2=(dict(request.POST)['choice2'])[0],
+                                                          choice3=(dict(request.POST)['choice3'])[0],
+                                                          choice4=(dict(request.POST)['choice4'])[0],
+                                                          correct_choice=(dict(request.POST)['correct_choice'])[0])
                     return redirect('admin_auth')
                 else:
                     return HttpResponse("Choices cannot be same")
         else:
             form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'question':question})
+        return render(request, self.template_name, {'form': form, 'question': question})
+
 
 class DeleteQuestionView(View):
 
@@ -423,43 +373,10 @@ class DeleteCategoryView(View):
         Category.objects.filter(pk=pk).delete()
         return redirect('control_operation')
 
-@login_required
-def instruction(request):
-    form = forms.CandidateRegistration(None)
-    name = form.cleaned_data.get('name')
-    return render('core/instructions.html',{'name': name})
-
-
-class CandidateRegistration(generic.ListView):
-    form_class = forms.CandidateRegistration
-    template_name = 'core/signup.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.session.has_key("email"):
-            return redirect('home')
-        return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, *args, **kwargs):
-        form = self.form_class(self.request.POST)
-        if form.is_valid():
-            form.save()
-            name = form.cleaned_data.get('name')
-            email = form.cleaned_data.get('email')
-            candidate = Candidate.objects.get(name=name, email=email)
-            if candidate:
-                self.request.session['email'] = email
-                self.request.session['name'] = name
-                return redirect('home')
-        return render(self.request, self.template_name, {'form':form })
-
 
 class AdminInstructionView(View):
     form_class = forms.InstructionForm
-    template_name = 'core/instruction.html'
+    template_name = 'admin/instruction.html'
 
     def dispatch(self, request, *args, **kwargs):
         if len(Instruction.objects.all()) == 0:
@@ -472,9 +389,9 @@ class AdminInstructionView(View):
     def get(self, request):
         form = self.form_class()
         Iname = Instruction.objects.latest('instruction')
-        return render(request,  self.template_name, {'form': form, 'Iname':Iname.instruction,})
+        return render(request, self.template_name, {'form': form, 'Iname': Iname.instruction, })
 
-    def post(self,request):
+    def post(self, request):
         Iname = Instruction.objects.latest('instruction')
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -482,13 +399,5 @@ class AdminInstructionView(View):
             return redirect('admin_auth')
         else:
             form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'Iname':Iname,})
+        return render(request, self.template_name, {'form': form, 'Iname': Iname, })
 
-
-def logout(request):
-    try:
-        del request.session['email']
-        del request.session['name']
-    except:
-        pass
-    return redirect('signup')

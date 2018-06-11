@@ -60,6 +60,10 @@ class QuestionByCategory(generic.DetailView):
             context_dict['question'] = question
             context_dict['category'] = category
             context_dict["all_category"] = Category.objects.all()
+            total_question_dict = []
+            for i in range(1, total_question+1):
+                total_question_dict.append(i)
+            context_dict['total_question'] = total_question_dict
         except Category.DoesNotExist:
             pass
         return render(self.request, self.template_name, context_dict)

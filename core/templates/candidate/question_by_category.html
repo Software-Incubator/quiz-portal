@@ -31,19 +31,19 @@
                         </div>
                         <div class="options" id={{ question_id }}>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios"  value="1" class="option">
+                                    <input type="radio" name="optionsRadios"  value="1" class="option1">
                                     {{ question.choice1|safe|escape }}
                             </div>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios"  value="2" class="option">
+                                    <input type="radio" name="optionsRadios"  value="2" class="option2">
                                     {{ question.choice2|safe|escape }}
                             </div>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios" value="3" class="option">
+                                    <input type="radio" name="optionsRadios" value="3" class="option3">
                                     {{ question.choice3|safe|escape }}
                             </div>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios" value="4" class="option">
+                                    <input type="radio" name="optionsRadios" value="4" class="option4">
                                     {{ question.choice4|safe|escape }}
                             </div>
                         </div>
@@ -80,7 +80,6 @@
         $("input").on('change', function () {
             var option_number = $("input[name='optionsRadios']:checked").val();
             var question_id = $(".options").attr("id");
-            console.log(option_number, question_id)
             $.ajax({
                 url: '{% url 'answer' %}',
                 data: {
@@ -88,10 +87,31 @@
                     'question_id': question_id,
                 },
                 success: function (data) {
-                    console.log("data save");
+                    var value = data.candidate_answer
+                    console.log(value);
+                    $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
+                    $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
                 }
             })
         })
     })
+
+    $(window).on("load", function() {
+        var question_id = $(".options").attr("id");
+        $.ajax({
+                url: '{% url 'user_answer' %}',
+                data: {
+                    'question_id': question_id,
+                },
+                success: function (data) {
+                    var value = data.candidate_answer
+                    console.log(value);
+                    $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
+                    if(value!=-1){
+                    $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
+                }}
+            })
+    })
+
 
 {% endblock %}

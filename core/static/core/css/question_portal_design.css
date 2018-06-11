@@ -1,0 +1,36 @@
+body{
+    background-color: #eee;
+}
+
+header .navbar{
+    height: 50px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+}
+
+header .navbar .logo img{
+    width: 40px;
+    height: auto;
+}
+
+header .navbar .heading{
+    font-family: 'Montserrat', sans-serif;
+}
+
+main .categories{
+    width: 100%;
+    background-color: #fff;
+}
+
+main .question-options{
+    width: 100%;
+    background-color: rgb(255, 241, 241)
+}
+
+main .question-options .question{
+    padding: 25px;
+}
+
+main .question-options .options{
+    padding: 25px;
+}

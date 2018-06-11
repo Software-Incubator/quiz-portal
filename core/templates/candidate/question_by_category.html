@@ -1,32 +1,97 @@
-{% extends 'core/../admin/base.html' %}
+{% extends 'candidate/base.html' %}
 {% block title %}{{ category }}{% endblock %}
-{% block content %}
 
-{% block login %}
-    <span>Hello {{ request.session.name}}</span>
-        <a href={% url 'session_out' %} >Logout</a>
+{% load staticfiles %}
+
+{% block content %}
+        <div class="row">
+            <div class="col-9">
+                <div class="row">
+
+                    <section class="col-12 categories">
+                        {% for category in all_category %}
+                        <span class="category" id={{ category.category }}>
+                            <a href={% url 'category' category.category 1 %}>
+                            <button type="button" class="btn btn-primary">{{ category.category }}</button>
+                            </a>
+                        </span>
+                        {% endfor %}
+
+                    </section>
+                    <section class="col-12 question-options">
+                        <div class="question">
+                            <span class="question-no.">
+                                1.
+                            </span>
+                            <h6>
+                                 {% autoescape off %}
+                               {{ question.question_text|safe|escape }}
+                                {% endautoescape %}
+                            </h6>
+                        </div>
+                        <div class="options" id={{ question_id }}>
+                            <div class="radio">
+                                    <input type="radio" name="optionsRadios"  value="1" class="option">
+                                    {{ question.choice1|safe|escape }}
+                            </div>
+                            <div class="radio">
+                                    <input type="radio" name="optionsRadios"  value="2" class="option">
+                                    {{ question.choice2|safe|escape }}
+                            </div>
+                            <div class="radio">
+                                    <input type="radio" name="optionsRadios" value="3" class="option">
+                                    {{ question.choice3|safe|escape }}
+                            </div>
+                            <div class="radio">
+                                    <input type="radio" name="optionsRadios" value="4" class="option">
+                                    {{ question.choice4|safe|escape }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="col-12">
+                        <button type="button" class="btn btn-raised btn-primary">Previous</button>
+                        <button type="button" class="btn btn-raised btn-warning">Mark for review & next</button>
+                        <button type="button" class="btn btn-raised btn-primary">Save and next</button>
+                    </section>
+                </div>
+            </div>
+            <div class="col-3">
+
+                <div class="row question_status">
+                    {% for i in total_question_dict %}
+                    <div class="col-4">
+                        <a href={% url 'category' category.category i %}>
+                        <button type="button" class="btn btn-raised btn-active">{{ i }}</button>
+                        </a>
+                    </div>
+                    {% endfor %}
+
+                    <div class="col-12">
+                        <button type="button" class="btn btn-raised btn-primary disabled">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}
-    <ul>
-        {% for category in all_category %}
-            <li><a href={% url 'category' category.category 1 %}>{{ category.category }}</a></li>
-        {% endfor %}
-    </ul>
-     <h1>{{ category_name }}</h1>
-        {% if category %}
-            {% if question %}
-                {% autoescape off %}
-                {{ question.question_text }}
-                 <ol>
-                      <li>{{ question.choice1 }}</li>
-                      <li>{{ question.choice2 }}</li>
-                      <li>{{ question.choice3 }}</li>
-                      <li>{{ question.choice4 }}</li>
-                 </ol>
-                {% endautoescape %}
-            {% else %}
-                <strong>No questions currently in category.</strong>
-            {% endif %}
-        {% else %}
-            The specified category {{ category_name }} does not exist!
-        {% endif %}
+
+{% block script %}
+    $(document).ready(function() {
+        $("input").on('change', function () {
+            var option_number = $("input[name='optionsRadios']:checked").val();
+            var question_id = $(".options").attr("id");
+            console.log(option_number, question_id)
+            $.ajax({
+                url: '{% url 'answer' %}',
+                data: {
+                    'option_number': option_number,
+                    'question_id': question_id,
+                },
+                success: function (data) {
+                    console.log("data save");
+                }
+            })
+        })
+    })
+
 {% endblock %}

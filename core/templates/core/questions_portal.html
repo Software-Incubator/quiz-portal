@@ -7,7 +7,6 @@
         <div class="row">
             <div class="col-9">
                 <div class="row">
-
                     <section class="col-12 categories">
                         {% for category in all_category %}
                         <span class="category" id={{ category.category }}>
@@ -24,47 +23,32 @@
                                 1.
                             </span>
                             <h6>
-                                 {% autoescape off %}
                                {{ question.question_text }}
-                                {% endautoescape %}
                             </h6>
                         </div>
                         <div class="options">
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="1" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice1 }}
-                                    {% endautoescape %}
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> {{ question.choice1 }}
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="2" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice2 }}
-                                    {% endautoescape %}
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> {{ question.choice2 }}
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="3" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice3 }}
-                                    {% endautoescape %}
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1"> {{ question.choice3 }}
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="4" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice4 }}
-                                    {% endautoescape %}
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">  {{ question.choice4 }}
                                 </label>
                             </div>
                         </div>
                     </section>
-
                     <section class="col-12">
                         <button type="button" class="btn btn-raised btn-primary">Previous</button>
                         <button type="button" class="btn btn-raised btn-warning">Mark for review & next</button>
@@ -75,9 +59,9 @@
             <div class="col-3">
 
                 <div class="row question_status">
-                    {% for i in total_question_dict %}
+                    {% for i in range(total_question) %}
                     <div class="col-4">
-                        <button type="button" class="btn btn-raised btn-active">{{ i }}</button>
+                        <button type="button" class="btn btn-raised btn-active">1</button>
                     </div>
                     {% endfor %}
 
@@ -91,3 +75,5 @@
 
 
 {% endblock %}
+
+

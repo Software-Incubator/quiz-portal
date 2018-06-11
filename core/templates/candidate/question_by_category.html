@@ -25,42 +25,26 @@
                             </span>
                             <h6>
                                  {% autoescape off %}
-                               {{ question.question_text }}
+                               {{ question.question_text|safe|escape }}
                                 {% endautoescape %}
                             </h6>
                         </div>
-                        <div class="options">
+                        <div class="options" id={{ question_id }}>
                             <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="1" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice1 }}
-                                    {% endautoescape %}
-                                </label>
+                                    <input type="radio" name="optionsRadios"  value="1" class="option">
+                                    {{ question.choice1|safe|escape }}
                             </div>
                             <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="2" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice2 }}
-                                    {% endautoescape %}
-                                </label>
+                                    <input type="radio" name="optionsRadios"  value="2" class="option">
+                                    {{ question.choice2|safe|escape }}
                             </div>
                             <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="3" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice3 }}
-                                    {% endautoescape %}
-                                </label>
+                                    <input type="radio" name="optionsRadios" value="3" class="option">
+                                    {{ question.choice3|safe|escape }}
                             </div>
                             <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="4" class="option">
-                                    {% autoescape off %}
-                                    {{ question.choice4 }}
-                                    {% endautoescape %}
-                                </label>
+                                    <input type="radio" name="optionsRadios" value="4" class="option">
+                                    {{ question.choice4|safe|escape }}
                             </div>
                         </div>
                     </section>
@@ -77,7 +61,9 @@
                 <div class="row question_status">
                     {% for i in total_question_dict %}
                     <div class="col-4">
+                        <a href={% url 'category' category.category i %}>
                         <button type="button" class="btn btn-raised btn-active">{{ i }}</button>
+                        </a>
                     </div>
                     {% endfor %}
 
@@ -91,15 +77,18 @@
 
 {% block script %}
     $(document).ready(function() {
-        $(".display1").on('click', function () {
-            var imgid = $(this).attr("data-imgid");
+        $("input").on('change', function () {
+            var option_number = $("input[name='optionsRadios']:checked").val();
+            var question_id = $(".options").attr("id");
+            console.log(option_number, question_id)
             $.ajax({
-                url: '{% url 'like' %}',
+                url: '{% url 'answer' %}',
                 data: {
-                    'imgid': imgid
+                    'option_number': option_number,
+                    'question_id': question_id,
                 },
                 success: function (data) {
-
+                    console.log("data save");
                 }
             })
         })

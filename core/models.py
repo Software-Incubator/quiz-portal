@@ -37,7 +37,7 @@ class Category(models.Model):
 
 class Question(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    question_number = models.PositiveIntegerField(blank=False)
+    question_number = models.PositiveIntegerField(blank=True)
     question_text = RichTextUploadingField()
     choice1 = RichTextUploadingField()
     choice2 = RichTextUploadingField()
@@ -45,8 +45,8 @@ class Question(models.Model):
     choice4 = RichTextUploadingField()
     correct_choice = models.PositiveIntegerField(blank=False)
     negative = models.BooleanField(default=False)
-    negative_marks = models.IntegerField(null=True)
-    marks = models.IntegerField(null=True)
+    negative_marks = models.IntegerField(null=True, blank=True)
+    marks = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.question_text
@@ -66,7 +66,7 @@ class Candidate(models.Model):
 class SelectedAnswer(models.Model):
     email = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     question_text = models.ForeignKey(Question, on_delete=models.CASCADE)
-    selected_choice = models.PositiveIntegerField(blank=False)
+    selected_choice = models.PositiveIntegerField(blank=True)
 
     def __str__(self):
         st = str(self.question_text) + ' - ' + str(self.selected_choice)

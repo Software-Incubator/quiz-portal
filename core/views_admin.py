@@ -83,8 +83,7 @@ class TestName(View):
             return redirect('admin_auth')
         else:
             form = self.form_class
-        return render(request, 'core/templates/candidate/signup.html', {'form': form})
-
+        return render(request, self.template_name, {'form': form})
 
 
 class AddQuestionView(View):

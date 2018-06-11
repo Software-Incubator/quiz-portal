@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,23 +36,35 @@
             <form method="post" novalidate>
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for={{ form.name.id_for_label }} class="bmd-label-floating">Name</label>
-                    <input type="text" class="form-control" id="{{ form.name.id_for_label }}">
+{#                    <label for="{{ form.name.id_for_label }}" class="bmd-label-floating">Name</label>#}
+{#                    <input type="text" class="form-control" id="{{ form.name.id_for_label }}">#}
+                    {{ form.name.label_tag }}
+                    {{ form.name.errors }}
+                    {{ form.name }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ form.email.id_for_label }}" class="bmd-label-floating">Email Address</label>
-                    <input type="email" class="form-control" id="{{ form.email.id_for_label }}">
+{#                    <label for="{{ form.email.id_for_label }}" class="bmd-label-floating">Email Address</label>#}
+{#                    <input type="email" class="form-control" id="{{ form.email.id_for_label }}">#}
+                    {{ form.email.label_tag }}
+                    {{ form.email.errors }}
+                    {{ form.email }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ form.father_name.id_for_label }}" class="bmd-label-floating">Father's Name</label>
-                    <input type="text" class="form-control" id="{{ form.father_name.id_for_label }}">
+{#                    <label for="{{ form.father_name.id_for_label }}" class="bmd-label-floating">Father's Name</label>#}
+{#                    <input type="text" class="form-control" id="{{ form.father_name.id_for_label }}">#}
+                        {{ form.father_name.label_tag }}
+                    {{ form.father_name.errors }}
+                    {{form.father_name }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ form.phone_number.id_for_label }}" class="bmd-label-floating">Mobile Number</label>
-                    <input type="text" class="form-control" id="{{ form.phone_number.id_for_label }}">
+{#                    <label for="{{ form.phone_number.id_for_label }}" class="bmd-label-floating">Mobile Number</label>#}
+{#                    <input type="text" class="form-control" id="{{ form.phone_number.id_for_label }}">#}
+                    {{ form.phone_number.label_tag }}
+                    {{ form.phone_number.errors }}
+                    {{ form.phone_number }}
                 </div>
                  <div class="btn-field">
                 <button type="submit" class="btn btn-raised btn-primary">Sign-Up</button>

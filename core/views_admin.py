@@ -76,7 +76,8 @@ class TestName(View):
     def post(self,request):
         print(type(request.POST['duration']))
         if request.POST['duration'] == '0':
-            return HttpResponse("Test duration cannot be zero")
+            message = "Test duration cannot be zero"
+            return render(request, 'admin/error.html', {'message': message})
         else:
             Tname = Test.objects.latest('test_name')
             form = self.form_class(request.POST)
@@ -119,7 +120,8 @@ class AddQuestionView(View):
                                         correct_choice=(dict(request.POST)['correct_choice'])[0])
                 return redirect('admin_auth')
             else:
-                return HttpResponse("Choices cannot be same")
+                message = "Choices cannot be same"
+                return render(request, 'admin/error.html', {'message': message})
         else:
             form = self.form_class()
         return render(request, self.template_name, {'form': form})
@@ -148,7 +150,8 @@ class AddCategoryView(View):
         form = self.form_class(request.POST)
         cats = Category.objects.all()
         if (Category.objects.filter(category=((dict(request.POST))['category'][0]).lower())).count() > 0:
-            return HttpResponse('ALL READY EXIST')
+            message = 'ALL READY EXIST'
+            return render(request, 'admin/error.html', {'message': message})
         else:
             if form.is_valid():
                 form.save()
@@ -340,7 +343,8 @@ class EditQuestionView(View):
                     choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
                 return redirect('admin_auth')
             else:
-                return HttpResponse("Choices cannot be same")
+                message = "Choices cannot be same"
+                return render(request, 'admin/error.html', {'message': message})
         else:
             form = self.form_class()
         return render(request, self.template_name, {'form': form, 'question': question})
@@ -397,3 +401,23 @@ class AdminInstructionView(View):
             form = self.form_class()
         return render(request, self.template_name, {'form': form, 'Iname': Iname, })
 
+
+
+def error404(request):
+    message = 'Error 404 \n Page not found'
+    return render(request, 'admin/error.html', {'message':message})
+
+
+def error400(request):
+    message = 'Error 400 \n Bad Request'
+    return render(request, 'admin/error.html', {'message':message})
+
+
+def error403(request):
+    message = 'Error 403 \n Permission Denied'
+    return render(request, 'admin/error.html', {'message':message})
+
+
+def error500(request):
+    message = 'Error 500 \n Server Error'
+    return render(request, 'admin/error.html', {'message':message})

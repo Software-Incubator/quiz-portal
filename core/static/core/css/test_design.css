@@ -1,0 +1,51 @@
+body{
+    background-color: #eee;
+}
+
+header .navbar{
+    height: 50px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+}
+
+header .navbar .logo img{
+    width: 40px;
+    height: auto;
+}
+
+header .navbar .heading{
+    font-family: 'Montserrat', sans-serif;
+}
+
+header .navbar .button-field a:hover{
+    text-decoration: none;
+}
+
+
+main .test-name{
+    width: 400px;
+    height: auto;
+    background-color: #fff;
+    border-radius: 0.125rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    margin: auto;
+    margin-top: 150px;
+}
+
+main .test-name .heading{
+    padding: 10px;
+    text-align: center;
+    background-color: #cacaca;
+    font-family: 'Montserrat', sans-serif;
+    /* border-bottom: 2px solid #eee; */
+}
+
+main .test-name form{
+    padding: 25px 25px 15px 25px;
+}
+
+main .test-name form .btn{
+    width: 100%;
+    margin: 25px 0;
+    font-family: 'Montserrat', sans-serif;
+}

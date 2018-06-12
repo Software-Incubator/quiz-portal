@@ -1,16 +1,132 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <title>Navigation Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Navigation Panel</title>
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+    integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="../../static/core/css/control_design.css">
 </head>
+
 <body>
-    <a href="{% url 'Test name' %}" ><button>Edit Test Name</button></a>
-    <a href="{% url 'Add Category' %}" ><button>Add, Edit and Delete Category</button></a>
-    <a href="{% url 'Add Question' %}" ><button>Add Questions</button></a>
-    <a href="{% url 'Show Candidates' %}" ><button>See Candidates</button></a>
-    <a href="{% url 'Instruction' %}" ><button>Edit Instructions</button></a>
-    <a href="{% url 'Show Questions' %}" ><button>See, Edit and Delete Questions</button></a><br>
-    <a href="{% url 'logout' %}" ><button>Logout</button></a>
+  <header>
+    <div class="navbar">
+      <div class="logo">
+        <img src="../../static/core/assets/images/akglogo.png">
+      </div>
+      <div class="heading">
+        <h3>AKGECAT ADMIN PORTAL</h3>
+      </div>
+      <a href="{% url 'logout' %}">
+        <button type="button" class="btn btn-raised btn-primary">Logout</button>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="control-options">
+      <div class="row">
+        <div class="col-4">
+          <a href="{% url 'Test name' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-edit"></i>
+              </div>
+              <div class="txt">
+                <p>Edit Test Name</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-4">
+          <a href="{% url 'Add Category' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-list-alt"></i>
+              </div>
+              <div class="txt">
+                <p>Add, Edit & Delete Category</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-4">
+          <a href="{% url 'Add Question' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-question-circle"></i>
+              </div>
+              <div class="txt">
+                <p>Add Questions</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-4">
+            <a href="{% url 'Show Candidates' %}">
+              <div class="control-option text-primary">
+                <div class="icon">
+                  <i class="far fa-id-badge"></i>
+                </div>
+                <div class="txt">
+                  <p>See Candidates</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+        
+          <div class="col-4">
+              <a href="{% url 'Instruction' %}">
+                <div class="control-option text-primary">
+                  <div class="icon">
+                    <i class="far fa-clipboard"></i>
+                  </div>
+                  <div class="txt">
+                    <p>Edit Instructions</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <div class="col-4">
+                <a href="{% url 'Show Questions' %}">
+                  <div class="control-option text-primary">
+                    <div class="icon">
+                        <i class="far fa-copy"></i>
+                    </div>
+                    <div class="txt">
+                      <p>See, Edit delete Questions</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+    crossorigin="anonymous"></script>
+  <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>
+
 </body>
+
 </html>

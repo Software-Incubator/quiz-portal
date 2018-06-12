@@ -1,28 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Show Questions</title>
-</head>
-<body>
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Show Questions
+{% endblock %}
+
+{% block head %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+
+{% block content %}
     {% for que in ques %}
-        <ol>
-            <div style="display: flex;">
-                <p>Q.{{ que.question_number }} &nbsp;</p>
-                <P>{{ que.question_text|safe|escape }}</p>
-            </div>
-            <li>{{ que.choice1|safe|escape }}</li>
-            <li>{{ que.choice2|safe|escape }}</li>
-            <li>{{ que.choice3|safe|escape }}</li>
-            <li>{{ que.choice4|safe|escape }}</li>
-        <p>Correct Choice  -  {{ que.correct_choice|safe|escape }}</p>
-        </ol>
-        <a href="{% url "Edit Question" que.pk %}" ><button>Edit</button></a>
-        <a href="{% url "Delete Question" que.pk %}" ><button>Delete</button></a>
+    <ol>
+        <div style="display: flex;">
+            <p>Q.{{ que.question_number }} &nbsp;</p>
+            <P>{{ que.question_text|safe|escape }}</p>
+        </div>
+        <li>{{ que.choice1|safe|escape }}</li>
+        <li>{{ que.choice2|safe|escape }}</li>
+        <li>{{ que.choice3|safe|escape }}</li>
+        <li>{{ que.choice4|safe|escape }}</li>
+    <p>Correct Choice  -  {{ que.correct_choice|safe|escape }}</p>
+    </ol>
+    <a href="{% url "Edit Question" que.pk %}" ><button>Edit</button></a>
+    <a href="{% url "Delete Question" que.pk %}" ><button>Delete</button></a>
     {% empty %}
-        <p>No Questions present</p>
+    <p>No Questions present</p>
     {% endfor %}<br>
-    <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
-    <a href="{% url 'logout' %}" ><button>Logout</button></a>
-</body>
-</html>
+{% endblock %}

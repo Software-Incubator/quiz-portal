@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-</head>
-<body>
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Candidate List 
+{% endblock %}
+
+
+{% block content %}
     <ol>
         {% for cand in cands %}
             <li>
@@ -14,7 +17,4 @@
             <p>No candidate present.</p>
         {% endfor %}
     </ol>
-    <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
-    <a href="{% url 'logout' %}" ><button>Logout</button></a>
-</body>
-</html>
+{% endblock %}

@@ -1,20 +1,23 @@
+{% extends 'admin/base_for_admin.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Instruction</title>
+
+{% block title %}
+    Instructions
+{% endblock %}
+
+{% block head %}
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-</head>
-<body>
+{% endblock %}
+
+
+{% block content %}
     <p>Previously Stored</p>
     {% if Iname == '' %}
         <p>No instructions Feeded</p>
     {% else %}
         {{ Iname|safe|escape }}<br><br>
     {% endif %}
-
 
     <form name="TestForm" method="post">
         {% csrf_token %}
@@ -37,7 +40,4 @@
         {{ form.as_p }}<br>
         <button type="submit">submit</button><br>
     </form>
-    <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
-    <a href="{% url 'logout' %}" ><button>Logout</button></a>
-</body>
-</html>
+{% endblock %}

@@ -86,9 +86,15 @@ class InstructionView(generic.ListView):
     def get(self, request, *args, **kwargs):
         instruction = Instruction.objects.all()
         test_name = Test.objects.all()
-        category = Category.objects.all()[0]
+        try:
+            category = Category.objects.all()[0]
+        except:
+            message = "NO CATEGORY ABAILABLE RIGHT NOW!"
+            return render(request, 'candidate/error.html', {'message': message})
+
         return render(request, self.template_name, {'instruction': instruction,
-                                                    'category': category,'test_name':test_name})
+                                                    'category': category,
+                                                    'test_name':test_name})
 
 
 class CandidateRegistration(generic.ListView):

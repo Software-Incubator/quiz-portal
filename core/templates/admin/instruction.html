@@ -37,7 +37,8 @@
             {% endfor %}
         {% endif %}
         {{ form.media }}
-        {{ form.as_p }}<br>
+        {{ form.instruction.label_tag }}
+        {{ form.instruction }}<br>
         <button type="submit">submit</button><br>
     </form>
 {% endblock %}

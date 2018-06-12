@@ -38,7 +38,6 @@
     </script>
 {% endblock %}
 
-
 {% block content %}
     {% for cat in cats %}
         <input id="cat{{cat.pk}}" type="text" name="category"  value={{ cat.category }}>
@@ -63,7 +62,9 @@
                 </div>
             {% endfor %}
         {% endif %}
-        <b>{{ form }}</b><br>
+        <!-- <b>{{ form }}</b><br> -->
+        {{ form.category.label_tag }}
+        {{ form.category }}<br>
         <button type="submit">Add</button>
     </form><br>
 {% endblock %}

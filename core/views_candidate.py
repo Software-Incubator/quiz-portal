@@ -52,17 +52,31 @@ class QuestionByCategory(generic.DetailView):
                 return redirect(reverse('category', kwargs={"category_name": category_name,
                                                             "id": 1}))
             candidate_id = Candidate.objects.get(email=email).id
+            candidate = Candidate.objects.get(email=email)
             which_question = random_question(total_question, int(candidate_id), id)
             question = Question.objects.filter(category=category)[which_question - 1]
             context_dict["which_question"] = which_question
             context_dict['question'] = question
             context_dict["question_id"] = question.id
             context_dict['category'] = category
+            context_dict["id"] = id
             context_dict["all_category"] = Category.objects.all()
             total_question_dict = []
             for i in range(1, total_question+1):
                 total_question_dict.append(i)
             context_dict['total_question_dict'] = total_question_dict
+            # check status of question
+            """
+            status=1 (not attempted)
+            status=2 (preview)
+            status=3 (save)
+            """
+            try:
+                obj = SelectedAnswer.objects.get(email=candidate, question_text=question)
+                status = obj.status
+            except:
+                status = 1
+            context_dict["status"] = status
         except Category.DoesNotExist:
             pass
         return render(self.request, self.template_name, context_dict)
@@ -171,6 +185,34 @@ class DefaultOption(generic.ListView):
             return JsonResponse(data)
         else:
             raise Http404
+
+
+class SaveStatus(generic.ListView):
+    def get(self, request, *args, **kwargs):
+        if request.is_ajax():
+            email = request.session["email"]
+            candidate = Candidate.objects.get(email=email)
+
+            question_id = request.GET["question_id"]
+            status = int(request.GET["status"])
+            question = Question.objects.get(id=int(question_id))
+
+            try:
+                object = SelectedAnswer.objects.get(email=candidate,
+                                                    question_text=question
+                                                    )
+                object.status = status
+                object.save()
+            except:
+                status = 1
+            data = {
+                "status": status
+            }
+            print("function work properly")
+            return JsonResponse(data)
+        else:
+            raise Http404
+
 
 
 class EndPage(generic.ListView):

@@ -48,6 +48,7 @@ class Question(models.Model):
     negative_marks = models.IntegerField(null=True, blank=True)
     marks = models.IntegerField(null=True, blank=True)
 
+
     def __str__(self):
         return self.question_text
 
@@ -67,7 +68,9 @@ class SelectedAnswer(models.Model):
     email = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     question_text = models.ForeignKey(Question, on_delete=models.CASCADE)
     selected_choice = models.PositiveIntegerField(blank=True)
+    status = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         st = str(self.question_text) + ' - ' + str(self.selected_choice)
         return st
+

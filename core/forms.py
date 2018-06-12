@@ -1,6 +1,7 @@
 from django import forms
 from core.models import Test, Question, Category, Instruction
-from ckeditor.fields import CKEditorWidget
+from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from .models import Candidate
 import re
 
@@ -44,12 +45,12 @@ class CategoryForm(forms.ModelForm):
 
 
 class QuestionForm(forms.Form):
-    question_text = forms.CharField(widget=CKEditorWidget())
+    question_text = forms.CharField(widget=CKEditorUploadingWidget())
     category = forms.category = forms.ChoiceField(choices=category_name_list,label="Question Category")
-    choice1 = forms.CharField(widget=CKEditorWidget())
-    choice2 = forms.CharField(widget=CKEditorWidget())
-    choice3 = forms.CharField(widget=CKEditorWidget())
-    choice4 = forms.CharField(widget=CKEditorWidget())
+    choice1 = forms.CharField(widget=CKEditorUploadingWidget())
+    choice2 = forms.CharField(widget=CKEditorUploadingWidget())
+    choice3 = forms.CharField(widget=CKEditorUploadingWidget())
+    choice4 = forms.CharField(widget=CKEditorUploadingWidget())
     correct_choice = forms.ChoiceField(choices=answer_choice, label="Select answer")
 
     class Meta:

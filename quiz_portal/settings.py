@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
     'ckeditor',
     'ckeditor_uploader',
-    'core',
 ]
 
 MIDDLEWARE = [
@@ -144,8 +144,11 @@ LOGIN_REDIRECT_URL ='signup'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
+# CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor"
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_RESTRICT_BY_USER = True
+# CKEDITOR_ALLOW_NONIMAGE_FILES = False
+# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
 CKEDITOR_CONFIGS = {
     'default': {

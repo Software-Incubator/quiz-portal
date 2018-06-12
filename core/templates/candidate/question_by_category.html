@@ -21,10 +21,10 @@
                     <section class="col-12 question-options">
                         <div class="question">
                             <span class="question-no.">
-                                1.
                             </span>
                             <h6>
                                  {% autoescape off %}
+{#                                     {{ question.question_number|safe|escape}}#}
                                {{ question.question_text|safe|escape }}
                                 {% endautoescape %}
                             </h6>
@@ -85,7 +85,9 @@
                     {% endfor %}
 
                     <div class="col-12">
-                        <button type="button" class="btn btn-raised btn-primary disabled">Submit</button>
+                        <a href="{% url 'ending' %}">
+                        <button type="submit" class="btn btn-raised btn-primary disabled">Submit</button>
+                        </a>
                     </div>
                 </div>
             </div>

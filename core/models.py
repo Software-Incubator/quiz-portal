@@ -5,6 +5,10 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
+from django.db import models
+
+from django.contrib.sessions.models import Session
 
 
 class Test(models.Model):
@@ -73,4 +77,3 @@ class SelectedAnswer(models.Model):
     def __str__(self):
         st = str(self.question_text) + ' - ' + str(self.selected_choice)
         return st
-

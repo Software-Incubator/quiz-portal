@@ -1,26 +1,9 @@
 from django.shortcuts import render, redirect, reverse
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib import auth
-from django.views import generic, View
+from django.views import generic
 from . import forms
-from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render_to_response
-from .models import Candidate, Instruction, Category, Test, Question
-from .models import Candidate
-from core.models import Category, Question, Instruction, Test, SelectedAnswer
-import json
+from core.models import Category, Question, Instruction, Test, SelectedAnswer, Candidate
 import itertools
 from django.http import JsonResponse, Http404
-import os
-from django.conf import settings
-from django.template import Context
-from django.template.loader import get_template
-import datetime
-from xhtml2pdf import pisa
 
 
 def random_question(n, can_id, ques_id):
@@ -28,9 +11,6 @@ def random_question(n, can_id, ques_id):
     a = list(itertools.permutations(a))
     l = len(a)
     return a[can_id % l][ques_id % n]
-
-
-
 
 
 class QuestionByCategory(generic.DetailView):
@@ -48,34 +28,41 @@ class QuestionByCategory(generic.DetailView):
         try:
             category = Category.objects.get(category=category_name)
             total_question = Question.objects.filter(category=category).count()
-            email = request.session["email"]
-            id = kwargs["id"]
+            if total_question:
+                email = request.session["email"]
+                id = kwargs["id"]
 
-            if id not in range(1, total_question + 1):
-                return redirect(reverse('category', kwargs={"category_name": category_name,
+                if id not in range(1, total_question + 1):
+                    return redirect(reverse('category', kwargs={"category_name": category_name,
                                                             "id": 1}))
-            candidate_id = Candidate.objects.get(email=email).id
-            candidate = Candidate.objects.get(email=email)
-            which_question = random_question(total_question, int(candidate_id), id)
-            question = Question.objects.filter(category=category)[which_question - 1]
-            context_dict["which_question"] = which_question
+                candidate_id = Candidate.objects.get(email=email).id
+                candidate = Candidate.objects.get(email=email)
+                which_question = random_question(total_question, int(candidate_id), id)
+                question = Question.objects.filter(category=category)[which_question - 1]
 
-            context_dict['question'] = question
-            context_dict["question_id"] = question.id
-            context_dict['category'] = category
-            context_dict["id"] = id
-            context_dict["all_category"] = Category.objects.all()
-            status_dict = {}
-            for i in range(1, total_question+1):
-                now_question = random_question(total_question, int(candidate_id), i)
-                per_question = Question.objects.filter(category=category)[now_question - 1]
-                try:
-                    obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question)
-                    status_dict[i] = obj.status
-                except:
-                    status_dict[i] = 1
+                context_dict["which_question"] = which_question
 
-            context_dict["status_dict"] = status_dict
+                context_dict['question'] = question
+                context_dict["question_id"] = question.id
+                context_dict['category'] = category
+                context_dict["id"] = id
+                context_dict["all_category"] = Category.objects.all()
+                status_dict = {}
+                for i in range(1, total_question+1):
+                    now_question = random_question(total_question, int(candidate_id), i)
+                    per_question = Question.objects.filter(category=category)[now_question - 1]
+                    try:
+                        obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question)
+                        status_dict[i] = obj.status
+                    except:
+                        status_dict[i] = 1
+
+                context_dict["status_dict"] = status_dict
+
+            else:
+                message = "NO QUESTIONS IN THIS CATEGORY!"
+                return render(request, 'candidate/error.html', {'message':message})
+
 
             """
             status=1 (not attempted)
@@ -98,9 +85,10 @@ class InstructionView(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         instruction = Instruction.objects.all()
+        test_name = Test.objects.all()
         category = Category.objects.all()[0]
         return render(request, self.template_name, {'instruction': instruction,
-                                                    'category': category})
+                                                    'category': category,'test_name':test_name})
 
 
 class CandidateRegistration(generic.ListView):
@@ -218,7 +206,6 @@ class SaveStatus(generic.ListView):
             return JsonResponse(data)
         else:
             raise Http404
-
 
 
 class EndPage(generic.ListView):

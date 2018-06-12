@@ -1,7 +1,10 @@
 {% extends 'candidate/base.html' %}
 
 {% block content %}
-  <h1> INSTRUCTIONS</h1>
+    {% for t in test_name %}
+        <h1>{{ t }}</h1>
+    {% endfor %}
+  <h2>INSTRUCTIONS</h2>
 
 {% block login %}
     <span>Hello {{ request.session.name}}</span>

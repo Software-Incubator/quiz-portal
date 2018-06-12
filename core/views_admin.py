@@ -186,8 +186,9 @@ class ShowQuestionsView(View):
         return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
+        cats = Category.objects.all()
         ques = Question.objects.all()
-        return render(request, self.template_name, {'ques': ques})
+        return render(request, self.template_name, {'ques': ques, 'cats':cats})
 
 
 class ShowCandidateListView(View):

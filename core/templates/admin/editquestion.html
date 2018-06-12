@@ -17,6 +17,7 @@
             <p>Q.{{ question.question_number }} &nbsp;</p>
             <P>{{ question.question_text|safe|escape }}</p>
         </div>
+        <p>Category  -  {{ question.category }}</p>
         <li>{{ question.choice1|safe|escape }}</li>
         <li>{{ question.choice2|safe|escape }}</li>
         <li>{{ question.choice3|safe|escape }}</li>

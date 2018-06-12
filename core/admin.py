@@ -42,9 +42,17 @@ class CandidateAdmin(admin.ModelAdmin):
         model = Candidate
 
 
+class TestAdmin(admin.ModelAdmin):
+    search_fields = ['id', 'test_name']
+    list_display = ('id', 'test_name', 'duration')
+
+    class Meta:
+        model = Candidate
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(Test)
+admin.site.register(Test, TestAdmin)
 admin.site.register(Instruction)
 admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(SelectedAnswer)

@@ -102,11 +102,16 @@ class CandidateRegistration(generic.ListView):
             form.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
-            print(name, email)
             candidate = Candidate.objects.get(name=name, email=email)
             if candidate:
                 self.request.session['email'] = email
                 self.request.session['name'] = name
+                try:
+                    test = Test.objects.all()[0]
+                    time = test.duration
+                    self.request.session.set_expiry(time*60)
+                except:
+                    self.request.session.set_expiry(1)
                 return redirect('home')
         return render(self.request, self.template_name, {'form': form})
 
@@ -114,6 +119,12 @@ class CandidateRegistration(generic.ListView):
 class UserAnswerView(generic.ListView):
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
+            if not request.session.has_key("email"):
+                data = {
+                    "url": reverse('ending'),
+                    "candidate_answer": -2
+                }
+                return JsonResponse(data)
             email = request.session["email"]
             candidate = Candidate.objects.get(email=email)
             option_number = request.GET["option_number"]
@@ -162,7 +173,11 @@ class DefaultOption(generic.ListView):
             raise Http404
 
 
+class EndPage(generic.ListView):
+    template_name = 'candidate/end.html'
 
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
 
 def logout(request):

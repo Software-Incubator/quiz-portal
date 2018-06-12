@@ -88,10 +88,13 @@
                 },
                 success: function (data) {
                     var value = data.candidate_answer
-                    console.log(value);
+                    if(value==-2){
+                        window.location.href = data.url;
+                    }
+                    else{
                     $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
                     $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
-                }
+                }}
             })
         })
     })
@@ -105,13 +108,12 @@
                 },
                 success: function (data) {
                     var value = data.candidate_answer
-                    console.log(value);
+
                     $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
                     if(value!=-1){
                     $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
                 }}
             })
     })
-
 
 {% endblock %}

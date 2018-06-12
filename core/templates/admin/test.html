@@ -40,15 +40,21 @@
                 <h6>Edit Test Name</h6>
             </div>
             <form name="TestForm" method="post">
-                {% csrf_token %} {% if form.errors %} {% for field in form %} {% for error in field.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-                {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-                {% endfor %} {% endif %}
+                {% csrf_token %}
+                {% if form.errors %}
+                    {% for field in form %} 
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %} 
+                    {% endfor %} 
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
                 <div class="form-group">
                     <label for="name" class="bmd-label-floating">{{ form.test_name.label_tag }}</label>

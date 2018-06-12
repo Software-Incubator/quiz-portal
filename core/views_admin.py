@@ -34,7 +34,7 @@ class AdminAuth(generic.ListView):
         form = self.form_class
         return render(request, self.template_name, {"form": form})
 
-    def post(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')

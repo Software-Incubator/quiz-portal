@@ -35,12 +35,3 @@ main .question-options .options{
     padding: 25px;
 }
 
-.btn .status1{
-    background-color: blue;
-}
-.btn .status2{
-    background-color: orange;
-}
-.btn .status3{
-    background-color: black;
-}

@@ -221,4 +221,4 @@ def logout(request):
         del request.session['name']
     except:
         pass
-    return redirect('signup')
+    return redirect('ending')

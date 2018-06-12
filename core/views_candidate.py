@@ -22,37 +22,40 @@ class QuestionByCategory(generic.DetailView):
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        test_name = kwargs["test_name"]
+        test = Test.objects.get(test_name=test_name)
         category_name = kwargs["category_name"]
         context_dict = {'category_name': category_name}
 
         try:
-            category = Category.objects.get(category=category_name)
-            total_question = Question.objects.filter(category=category).count()
+            category = Category.objects.get(category=category_name, test=test)
+            total_question = Question.objects.filter(category=category, test=test).count()
             if total_question:
                 email = request.session["email"]
                 id = kwargs["id"]
 
                 if id not in range(1, total_question + 1):
                     return redirect(reverse('category', kwargs={"category_name": category_name,
-                                                            "id": 1}))
+                                                                "id": 1,
+                                                                "test_name": test_name}))
                 candidate_id = Candidate.objects.get(email=email).id
                 candidate = Candidate.objects.get(email=email)
                 which_question = random_question(total_question, int(candidate_id), id)
                 question = Question.objects.filter(category=category)[which_question - 1]
 
                 context_dict["which_question"] = which_question
-
+                context_dict["test_name"] = test_name
                 context_dict['question'] = question
                 context_dict["question_id"] = question.id
                 context_dict['category'] = category
                 context_dict["id"] = id
-                context_dict["all_category"] = Category.objects.all()
+                context_dict["all_category"] = Category.objects.filter(test=test)
                 status_dict = {}
                 for i in range(1, total_question+1):
                     now_question = random_question(total_question, int(candidate_id), i)
-                    per_question = Question.objects.filter(category=category)[now_question - 1]
+                    per_question = Question.objects.filter(category=category, test=test)[now_question - 1]
                     try:
-                        obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question)
+                        obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                         status_dict[i] = obj.status
                     except:
                         status_dict[i] = 1
@@ -76,7 +79,7 @@ class QuestionByCategory(generic.DetailView):
 
 
 class InstructionView(generic.ListView):
-    template_name ='candidate/instructions.html'
+    template_name = 'candidate/instructions.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.session.has_key("email"):
@@ -84,10 +87,12 @@ class InstructionView(generic.ListView):
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        instruction = Instruction.objects.all()
-        test_name = Test.objects.all()
+        test_name = kwargs["test_name"]
+        test = Test.objects.get(test_name=test_name)
+        instruction = Instruction.objects.filter(test=test)
+
         try:
-            category = Category.objects.all()[0]
+            category = Category.objects.filter(test=test)[0]
         except:
             message = "NO CATEGORY ABAILABLE RIGHT NOW!"
             return render(request, 'candidate/error.html', {'message': message})
@@ -95,6 +100,19 @@ class InstructionView(generic.ListView):
         return render(request, self.template_name, {'instruction': instruction,
                                                     'category': category,
                                                     'test_name':test_name})
+
+
+class SelectTest(generic.ListView):
+    template_name = 'candidate/select_test.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.session.has_key("email"):
+            return redirect('signup')
+        return super(SelectTest, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        all_test = Test.objects.all()
+        return render(request, self.template_name, {"all_test": all_test})
 
 
 class CandidateRegistration(generic.ListView):
@@ -143,6 +161,8 @@ class UserAnswerView(generic.ListView):
             candidate = Candidate.objects.get(email=email)
             option_number = request.GET["option_number"]
             question_id = request.GET["question_id"]
+            test_name = request.GET["test_name"]
+            test = Test.objects.get(test_name=test_name)
             question = Question.objects.get(id=int(question_id))
             try:
                 object = SelectedAnswer.objects.get(email=candidate,

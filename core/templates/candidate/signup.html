@@ -46,7 +46,7 @@
                 <h6>Sign-Up</h6>
             </div>
 
-            <form method="post">
+            <form name="CandidateRegistration" method="post">
                 {% csrf_token %}
                 {% if form.errors %}
                     {% for field in form %}
@@ -64,27 +64,26 @@
                 {% endif %}
                 <div class="form-group">
                     <label for="nameInput1" class="bmd-label-floating">Name</label>
-                    <input type="text" class="form-control" id="nameInput1">
+                    <input type="text" name="name" class="form-control" id="nameInput1">
                 </div>
 
                 <div class="form-group">
                     <label for="emailInput" class="bmd-label-floating">Email Address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1">
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1">
                 </div>
 
                 <div class="form-group">
                     <label for="nameInput2" class="bmd-label-floating">Father's Name</label>
-                    <input type="text" class="form-control" id="nameInput2">
+                    <input type="text" name="father_name" class="form-control" id="nameInput2">
                 </div>
 
                 <div class="form-group">
                     <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
-                    <input type="text" class="form-control" id="phoneInput">
+                    <input type="text" name="phone_number" class="form-control" id="phoneInput">
                 </div>
                 <div class="btn-field">
-                <button type="submit" class="btn btn-raised btn-primary">Sign-Up</button>
-            </div>
-
+                  <button type="submit" class="btn btn-raised btn-primary">Sign-Up</button>
+                </div>
             </form>
 
 

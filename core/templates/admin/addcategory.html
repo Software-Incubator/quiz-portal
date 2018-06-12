@@ -1,4 +1,78 @@
-<!DOCTYPE html>
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Add Category 
+{% endblock %}
+
+{% block head %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        console.log(1);
+        $(document).ready(function(){
+            console.log(2);
+            $(".change").on('click', function(event) {
+                console.log(3);
+                var imgid;
+                var name;
+                imgid = $(this).attr("cat_data");
+                console.log(imgid);
+                name = $('#cat' + imgid).val();
+                console.log(name);
+                if (name != ''){
+                    console.log(4);
+                $.ajax({
+                    url: '{% url 'Edit_Category' %}',
+                    data: {
+                        'imgid': imgid, 
+                        'name': name
+                        },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(5)
+                    }
+                });
+                }
+            })
+        });
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    {% for cat in cats %}
+        <input id="cat{{cat.pk}}" type="text" name="category"  value={{ cat.category }}>
+        <button class="change" cat_data="{{cat.pk}}" >Save after editing</button>
+        <a href="{% url "Delete_Category" cat.pk %}" ><button>Delete</button></a><br>
+    {% empty %}
+        <p>No category available</p>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <b>{{ form }}</b><br>
+        <button type="submit">Add</button>
+    </form><br>
+{% endblock %}
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,4 +126,4 @@
     <a href="{% url 'control_operation' %}" ><button>Back to Navigation Panel</button></a>
     <a href="{% url 'logout' %}" ><button>Logout</button></a>
 </body>
-</html>
+</html> -->

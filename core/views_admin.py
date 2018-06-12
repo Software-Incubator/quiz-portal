@@ -164,6 +164,7 @@ class AddCategoryView(View):
 class Editcategory(View):
 
     def get(self, request):
+        print("I am here")
         img_id = 0
         img_id = request.GET['imgid']
         if img_id:

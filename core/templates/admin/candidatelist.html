@@ -11,7 +11,7 @@
         {% for cand in cands %}
             <li>
                 {{ cand }}
-                <a href="{% url "View result" cand.pk %}" ><button>View result</button></a>
+                <a href="{% url "View_result" cand.pk %}" ><button>View result</button></a>
             </li>
         {% empty %}
             <p>No candidate present.</p>

@@ -24,8 +24,8 @@
         <li>{{ que.choice4|safe|escape }}</li>
     <p>Correct Choice  -  {{ que.correct_choice|safe|escape }}</p>
     </ol>
-    <a href="{% url "Edit Question" que.pk %}" ><button>Edit</button></a>
-    <a href="{% url "Delete Question" que.pk %}" ><button>Delete</button></a>
+    <a href="{% url "Edit_Question" que.pk %}" ><button>Edit</button></a>
+    <a href="{% url "Delete_Question" que.pk %}" ><button>Delete</button></a>
     {% empty %}
     <p>No Questions present</p>
     {% endfor %}<br>

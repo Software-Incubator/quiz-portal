@@ -26,7 +26,7 @@ class AdminAuth(generic.ListView):
     model = User
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if request.user.is_authenticated:
             return redirect('control_operation')
         return super(AdminAuth, self).dispatch(request, *args, **kwargs)
 

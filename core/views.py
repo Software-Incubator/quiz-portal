@@ -5,13 +5,10 @@ from django.views import generic, View
 from . import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render_to_response
-from .models import Candidate, Instruction, Category, Test, Question
-from .models import Candidate
-from core.models import Category, Question, Instruction, Test, SelectedAnswer
+from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer
 import json
 import itertools
 import os
@@ -76,15 +73,19 @@ class TestName(View):
         return render(request,  self.template_name, {'form': form, 'Tname':Tname,})
 
     def post(self,request):
-        Tname = Test.objects.latest('test_name')
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            Test.objects.filter(pk=Tname.pk).update(test_name=request.POST['test_name'],
-             duration=request.POST['duration'])
-            return redirect('admin_auth')
+        print(type(request.POST['duration']))
+        if request.POST['duration'] == '0':
+            return HttpResponse("Test duration cannot be zero")
         else:
-            form = self.form_class
-        return render(request, 'core/signup.html', {'form': form})
+            Tname = Test.objects.latest('test_name')
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                Test.objects.filter(pk=Tname.pk).update(test_name=request.POST['test_name'],
+                 duration=request.POST['duration'])
+                return redirect('admin_auth')
+            else:
+                form = self.form_class
+                return render(request, 'core/signup.html', {'form': form})
 
 
 def random_question(n, can_id, ques_id):
@@ -187,7 +188,7 @@ class AddCategoryView(View):
         return super(AddCategoryView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        if (Test.objects.all()).count() == 0:
+        if (Test.objects.all()).count() == 0 or (Test.objects.latest('test_name')).test_name == '':
             return redirect('Test name')
         else:
             cats = Category.objects.all()
@@ -209,7 +210,7 @@ class AddCategoryView(View):
             return render(request, self.template_name, {'form': form, 'cats':cats})
 
 
-class editcategory(View):
+class Editcategory(View):
 
     def get(self,request):
         img_id = 0
@@ -384,18 +385,15 @@ class EditQuestionView(View):
         num = question.question_number
         form = self.form_class(request.POST)
         if form.is_valid():
-            if int((dict(request.POST)['correct_choice'])[0]) > 4:
-                return HttpResponse("Not a valid choice")
+            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+                c = Category.objects.get(category = (dict(request.POST)['category'])[0])
+                Question.objects.filter(pk=pk).update(category = c,  question_number = num,
+                    question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
+                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
+                    choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
+                return redirect('admin_auth')
             else:
-                if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                    c = Category.objects.get(category = (dict(request.POST)['category'])[0])
-                    Question.objects.filter(pk=pk).update(category = c,  question_number = num,
-                        question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
-                        choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
-                        choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
-                    return redirect('admin_auth')
-                else:
-                    return HttpResponse("Choices cannot be same")
+                return HttpResponse("Choices cannot be same")
         else:
             form = self.form_class()
         return render(request, self.template_name, {'form': form, 'question':question})

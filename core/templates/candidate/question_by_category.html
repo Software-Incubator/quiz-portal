@@ -49,10 +49,21 @@
                         </div>
                     </section>
 
-                    <section class="col-12">
-                        <button type="button" class="btn btn-raised btn-primary">Previous</button>
-                        <button type="button" class="btn btn-raised btn-warning">Mark for review & next</button>
-                        <button type="button" class="btn btn-raised btn-primary">Save and next</button>
+                    <section class="col-12 ">
+                        {% if id == 1 %}
+                        <button type="button" class="btn btn-raised btn-primary csq" disabled>Previous</button>
+                        {% else %}
+                            <a href={% url 'category' category.category id|add:"-1" %}>
+                            <button type="button" class="btn btn-raised btn-primary csq" data-id="2">Previous</button>
+                            </a>
+                        {% endif %}
+
+                        <a href={% url 'category' category.category id|add:"1" %}>
+                            <button type="button" class="btn btn-raised btn-warning csq" data-id="2">Mark for review & next</button>
+                        </a>
+                        <a href={% url 'category' category.category id|add:"1" %}>
+                            <button type="button" class="btn btn-raised btn-primary csq" data-id="3">Save and next</button>
+                        </a>
                     </section>
                 </div>
             </div>
@@ -62,7 +73,13 @@
                     {% for i in total_question_dict %}
                     <div class="col-4">
                         <a href={% url 'category' category.category i %}>
-                        <button type="button" class="btn btn-raised btn-active">{{ i }}</button>
+                        {% if status == 1 %}
+                            <button type="button" class="btn btn-raised btn-active status1" style="background-color: white">{{ i }}</button>
+                        {% elif status == 2 %}
+                            <button type="button" class="btn btn-raised btn-active status2" style="background-color: blue">{{ i }}</button>
+                        {% elif status == 3 %}
+                            <button type="button" class="btn btn-raised btn-active status3" style="background-color: red">{{ i }}</button>
+                        {% endif %}
                         </a>
                     </div>
                     {% endfor %}
@@ -115,5 +132,24 @@
                 }}
             })
     })
+
+    $(document).ready(function() {
+        $(".csq").on('click', function () {
+            var status = $(this).attr("data-id");
+            console.log("st->",status);
+            var question_id = $(".options").attr("id");
+            $.ajax({
+                url: '{% url 'save_status' %}',
+                data: {
+                    'question_id': question_id,
+                    'status': status
+                },
+                success: function (data) {
+                    console.log(data.status);
+                }
+            })
+        })
+    })
+
 
 {% endblock %}

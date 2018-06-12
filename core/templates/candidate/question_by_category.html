@@ -73,7 +73,6 @@
                     {% for i, value in status_dict.items %}
                     <div class="col-4">
                         <a href={% url 'category' category.category i %}>
-                        {{ value }}
                         {% if value == 1 %}
                             <button type="button" class="btn btn-raised btn-active status1" style="background-color: white">{{ i }}</button>
                         {% elif value == 2 %}

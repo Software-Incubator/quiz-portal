@@ -29,7 +29,7 @@ class QuestionByCategory(generic.DetailView):
 
         try:
             category = Category.objects.get(category=category_name, test=test)
-            total_question = Question.objects.filter(category=category, test=test).count()
+            total_question = Question.objects.filter(category=category).count()
             if total_question:
                 email = request.session["email"]
                 id = kwargs["id"]
@@ -53,7 +53,7 @@ class QuestionByCategory(generic.DetailView):
                 status_dict = {}
                 for i in range(1, total_question+1):
                     now_question = random_question(total_question, int(candidate_id), i)
-                    per_question = Question.objects.filter(category=category, test=test)[now_question - 1]
+                    per_question = Question.objects.filter(category=category)[now_question - 1]
                     try:
                         obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                         status_dict[i] = obj.status

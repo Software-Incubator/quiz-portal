@@ -1,0 +1,63 @@
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Add Category 
+{% endblock %}
+
+{% block head %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        console.log(1);
+        $(document).ready(function(){
+            console.log(2);
+            $(".change").on('click', function(event) {
+                console.log(3);
+                var imgid;
+                var name;
+                var test;
+                imgid = $(this).attr("cat_data");
+                console.log(imgid);
+                name = $('#cat' + imgid).val();
+                test = $('#test' + imgid).val();
+                console.log(name);
+                console.log(test);
+                if (name != ''){
+                    console.log(4);
+                $.ajax({
+                    url: '{% url 'Edit_Category' %}',
+                    data: {
+                        'imgid': imgid, 
+                        'name': name,
+                        'test':test,
+                        },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(5)
+                    }
+                });
+                }
+            })
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% for test in tests %}
+        <input id="cat{{cat.pk}}" type="text" name="category"  value={{ test.test_name }}>
+        <input id="dur{{cat.pk}}" value={{ test.duration }} >
+        <P>Start or Stop</P>
+
+        {% if test.on_or_off == True %}
+            <input type="radio" name="on_or_off" value="True" checked  > Start 
+            <input style="margin-left:5em;" type="radio" name="on_or_off" value="False" > Stop
+        {% else %}
+            <input type="radio" name="on_or_off" value="True"  > Start 
+            <input style="margin-left:5em;" type="radio" name="on_or_off" value="False" checked > Stop
+        {% endif %}
+        <button class="change" cat_data="{{test.pk}}" >Save after editing</button>
+        <a href="{% url "Delete_Category" test.pk %}" ><button>Delete</button></a><br>
+    {% empty %}
+        <p>No category available</p>
+    {% endfor %}
+{% endblock %}

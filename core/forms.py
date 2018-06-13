@@ -65,7 +65,6 @@ class CategoryForm(forms.ModelForm):
 
 
 class QuestionForm(forms.Form):
-    test_name = forms.ChoiceField(choices=test_name_list, label="Test Category", widget=forms.Select() )
     question_text = forms.CharField(widget=CKEditorUploadingWidget())
     category = forms.ChoiceField(choices=category_name_list,label="Question Category")
     choice1 = forms.CharField(widget=CKEditorUploadingWidget())
@@ -75,7 +74,7 @@ class QuestionForm(forms.Form):
     correct_choice = forms.ChoiceField(choices=answer_choice, label="Select answer")
 
     class Meta:
-        fields = ['category', 'question_text','choice1','choice2','choice3','choice4', 'correct_choice','test_name']
+        fields = ['category', 'question_text','choice1','choice2','choice3','choice4', 'correct_choice']
 
 
 class CandidateRegistration(forms.ModelForm):

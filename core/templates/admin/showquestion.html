@@ -12,29 +12,35 @@
 
 
 {% block content %}
-    {% for cat in cats %}
-        <P> Questions in category {{ cat }}</P>
-        {% for que in ques %}
-            {% if cat == que.category %}
-                <ol>
-                    <div style="display: flex;">
-                        <p>Q. &nbsp;</p>
-                        <P>{{ que.question_text|safe|escape }}</p>
-                    </div>
-                    <p>Category  -  {{ que.category }}</p>
-                    <li>{{ que.choice1|safe|escape }}</li>
-                    <li>{{ que.choice2|safe|escape }}</li>
-                    <li>{{ que.choice3|safe|escape }}</li>
-                    <li>{{ que.choice4|safe|escape }}</li>
-                <p>Correct Choice  -  {{ que.correct_choice|safe|escape }}</p>
-                </ol>
-                <a href="{% url "Edit_Question" que.pk %}" ><button>Edit</button></a>
-                <a href="{% url "Delete_Question" que.pk %}" ><button>Delete</button></a>
+    {% for test in tests %}
+        <p>Questions for which test name is {{ test.test_name }} </p>
+        {% for cat in cats %}
+            {% if cat.test == test %}
+                <P> and  category is {{ cat }}</P>
+                {% for que in ques %}
+                    {% if cat == que.category %}
+                        <ol>
+                            <div style="display: flex;">
+                                <p>Q. &nbsp;</p>
+                                <P>{{ que.question_text|safe|escape }}</p>
+                            </div>
+                            <li>{{ que.choice1|safe|escape }}</li>
+                            <li>{{ que.choice2|safe|escape }}</li>
+                            <li>{{ que.choice3|safe|escape }}</li>
+                            <li>{{ que.choice4|safe|escape }}</li>
+                        <p>Correct Choice  -  {{ que.correct_choice|safe|escape }}</p>
+                        </ol>
+                        <a href="{% url "Edit_Question" que.pk %}" ><button>Edit</button></a>
+                        <a href="{% url "Delete_Question" que.pk %}" ><button>Delete</button></a>
+                    {% endif %}
+                {% empty %}
+                    <p>No Questions present.</p>
+                {% endfor %}<br>
             {% endif %}
         {% empty %}
-            <p>No Questions present</p>
-        {% endfor %}<br>
+            <p>No questions available in database for this category.</p>
+        {% endfor %}
     {% empty %}
-        <p>No questions available in database for this category.</p>
+        <p>No question for this test.</p>
     {% endfor %}
 {% endblock %}

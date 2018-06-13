@@ -94,6 +94,41 @@ class TestName(View):
                         form = self.form_class
                         return render(request, self.template_name, {'form': form})
 
+class ShowTestView(View):
+    template_name = 'admin/edittestname.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ShowTestView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        tests = Test.objects.all()
+        return render(request, self.template_name, {'tests':tests})
+
+class EditTest(View):
+    
+    def get(self, request):
+        img_id = 0
+        img_id = request.GET['imgid']
+        if img_id:
+            name = request.GET['name']
+            test = request.GET['test']
+            Tname = Test.objects.get(test_name=test)
+            Category.objects.filter(pk=img_id).update(category=name, test=Tname)
+            return HttpResponse(Tname.test_name)
+
+
+class DeleteTest(View):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(DeleteCategoryView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        Category.objects.filter(pk=pk).delete()
+        return redirect('control_operation')
 
 
 class AddQuestionView(View):
@@ -119,12 +154,11 @@ class AddQuestionView(View):
 
     def post(self, request):
         form = self.form_class(request.POST)
+        c = Category.objects.get(category=(dict(request.POST)['category'])[0])
         if form.is_valid():
-            Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            c = Category.objects.get(category=(dict(request.POST)['category'])[0])
             num = len(Question.objects.filter(category=c)) + 1
             if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                Question.objects.create(test=Tname, category=c, question_number=num,
+                Question.objects.create(category=c, question_number=num,
                                         question_text=(dict(request.POST)['question_text'])[0],
                                         choice1=(dict(request.POST)['choice1'])[0],
                                         choice2=(dict(request.POST)['choice2'])[0],
@@ -139,6 +173,63 @@ class AddQuestionView(View):
             form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
+class EditQuestionView(View):
+    form_class = forms.QuestionForm
+    template_name = 'admin/editquestion.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(EditQuestionView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        question = Question.objects.get(pk=pk)
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'question': question})
+
+    def post(self, request, pk):
+        question = Question.objects.get(pk=pk)
+        num = question.question_number
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+                c = Category.objects.get(category = (dict(request.POST)['category'])[0])
+                Question.objects.filter(pk=pk).update(category = c,  question_number = num,
+                    question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
+                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
+                    choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
+                return redirect('admin_auth')
+            else:
+                message = "Choices cannot be same"
+                return render(request, 'admin/error.html', {'message': message})
+        else:
+            form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'question': question})
+
+class ShowQuestionsView(View):
+    template_name = 'admin/showquestion.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        tests = Test.objects.all()
+        cats = Category.objects.all()
+        ques = Question.objects.all()
+        return render(request, self.template_name, {'ques': ques, 'cats':cats, 'tests':tests})
+
+class DeleteQuestionView(View):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(DeleteQuestionView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        Question.objects.filter(pk=pk).delete()
+        return redirect('control_operation')
 
 class AddCategoryView(View):
     form_class = forms.CategoryForm
@@ -176,7 +267,6 @@ class AddCategoryView(View):
                 form = self.form_class()
             return render(request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
-
 class Editcategory(View):
 
     def get(self, request):
@@ -191,18 +281,16 @@ class Editcategory(View):
             return HttpResponse(Tname.test_name)
 
 
-class ShowQuestionsView(View):
-    template_name = 'admin/showquestion.html'
-
+class DeleteCategoryView(View):
+    
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('admin_auth')
-        return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
+        return super(DeleteCategoryView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
-        cats = Category.objects.all()
-        ques = Question.objects.all()
-        return render(request, self.template_name, {'ques': ques, 'cats':cats})
+    def get(self, request, pk):
+        Category.objects.filter(pk=pk).delete()
+        return redirect('control_operation')
 
 
 class ShowCandidateListView(View):
@@ -332,64 +420,6 @@ class ViewResultView(View):
             file.close()
         return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
 
-
-class EditQuestionView(View):
-    form_class = forms.QuestionForm
-    template_name = 'admin/editquestion.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
-        return super(EditQuestionView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, pk):
-        question = Question.objects.get(pk=pk)
-        print(question)
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'question': question})
-
-    def post(self, request, pk):
-        question = Question.objects.get(pk=pk)
-        num = question.question_number
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                c = Category.objects.get(category = (dict(request.POST)['category'])[0])
-                Question.objects.filter(pk=pk).update(category = c,  question_number = num,
-                    question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
-                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
-                    choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
-                return redirect('admin_auth')
-            else:
-                message = "Choices cannot be same"
-                return render(request, 'admin/error.html', {'message': message})
-        else:
-            form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'question': question})
-
-
-class DeleteQuestionView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
-        return super(DeleteQuestionView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, pk):
-        Question.objects.filter(pk=pk).delete()
-        return redirect('control_operation')
-
-
-class DeleteCategoryView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
-        return super(DeleteCategoryView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, pk):
-        Category.objects.filter(pk=pk).delete()
-        return redirect('control_operation')
 
 
 class AdminInstructionView(View):

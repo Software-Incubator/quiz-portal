@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views_admin.AdminAuth.as_view(), name='admin_auth'),
     path('control/', views_admin.ControlOperation.as_view(), name='control_operation'),
     path('testname/', views_admin.TestName.as_view(), name='Test_name'),
+    path('seetest/', views_admin.ShowTestView.as_view(), name='See_Test'),
     path('instructions/', views_admin.AdminInstructionView.as_view(), name='Instruction'),
     path('addquestion/', views_admin.AddQuestionView.as_view(), name='Add_Question'),
     path('addcategory/', views_admin.AddCategoryView.as_view(), name='Add_Category'),

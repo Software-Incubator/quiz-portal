@@ -39,11 +39,10 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return (self.category + self.test.test_name)
+        return (self.category)
 
 
 class Question(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     question_number = models.PositiveIntegerField(blank=True)
     question_text = RichTextUploadingField()

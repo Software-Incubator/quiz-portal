@@ -39,7 +39,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return (self.category + self.test)
+        return (self.category + self.test.test_name)
 
 
 class Question(models.Model):

@@ -30,10 +30,12 @@
             {% endfor %}
         {% endif %}
         {{ form.media }}
-        {{ form.question_text.label_tag }}
-        {{ form.question_text }}<br>
+        {{ form.test_name.label_tag }}
+        {{ form.test_name }}<br>
         {{ form.category.label_tag }}
         {{ form.category }}<br>
+        {{ form.question_text.label_tag }}
+        {{ form.question_text }}<br>
         {{ form.choice1.label_tag }}
         {{ form.choice1 }}<br>
         {{ form.choice2.label_tag }}
@@ -44,7 +46,6 @@
         {{ form.choice4 }}<br>
         {{ form.correct_choice.label_tag }}
         {{ form.correct_choice }}<br>
-        <!-- {{ form.as_p }}<br> -->
         <button type="submit">submit</button><br>
     </form>
 {% endblock %}

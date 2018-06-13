@@ -68,7 +68,7 @@ class TestName(View):
     def get(self, request):
         form = self.form_class()
         # Tname = Test.objects.latest('test_name')
-        return render(request, self.template_name, {'form': form })
+        return render(request, self.template_name, {'form': form})
 
     def post(self,request):
         print(dict(request.POST))
@@ -89,7 +89,7 @@ class TestName(View):
                     if form.is_valid():
                         Test.objects.create(test_name=request.POST['test_name'],
                          duration=request.POST['duration'], on_or_off=request.POST['on_or_off'])
-                        return redirect('admin_auth')
+                        return redirect('control_operation')
                     else:
                         form = self.form_class
                         return render(request, self.template_name, {'form': form})
@@ -106,24 +106,32 @@ class AddQuestionView(View):
         return super(AddQuestionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        if (Test.objects.all()).count() == 0:
+            message = "No test present"
+            return render(request, 'admin/error.html', {'message': message})
+        else:
+            if (Category.objects.all()).count() == 0:
+                message = "No category present"
+                return render(request, 'admin/error.html', {'message': message})
+            else:            
+                form = self.form_class()
+                return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
+            Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
             c = Category.objects.get(category=(dict(request.POST)['category'])[0])
             num = len(Question.objects.filter(category=c)) + 1
-            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != \
-                    (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                Question.objects.create(category=c, question_number=num,
+            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+                Question.objects.create(test=Tname, category=c, question_number=num,
                                         question_text=(dict(request.POST)['question_text'])[0],
                                         choice1=(dict(request.POST)['choice1'])[0],
                                         choice2=(dict(request.POST)['choice2'])[0],
                                         choice3=(dict(request.POST)['choice3'])[0],
                                         choice4=(dict(request.POST)['choice4'])[0],
                                         correct_choice=(dict(request.POST)['correct_choice'])[0])
-                return redirect('admin_auth')
+                return redirect('control_operation')
             else:
                 message = "Choices cannot be same"
                 return render(request, 'admin/error.html', {'message': message})
@@ -159,8 +167,9 @@ class AddCategoryView(View):
             return render(request, 'admin/error.html', {'message': message})
         else:
             if form.is_valid():
-                form.save()
-                return redirect('admin_auth')
+                Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
+                Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname)
+                return redirect('control_operation')
             else:
                 form = self.form_class()
             return render(request, self.template_name, {'form': form, 'cats': cats})

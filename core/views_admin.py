@@ -224,6 +224,7 @@ class ViewResultView(View):
         cand = Candidate.objects.get(pk=pk)
         cats = Category.objects.all()
         selects = SelectedAnswer.objects.filter(email=cand)
+        test = Test.objects.get(on_or_off=True)
         if len(selects) != 0:
             for cat in cats:
                 total = 0
@@ -259,7 +260,7 @@ class ViewResultView(View):
             l.append(overall_correct)
             l.append(percent)
             l1.extend([l])
-        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
+        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
 
     def post(self, request, pk):
         l1 = []
@@ -269,6 +270,7 @@ class ViewResultView(View):
         cand = Candidate.objects.get(pk=pk)
         cats = Category.objects.all()
         selects = SelectedAnswer.objects.filter(email=cand)
+        test = Test.objects.get(on_or_off=True)
         if len(selects) != 0:
             for cat in cats:
                 total = 0
@@ -319,7 +321,7 @@ class ViewResultView(View):
             file.seek(0)
             pdf = file.read()
             file.close()
-        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
+        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
 
 
 class EditQuestionView(View):

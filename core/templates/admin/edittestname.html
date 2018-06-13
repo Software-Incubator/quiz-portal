@@ -14,50 +14,48 @@
             $(".change").on('click', function(event) {
                 console.log(3);
                 var imgid;
-                var name;
                 var test;
+                var dur;
                 imgid = $(this).attr("cat_data");
                 console.log(imgid);
-                name = $('#cat' + imgid).val();
                 test = $('#test' + imgid).val();
-                console.log(name);
+                dur = $('#dur' + imgid).val();
                 console.log(test);
-                if (name != ''){
-                    console.log(4);
+                console.log(dur);
                 $.ajax({
-                    url: '{% url 'Edit_Category' %}',
+                    url: '{% url 'Edit_Test' %}',
                     data: {
                         'imgid': imgid, 
-                        'name': name,
-                        'test':test,
+                        'test': test,
+                        'dur':dur,
                         },
                     dataType: 'json',
                     success: function (data) {
                         console.log(5)
                     }
                 });
-                }
             })
         });
     </script>
 {% endblock %}
 
 {% block content %}
-    {% for test in tests %}
-        <input id="cat{{cat.pk}}" type="text" name="category"  value={{ test.test_name }}>
-        <input id="dur{{cat.pk}}" value={{ test.duration }} >
-        <P>Start or Stop</P>
-
-        {% if test.on_or_off == True %}
-            <input type="radio" name="on_or_off" value="True" checked  > Start 
-            <input style="margin-left:5em;" type="radio" name="on_or_off" value="False" > Stop
-        {% else %}
-            <input type="radio" name="on_or_off" value="True"  > Start 
-            <input style="margin-left:5em;" type="radio" name="on_or_off" value="False" checked > Stop
-        {% endif %}
-        <button class="change" cat_data="{{test.pk}}" >Save after editing</button>
-        <a href="{% url "Delete_Category" test.pk %}" ><button>Delete</button></a><br>
-    {% empty %}
-        <p>No category available</p>
-    {% endfor %}
+    <ol>
+        {% for test in tests %}
+            <li><div style="display:flex;">
+                <input id="test{{test.pk}}" type="text" name="category"  value={{ test.test_name }}>
+                <input id="dur{{test.pk}}" value={{ test.duration }} >
+                {% if test.on_or_off == True %}
+                <P>Status: Start</P>
+                {% else %}
+                    <P>Status: Stop</P>
+                {% endif %}
+                <a href="{% url "toggle" test.pk %}" ><button>Toggle test status</button></a>
+                <button class="change" cat_data="{{test.pk}}" >Save after editing</button>
+                <br><br>
+            </div></li>
+        {% empty %}
+            <p>No category available</p>
+        {% endfor %}
+    </ol>
 {% endblock %}

@@ -109,14 +109,31 @@ class ShowTestView(View):
 class EditTest(View):
     
     def get(self, request):
+        print("a")
         img_id = 0
         img_id = request.GET['imgid']
+        print(img_id)
         if img_id:
-            name = request.GET['name']
+            dur = request.GET['dur']
             test = request.GET['test']
-            Tname = Test.objects.get(test_name=test)
-            Category.objects.filter(pk=img_id).update(category=name, test=Tname)
-            return HttpResponse(Tname.test_name)
+            Test.objects.filter(pk=img_id).update(duration=dur, test_name=test)
+            return HttpResponse(img_id)
+
+class ToggleTestStatus(View):
+
+    def get(self, request, pk):
+        if pk:
+            test = Test.objects.get(pk=pk)
+            if (Test.objects.filter(on_or_off = True)).count() > 0:
+                message = "Two tests cannot be started together"
+                return render(request, 'admin/error.html', {'message': message})
+            else:
+                if test.on_or_off == True:
+                    Test.objects.filter(pk=pk).update(on_or_off=False)
+                else:
+                    Test.objects.filter(pk=pk).update(on_or_off=True)
+                return redirect('See_Test')
+            
 
 
 class DeleteTest(View):
@@ -124,10 +141,10 @@ class DeleteTest(View):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('admin_auth')
-        return super(DeleteCategoryView, self).dispatch(request, *args, **kwargs)
+        return super(DeleteTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, pk):
-        Category.objects.filter(pk=pk).delete()
+        Test.objects.filter(pk=pk).delete()
         return redirect('control_operation')
 
 

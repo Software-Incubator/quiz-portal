@@ -139,7 +139,7 @@ class AddCategoryView(View):
 
     def get(self, request):
         if (Test.objects.all()).count() == 0 or (Test.objects.latest('test_name')).test_name == '':
-            return redirect('Test name')
+            return redirect('Test_name')
         else:
             cats = Category.objects.all()
             form = self.form_class()

@@ -12,7 +12,7 @@
 
 
 {% block content %}
-    <ol>
+    <!-- <ol>
         <div style="display: flex;">
             <p>Q.{{ question.question_number }} &nbsp;</p>
             <P>{{ question.question_text|safe|escape }}</p>
@@ -23,7 +23,7 @@
         <li>{{ question.choice3|safe|escape }}</li>
         <li>{{ question.choice4|safe|escape }}</li>
         <p>Correct Choice  -  {{ question.correct_choice|safe|escape }}</p>
-    </ol>
+    </ol> -->
     <form name="TestForm" method="post">
         {% csrf_token %}
 

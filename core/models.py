@@ -14,12 +14,14 @@ from django.contrib.sessions.models import Session
 class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False)
     duration = models.PositiveIntegerField(blank = False)
+    # on_or_off = models.
 
     def __str__(self):
         return self.test_name
 
 
 class Instruction(models.Model):
+    # test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
     instruction = RichTextUploadingField()
 
     class Meta:
@@ -40,6 +42,7 @@ class Category(models.Model):
 
 
 class Question(models.Model):
+    # test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     question_number = models.PositiveIntegerField(blank=True)
     question_text = RichTextUploadingField()

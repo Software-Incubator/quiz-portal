@@ -50,6 +50,10 @@ class AdminAuth(generic.ListView):
 
 class ControlOperation(View):
     template_name = 'admin/control.html'
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ControlOperation, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
         return render(request, self.template_name)
@@ -107,19 +111,31 @@ class ShowTestView(View):
         return render(request, self.template_name, {'tests':tests})
 
 class EditTest(View):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(EditTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        print("a")
         img_id = 0
         img_id = request.GET['imgid']
-        print(img_id)
         if img_id:
             dur = request.GET['dur']
             test = request.GET['test']
-            Test.objects.filter(pk=img_id).update(duration=dur, test_name=test)
-            return HttpResponse(img_id)
+            if int(dur) < 1:
+                message = "Duration cannot be 0 or less"
+                return render(request, 'admin/error.html', {'message': message})
+            else:
+                Test.objects.filter(pk=img_id).update(duration=dur, test_name=test)
+                return HttpResponse(img_id)
 
 class ToggleTestStatus(View):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ToggleTestStatus, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, pk):
         if pk:
@@ -285,6 +301,11 @@ class AddCategoryView(View):
             return render(request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
 class Editcategory(View):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(Editcategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
         print("I am here")
@@ -299,6 +320,11 @@ class Editcategory(View):
 
 
 class DeleteCategoryView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(DeleteCategoryView, self).dispatch(request, *args, **kwargs)
     
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
@@ -471,6 +497,56 @@ class AdminInstructionView(View):
             form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
+class EditInstructionView(View):
+    form_class = forms.InstructionForm
+    template_name = 'admin/editinstruction.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(EditInstructionView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        inst = Instruction.objects.get(pk=pk)
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'inst': inst})
+
+    def post(self, request, pk):
+        question = Instruction.objects.get(pk=pk)
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
+            Instruction.objects.filter(pk=pk).update(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
+            return redirect('control_operation')
+
+        else:
+            form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'question': question})
+
+class ShowInstructionView(View):
+    template_name = 'admin/showInstructions.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ShowInstructionView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        insts = Instruction.objects.all()
+        for i in insts:
+            print(i.test)
+        return render(request, self.template_name, {'insts':insts})
+
+class DeleteInstructionView(View):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(DeleteInstructionView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        Instruction.objects.filter(pk=pk).delete()
+        return redirect('control_operation')
 
 
 def error404(request):

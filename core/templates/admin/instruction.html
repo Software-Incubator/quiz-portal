@@ -12,12 +12,12 @@
 
 
 {% block content %}
-    <p>Previously Stored</p>
+    <!-- <p>Previously Stored</p>
     {% if Iname == '' %}
         <p>No instructions Feeded</p>
     {% else %}
         {{ Iname|safe|escape }}<br><br>
-    {% endif %}
+    {% endif %} -->
 
     <form name="TestForm" method="post">
         {% csrf_token %}
@@ -39,6 +39,8 @@
         {{ form.media }}
         {{ form.instruction.label_tag }}
         {{ form.instruction }}<br>
+        {{ form.test_name.label_tag }}
+        {{ form.test_name }}<br>
         <button type="submit">submit</button><br>
     </form>
 {% endblock %}

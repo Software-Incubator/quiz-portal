@@ -60,9 +60,6 @@ class TestName(View):
     template_name = 'admin/test.html'
 
     def dispatch(self, request, *args, **kwargs):
-        
-        if (Test.objects.all()).count() == 0:
-            Test.objects.create(test_name='', duration=0, on_or_off=False)
 
         if not request.user.is_superuser:
             return redirect('admin_auth')
@@ -391,10 +388,6 @@ class AdminInstructionView(View):
     def dispatch(self, request, *args, **kwargs):
         if (Test.objects.all()).count() == 0:
             return redirect('Test_name')
-        else:
-            if (Instruction.objects.all()).count() == 0:
-                Tname = Test.objects.latest('test_name')
-                Instruction.objects.create(test_name=Tname, instruction='')
 
         if not request.user.is_superuser:
             return redirect('admin_auth')
@@ -402,18 +395,23 @@ class AdminInstructionView(View):
 
     def get(self, request):
         form = self.form_class()
-        Iname = Instruction.objects.latest('instruction')
-        return render(request, self.template_name, {'form': form, 'Iname': Iname.instruction, })
+        # Iname = Instruction.objects.latest('instruction')
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        Iname = Instruction.objects.latest('instruction')
+        # Iname = Instruction.objects.latest('instruction')
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('admin_auth')
+            Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
+            if (Instruction.objects.filter(test=Tname)).count() > 0:
+                message = "Instruction for this test already exits"
+                return render(request, 'admin/error.html', {'message': message})
+            else:
+                Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
+                return redirect('admin_auth')
         else:
             form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'Iname': Iname, })
+        return render(request, self.template_name, {'form': form})
 
 
 

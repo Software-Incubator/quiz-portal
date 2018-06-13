@@ -49,7 +49,7 @@ class TestForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
-    test_name = forms.ChoiceField(choices=test_name_list,label="Test Category")
+    test_name = forms.ChoiceField(choices=test_name_list,label="Test Category", widget=forms.Select() )
     class Meta:
         model = Instruction
         fields = ['instruction','test_name']

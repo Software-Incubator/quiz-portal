@@ -21,8 +21,8 @@ class Test(models.Model):
 
 
 class Instruction(models.Model):
-    test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
     instruction = RichTextUploadingField()
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "Instructions"
@@ -32,7 +32,7 @@ class Instruction(models.Model):
 
 
 class Category(models.Model):
-    test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
     category = models.CharField(max_length=225)
 
     class Meta:
@@ -43,7 +43,7 @@ class Category(models.Model):
 
 
 class Question(models.Model):
-    test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     question_number = models.PositiveIntegerField(blank=True)
     question_text = RichTextUploadingField()

@@ -1,21 +1,21 @@
 {% extends 'candidate/base.html' %}
 
 {% block content %}
-    {% for t in test_name %}
-        <h1>{{ t }}</h1>
-    {% endfor %}
+
+        <h1>{{ test_name }}</h1>
+
   <h2>INSTRUCTIONS</h2>
 
-{% block login %}
+
     <span>Hello {{ request.session.name}}</span>
         <a href={% url 'session_out' %} >Logout</a>
-{% endblock %}
+
     {% for instr in instruction %}
         {% autoescape off %}
         {{ instr.instruction }}
         {% endautoescape %}
     {% endfor %}
 
-    <a href={% url 'category' category.category 1 %}>OK </a>
+    <a href={% url 'category' test_name category.category 1 %}>OK </a>
 
 {% endblock %}

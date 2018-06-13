@@ -49,10 +49,10 @@ class TestForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
-
+    test_name = forms.ChoiceField(choices=test_name_list,label="Test Category")
     class Meta:
         model = Instruction
-        fields = ['instruction']
+        fields = ['instruction','test_name']
 
 
 class CategoryForm(forms.ModelForm):
@@ -64,7 +64,7 @@ class CategoryForm(forms.ModelForm):
 
 class QuestionForm(forms.Form):
     question_text = forms.CharField(widget=CKEditorUploadingWidget())
-    category = forms.category = forms.ChoiceField(choices=category_name_list,label="Question Category")
+    category = forms.ChoiceField(choices=category_name_list,label="Question Category")
     choice1 = forms.CharField(widget=CKEditorUploadingWidget())
     choice2 = forms.CharField(widget=CKEditorUploadingWidget())
     choice3 = forms.CharField(widget=CKEditorUploadingWidget())

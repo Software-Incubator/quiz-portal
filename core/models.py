@@ -28,7 +28,7 @@ class Instruction(models.Model):
         verbose_name_plural = "Instructions"
 
     def __str__(self):
-        return self.instruction
+        return (self.instruction + self.category)
 
 
 class Category(models.Model):

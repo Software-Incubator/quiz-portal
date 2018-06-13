@@ -389,8 +389,12 @@ class AdminInstructionView(View):
     template_name = 'admin/instruction.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if len(Instruction.objects.all()) == 0:
-            Instruction.objects.create(instruction='')
+        if (Test.objects.all()).count() == 0:
+            return redirect('Test_name')
+        else:
+            if (Instruction.objects.all()).count() == 0:
+                Tname = Test.objects.latest('test_name')
+                Instruction.objects.create(test_name=Tname, instruction='')
 
         if not request.user.is_superuser:
             return redirect('admin_auth')

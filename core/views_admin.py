@@ -107,7 +107,7 @@ class ShowTestView(View):
         return render(request, self.template_name, {'tests':tests})
 
 class EditTest(View):
-    
+
     def get(self, request):
         print("a")
         img_id = 0
@@ -124,7 +124,7 @@ class ToggleTestStatus(View):
     def get(self, request, pk):
         if pk:
             test = Test.objects.get(pk=pk)
-            if (Test.objects.filter(on_or_off = True)).count() > 0:
+            if (Test.objects.filter(on_or_off = True)).count() > 0 and test.on_or_off == False:
                 message = "Two tests cannot be started together"
                 return render(request, 'admin/error.html', {'message': message})
             else:

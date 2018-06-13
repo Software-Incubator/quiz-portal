@@ -16,7 +16,23 @@ def category_name_list():
 
     return CATEGORY_CHOICE
 
+def test_name_list():
+    tests = Test.objects.all()
+    TEST_CHOICE = ()
+
+    for test in tests:
+        data = ((test.test_name, test.test_name),)
+        TEST_CHOICE = TEST_CHOICE + data
+
+    return TEST_CHOICE
+
 answer_choice = ((1,1),(2,2),(3,3),(4,4))
+
+TRUE_FALSE_CHOICES = (
+    (True, 'START'),
+    (False, 'STOP')
+)
+
 
 
 class AdminLoginForm(forms.Form):
@@ -24,10 +40,12 @@ class AdminLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 class TestForm(forms.ModelForm):
+    on_or_off = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Some Label", 
+                              initial='', widget=forms.RadioSelect(), required=True)
 
     class Meta:
         model = Test
-        fields = ['test_name','duration',]
+        fields = ['test_name','duration','on_or_off']
 
 
 class InstructionForm(forms.ModelForm):

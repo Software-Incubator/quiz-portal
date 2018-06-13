@@ -62,7 +62,7 @@ class TestName(View):
     def dispatch(self, request, *args, **kwargs):
         
         if (Test.objects.all()).count() == 0:
-            Test.objects.create(test_name='', duration=0)
+            Test.objects.create(test_name='', duration=0, on_or_off=False)
 
         if not request.user.is_superuser:
             return redirect('admin_auth')
@@ -70,24 +70,32 @@ class TestName(View):
 
     def get(self, request):
         form = self.form_class()
-        Tname = Test.objects.latest('test_name')
-        return render(request, self.template_name, {'form': form, 'Tname': Tname, })
+        # Tname = Test.objects.latest('test_name')
+        return render(request, self.template_name, {'form': form })
 
     def post(self,request):
-        print(type(request.POST['duration']))
+        print(dict(request.POST))
         if request.POST['duration'] == '0':
             message = "Test duration cannot be zero"
             return render(request, 'admin/error.html', {'message': message})
         else:
-            Tname = Test.objects.latest('test_name')
-            form = self.form_class(request.POST)
-            if form.is_valid():
-                Test.objects.filter(pk=Tname.pk).update(test_name=request.POST['test_name'],
-                 duration=request.POST['duration'])
-                return redirect('admin_auth')
+            if request.POST['on_or_off'] == 'True' and (Test.objects.filter(on_or_off=True)).count() > 0:
+                message = "Two tests cannot be started together"
+                return render(request, 'admin/error.html', {'message': message})
+            # Tname = Test.objects.latest('test_name')
             else:
-                form = self.form_class
-                return render(request, 'core/signup.html', {'form': form})
+                if (Test.objects.filter(test_name=request.POST['test_name'])).count() > 0:
+                    message = "No two test can have same name"
+                    return render(request, 'admin/error.html', {'message': message})
+                else:
+                    form = self.form_class(request.POST)
+                    if form.is_valid():
+                        Test.objects.create(test_name=request.POST['test_name'],
+                         duration=request.POST['duration'], on_or_off=request.POST['on_or_off'])
+                        return redirect('admin_auth')
+                    else:
+                        form = self.form_class
+                        return render(request, self.template_name, {'form': form})
 
 
 

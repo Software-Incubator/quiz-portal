@@ -80,23 +80,18 @@ class TestName(View):
             message = "Test duration cannot be zero"
             return render(request, 'admin/error.html', {'message': message})
         else:
-            if request.POST['on_or_off'] == 'True' and (Test.objects.filter(on_or_off=True)).count() > 0:
-                message = "Two tests cannot be started together"
+            if (Test.objects.filter(test_name=request.POST['test_name'])).count() > 0:
+                message = "No two test can have same name"
                 return render(request, 'admin/error.html', {'message': message})
-            # Tname = Test.objects.latest('test_name')
             else:
-                if (Test.objects.filter(test_name=request.POST['test_name'])).count() > 0:
-                    message = "No two test can have same name"
-                    return render(request, 'admin/error.html', {'message': message})
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                    Test.objects.create(test_name=request.POST['test_name'],
+                     duration=request.POST['duration'], on_or_off=request.POST['on_or_off'])
+                    return redirect('control_operation')
                 else:
-                    form = self.form_class(request.POST)
-                    if form.is_valid():
-                        Test.objects.create(test_name=request.POST['test_name'],
-                         duration=request.POST['duration'], on_or_off=request.POST['on_or_off'])
-                        return redirect('control_operation')
-                    else:
-                        form = self.form_class
-                        return render(request, self.template_name, {'form': form})
+                    form = self.form_class
+                    return render(request, self.template_name, {'form': form})
 
 class ShowTestView(View):
     template_name = 'admin/edittestname.html'
@@ -140,15 +135,11 @@ class ToggleTestStatus(View):
     def get(self, request, pk):
         if pk:
             test = Test.objects.get(pk=pk)
-            if (Test.objects.filter(on_or_off = True)).count() > 0 and test.on_or_off == False:
-                message = "Two tests cannot be started together"
-                return render(request, 'admin/error.html', {'message': message})
+            if test.on_or_off == True:
+                Test.objects.filter(pk=pk).update(on_or_off=False)
             else:
-                if test.on_or_off == True:
-                    Test.objects.filter(pk=pk).update(on_or_off=False)
-                else:
-                    Test.objects.filter(pk=pk).update(on_or_off=True)
-                return redirect('See_Test')
+                Test.objects.filter(pk=pk).update(on_or_off=True)
+            return redirect('See_Test')
             
 
 

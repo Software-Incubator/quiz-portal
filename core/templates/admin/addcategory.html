@@ -15,17 +15,21 @@
                 console.log(3);
                 var imgid;
                 var name;
+                var test;
                 imgid = $(this).attr("cat_data");
                 console.log(imgid);
                 name = $('#cat' + imgid).val();
+                test = $('#test' + imgid).val();
                 console.log(name);
+                console.log(test);
                 if (name != ''){
                     console.log(4);
                 $.ajax({
                     url: '{% url 'Edit_Category' %}',
                     data: {
                         'imgid': imgid, 
-                        'name': name
+                        'name': name,
+                        'test':test,
                         },
                     dataType: 'json',
                     success: function (data) {
@@ -41,6 +45,15 @@
 {% block content %}
     {% for cat in cats %}
         <input id="cat{{cat.pk}}" type="text" name="category"  value={{ cat.category }}>
+        <input id="test{{cat.pk}}" list="browsers" value={{ cat.test.test_name }} >
+        <datalist id="browsers">
+                {% for test in tests %}
+                    <option value="{{test.test_name}}">{{test.test_name}}</option>
+                {% empty %}
+                    <option></option>
+                {% endfor %}
+          <option value="Internet Explorer">
+        </datalist>
         <button class="change" cat_data="{{cat.pk}}" >Save after editing</button>
         <a href="{% url "Delete_Category" cat.pk %}" ><button>Delete</button></a><br>
     {% empty %}

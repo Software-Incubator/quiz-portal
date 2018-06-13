@@ -154,14 +154,16 @@ class AddCategoryView(View):
         if (Test.objects.all()).count() == 0 or (Test.objects.latest('test_name')).test_name == '':
             return redirect('Test_name')
         else:
+            tests = Test.objects.all()
             cats = Category.objects.all()
             form = self.form_class()
-            return render(request, self.template_name, {'form': form, 'cats': cats})
+            return render(request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
     def post(self, request):
         (dict(request.POST))['category'][0] = ((dict(request.POST))['category'][0]).lower()
         form = self.form_class(request.POST)
         cats = Category.objects.all()
+        tests = Test.objects.all()
         if (Category.objects.filter(category=((dict(request.POST))['category'][0]).lower())).count() > 0:
             message = 'ALL READY EXIST'
             return render(request, 'admin/error.html', {'message': message})
@@ -172,7 +174,7 @@ class AddCategoryView(View):
                 return redirect('control_operation')
             else:
                 form = self.form_class()
-            return render(request, self.template_name, {'form': form, 'cats': cats})
+            return render(request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
 
 class Editcategory(View):
@@ -182,13 +184,11 @@ class Editcategory(View):
         img_id = 0
         img_id = request.GET['imgid']
         if img_id:
-            d = dict()
             name = request.GET['name']
-            Category.objects.filter(pk=img_id).update(category=name)
-            c = Category.objects.get(pk=img_id)
-            d['name'] = c.category
-            x = json.dumps(d)
-            return HttpResponse(x)
+            test = request.GET['test']
+            Tname = Test.objects.get(test_name=test)
+            Category.objects.filter(pk=img_id).update(category=name, test=Tname)
+            return HttpResponse(Tname.test_name)
 
 
 class ShowQuestionsView(View):

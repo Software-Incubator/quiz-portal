@@ -36,7 +36,6 @@
                 <h6>Sign-In</h6>
             </div>
             <form name="AdminLoginForm" method="post">
-                {% csrf_token %}
                 {% if form.errors %}
                     {% for field in form %}
                         {% for error in field.errors %}

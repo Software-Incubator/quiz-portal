@@ -30,9 +30,9 @@ class AdminAuth(generic.ListView):
             return redirect('control_operation')
         return super(AdminAuth, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, *args):
+    def get(self, request, *args, **kwargs):
         form = self.form_class
-        return render(request, self.template_name, {"form": form})
+        return render(self.request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST)
@@ -55,8 +55,8 @@ class ControlOperation(View):
             return redirect('admin_auth')
         return super(ControlOperation, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def get(self, request, *args, **kwargs):
+        return render(self.request, self.template_name)
 
 
 class TestName(View):
@@ -69,13 +69,12 @@ class TestName(View):
             return redirect('admin_auth')
         return super(TestName, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         form = self.form_class()
         # Tname = Test.objects.latest('test_name')
         return render(request, self.template_name, {'form': form})
 
-    def post(self,request):
-        print(dict(request.POST))
+    def post(self,request, *args, **kwargs):
         if request.POST['duration'] == '0':
             message = "Test duration cannot be zero"
             return render(request, 'admin/error.html', {'message': message})
@@ -91,7 +90,7 @@ class TestName(View):
                     return redirect('control_operation')
                 else:
                     form = self.form_class
-                    return render(request, self.template_name, {'form': form})
+                    return render(self.request, self.template_name, {'form': form})
 
 class ShowTestView(View):
     template_name = 'admin/edittestname.html'
@@ -101,7 +100,7 @@ class ShowTestView(View):
             return redirect('admin_auth')
         return super(ShowTestView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         tests = Test.objects.all()
         return render(request, self.template_name, {'tests':tests})
 
@@ -112,7 +111,7 @@ class EditTest(View):
             return redirect('admin_auth')
         return super(EditTest, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         img_id = 0
         img_id = request.GET['imgid']
         if img_id:
@@ -132,7 +131,7 @@ class ToggleTestStatus(View):
             return redirect('admin_auth')
         return super(ToggleTestStatus, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         if pk:
             test = Test.objects.get(pk=pk)
             if test.on_or_off == True:
@@ -140,7 +139,6 @@ class ToggleTestStatus(View):
             else:
                 Test.objects.filter(pk=pk).update(on_or_off=True)
             return redirect('See_Test')
-            
 
 
 class DeleteTest(View):
@@ -150,7 +148,7 @@ class DeleteTest(View):
             return redirect('admin_auth')
         return super(DeleteTest, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         Test.objects.filter(pk=pk).delete()
         return redirect('control_operation')
 
@@ -164,7 +162,7 @@ class AddQuestionView(View):
             return redirect('admin_auth')
         return super(AddQuestionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         if (Test.objects.all()).count() == 0:
             message = "No test present"
             return render(request, 'admin/error.html', {'message': message})
@@ -176,10 +174,10 @@ class AddQuestionView(View):
                 form = self.form_class()
                 return render(request, self.template_name, {'form': form})
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        c = Category.objects.get(category=(dict(request.POST)['category'])[0])
         if form.is_valid():
+            c = Category.objects.get(category=(dict(request.POST)['category'])[0])
             num = len(Question.objects.filter(category=c)) + 1
             if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
                 Question.objects.create(category=c, question_number=num,
@@ -195,7 +193,7 @@ class AddQuestionView(View):
                 return render(request, 'admin/error.html', {'message': message})
         else:
             form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        return render(self.request, self.template_name, {'form': form})
 
 class EditQuestionView(View):
     form_class = forms.QuestionForm
@@ -206,12 +204,12 @@ class EditQuestionView(View):
             return redirect('admin_auth')
         return super(EditQuestionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         question = Question.objects.get(pk=pk)
         form = self.form_class()
         return render(request, self.template_name, {'form': form, 'question': question})
 
-    def post(self, request, pk):
+    def post(self, request, pk, *args, **kwargs):
         question = Question.objects.get(pk=pk)
         num = question.question_number
         form = self.form_class(request.POST)
@@ -228,7 +226,7 @@ class EditQuestionView(View):
                 return render(request, 'admin/error.html', {'message': message})
         else:
             form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'question': question})
+        return render(self.request, self.template_name, {'form': form, 'question': question})
 
 class ShowQuestionsView(View):
     template_name = 'admin/showquestion.html'
@@ -238,7 +236,7 @@ class ShowQuestionsView(View):
             return redirect('admin_auth')
         return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         tests = Test.objects.all()
         cats = Category.objects.all()
         ques = Question.objects.all()
@@ -251,7 +249,7 @@ class DeleteQuestionView(View):
             return redirect('admin_auth')
         return super(DeleteQuestionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         Question.objects.filter(pk=pk).delete()
         return redirect('control_operation')
 
@@ -265,7 +263,7 @@ class AddCategoryView(View):
             return redirect('admin_auth')
         return super(AddCategoryView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         if (Test.objects.all()).count() == 0 or (Test.objects.latest('test_name')).test_name == '':
             return redirect('Test_name')
         else:
@@ -274,7 +272,7 @@ class AddCategoryView(View):
             form = self.form_class()
             return render(request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         (dict(request.POST))['category'][0] = ((dict(request.POST))['category'][0]).lower()
         form = self.form_class(request.POST)
         cats = Category.objects.all()
@@ -289,7 +287,7 @@ class AddCategoryView(View):
                 return redirect('control_operation')
             else:
                 form = self.form_class()
-            return render(request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
+            return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
 class Editcategory(View):
     
@@ -298,7 +296,7 @@ class Editcategory(View):
             return redirect('admin_auth')
         return super(Editcategory, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         print("I am here")
         img_id = 0
         img_id = request.GET['imgid']
@@ -316,13 +314,8 @@ class DeleteCategoryView(View):
         if not request.user.is_superuser:
             return redirect('admin_auth')
         return super(DeleteCategoryView, self).dispatch(request, *args, **kwargs)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
-        return super(DeleteCategoryView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         Category.objects.filter(pk=pk).delete()
         return redirect('control_operation')
 
@@ -335,7 +328,7 @@ class ShowCandidateListView(View):
             return redirect('admin_auth')
         return super(ShowCandidateListView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         cands = Candidate.objects.all()
         return render(request, self.template_name, {'cands': cands})
 
@@ -348,7 +341,7 @@ class ViewResultView(View):
             return redirect('admin_auth')
         return super(ViewResultView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         l1 = []
         overall_total = 0
         overall_correct = 0
@@ -393,7 +386,7 @@ class ViewResultView(View):
             l1.extend([l])
         return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
 
-    def post(self, request, pk):
+    def post(self, request, pk, *args, **kwargs):
         l1 = []
         data = {}
         overall_total = 0
@@ -452,7 +445,7 @@ class ViewResultView(View):
             file.seek(0)
             pdf = file.read()
             file.close()
-        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
+        return render(self.request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
 
 
 
@@ -468,12 +461,11 @@ class AdminInstructionView(View):
             return redirect('admin_auth')
         return super(AdminInstructionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         form = self.form_class()
-        # Iname = Instruction.objects.latest('instruction')
         return render(request, self.template_name, {'form': form})
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         # Iname = Instruction.objects.latest('instruction')
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -486,7 +478,7 @@ class AdminInstructionView(View):
                 return redirect('admin_auth')
         else:
             form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        return render(self.request, self.template_name, {'form': form})
 
 class EditInstructionView(View):
     form_class = forms.InstructionForm
@@ -497,12 +489,15 @@ class EditInstructionView(View):
             return redirect('admin_auth')
         return super(EditInstructionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         inst = Instruction.objects.get(pk=pk)
         form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'inst': inst})
+        print(dict(form.__dict__['fields'])['test_name'])
+        (dict(form.__dict__['fields'])['instruction']).initial = inst.instruction
+        (dict(form.__dict__['fields'])['test_name']).initial = inst.test
+        return render(request, self.template_name, {'form': form})
 
-    def post(self, request, pk):
+    def post(self, request, pk, *args, **kwargs):
         question = Instruction.objects.get(pk=pk)
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -512,7 +507,7 @@ class EditInstructionView(View):
 
         else:
             form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'question': question})
+        return render(self.request, self.template_name, {'form': form, 'question': question})
 
 class ShowInstructionView(View):
     template_name = 'admin/showInstructions.html'
@@ -522,10 +517,8 @@ class ShowInstructionView(View):
             return redirect('admin_auth')
         return super(ShowInstructionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         insts = Instruction.objects.all()
-        for i in insts:
-            print(i.test)
         return render(request, self.template_name, {'insts':insts})
 
 class DeleteInstructionView(View):
@@ -535,7 +528,7 @@ class DeleteInstructionView(View):
             return redirect('admin_auth')
         return super(DeleteInstructionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, pk, *args, **kwargs):
         Instruction.objects.filter(pk=pk).delete()
         return redirect('control_operation')
 

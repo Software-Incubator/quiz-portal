@@ -12,13 +12,8 @@
 
 
 {% block content %}
-    <ol>
-        <p>Test Name  -  {{ inst.test.test_name }}</p>
-        {{ inst.instruction|safe|escape }}
-    </ol>
     <form name="TestForm" method="post">
         {% csrf_token %}
-
         {% if form.errors %}
             {% for field in form %}
                 {% for error in field.errors %}

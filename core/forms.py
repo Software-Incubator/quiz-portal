@@ -13,7 +13,7 @@ def category_name_list():
     CATEGORY_CHOICE = ()
 
     for category in categories:
-        data = ((category.category, category.category),)
+        data = ((category.category, category),)
         CATEGORY_CHOICE = CATEGORY_CHOICE + data
 
     return CATEGORY_CHOICE

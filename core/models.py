@@ -39,7 +39,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return (self.category)
+        return (self.category + "--" + self.test.test_name)
 
 
 class Question(models.Model):
@@ -54,7 +54,6 @@ class Question(models.Model):
     negative = models.BooleanField(default=False)
     negative_marks = models.IntegerField(null=True, blank=True)
     marks = models.IntegerField(null=True, blank=True)
-
 
     def __str__(self):
         return self.question_text

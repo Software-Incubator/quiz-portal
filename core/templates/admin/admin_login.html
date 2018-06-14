@@ -36,10 +36,11 @@
                 <h6>Sign-In</h6>
             </div>
             <form name="AdminLoginForm" method="post">
-            {% if messages %}
+                 {% csrf_token %}
+                {% if messages %}
                     <ul class="messages">
                         {% for message in messages %}
-                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            <li>{{ message }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}

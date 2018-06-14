@@ -16,7 +16,7 @@
         <p>Questions for which test name is {{ test.test_name }} </p>
         {% for cat in cats %}
             {% if cat.test == test %}
-                <P> and  category is {{ cat }}</P>
+                <P> and  category is {{ cat.category }}</P>
                 {% for que in ques %}
                     {% if cat == que.category %}
                         <ol>

@@ -46,9 +46,9 @@
                 <input id="test{{test.pk}}" type="text" name="category"  value={{ test.test_name }}>
                 <input id="dur{{test.pk}}" value={{ test.duration }} >
                 {% if test.on_or_off == True %}
-                <P>Status: Start</P>
+                <p>Status: Started</p>
                 {% else %}
-                    <P>Status: Stop</P>
+                    <p>Status: Not started yet.</p>
                 {% endif %}
                 <a href="{% url "toggle" test.pk %}" ><button>Toggle test status</button></a>
                 <button class="change" cat_data="{{test.pk}}" >Save after editing</button>

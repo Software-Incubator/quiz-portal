@@ -111,7 +111,7 @@ class SelectTest(generic.ListView):
         return super(SelectTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        all_test = Test.objects.all()
+        all_test = Test.objects.filter(on_or_off=True)
         return render(request, self.template_name, {"all_test": all_test})
 
 

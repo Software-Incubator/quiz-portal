@@ -207,7 +207,14 @@ class EditQuestionView(View):
     def get(self, request, pk, *args, **kwargs):
         question = Question.objects.get(pk=pk)
         form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'question': question})
+        (dict(form.__dict__['fields'])['question_text']).initial = question.question_text
+        (dict(form.__dict__['fields'])['category']).initial = question.category
+        (dict(form.__dict__['fields'])['choice1']).initial = question.choice1
+        (dict(form.__dict__['fields'])['choice2']).initial = question.choice2
+        (dict(form.__dict__['fields'])['choice3']).initial = question.choice3
+        (dict(form.__dict__['fields'])['choice4']).initial = question.choice4
+        (dict(form.__dict__['fields'])['correct_choice']).initial = question.correct_choice
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, pk, *args, **kwargs):
         question = Question.objects.get(pk=pk)
@@ -348,7 +355,7 @@ class ViewResultView(View):
         cand = Candidate.objects.get(pk=pk)
         cats = Category.objects.all()
         selects = SelectedAnswer.objects.filter(email=cand)
-        test = Test.objects.get(on_or_off=True)
+        # test = Test.objects.get(on_or_off=True)
         if len(selects) != 0:
             for cat in cats:
                 total = 0
@@ -384,7 +391,7 @@ class ViewResultView(View):
             l.append(overall_correct)
             l.append(percent)
             l1.extend([l])
-        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
+        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
 
     def post(self, request, pk, *args, **kwargs):
         l1 = []
@@ -394,7 +401,7 @@ class ViewResultView(View):
         cand = Candidate.objects.get(pk=pk)
         cats = Category.objects.all()
         selects = SelectedAnswer.objects.filter(email=cand)
-        test = Test.objects.get(on_or_off=True)
+        # test = Test.objects.get(on_or_off=True)
         if len(selects) != 0:
             for cat in cats:
                 total = 0
@@ -445,7 +452,7 @@ class ViewResultView(View):
             file.seek(0)
             pdf = file.read()
             file.close()
-        return render(self.request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1, 'test':test})
+        return render(self.request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
 
 
 
@@ -466,7 +473,6 @@ class AdminInstructionView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        # Iname = Instruction.objects.latest('instruction')
         form = self.form_class(request.POST)
         if form.is_valid():
             Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
@@ -492,7 +498,6 @@ class EditInstructionView(View):
     def get(self, request, pk, *args, **kwargs):
         inst = Instruction.objects.get(pk=pk)
         form = self.form_class()
-        print(dict(form.__dict__['fields'])['test_name'])
         (dict(form.__dict__['fields'])['instruction']).initial = inst.instruction
         (dict(form.__dict__['fields'])['test_name']).initial = inst.test
         return render(request, self.template_name, {'form': form})
@@ -502,9 +507,12 @@ class EditInstructionView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            Instruction.objects.filter(pk=pk).update(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
-            return redirect('control_operation')
-
+            if (Instruction.objects.filter(test=Tname)).count() > 0:
+                message = "Instruction for this test already exits"
+                return render(request, 'admin/error.html', {'message': message})
+            else:
+                Instruction.objects.filter(pk=pk).update(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
+                return redirect('control_operation')
         else:
             form = self.form_class()
         return render(self.request, self.template_name, {'form': form, 'question': question})

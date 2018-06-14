@@ -94,7 +94,7 @@ class InstructionView(generic.ListView):
         try:
             category = Category.objects.filter(test=test)[0]
         except:
-            message = "NO CATEGORY ABAILABLE RIGHT NOW!"
+            message = "NO CATEGORY AVAILABLE RIGHT NOW!"
             return render(request, 'candidate/error.html', {'message': message})
 
         return render(request, self.template_name, {'instruction': instruction,

@@ -2,6 +2,6 @@
 
 {% block content %}
     {% for test in all_test %}
-        <a href={% url 'instruction' test.test_name %}>{{ test.test_name }}</a>
+        <a href="{% url 'instruction' test.test_name %}">{{ test.test_name }}</a>
     {% endfor %}
 {% endblock %}

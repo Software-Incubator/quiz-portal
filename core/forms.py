@@ -3,6 +3,8 @@ from core.models import Test, Question, Category, Instruction
 from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from .models import Candidate
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
 import re
 
 
@@ -26,6 +28,7 @@ def test_name_list():
 
     return TEST_CHOICE
 
+
 answer_choice = ((1,1),(2,2),(3,3),(4,4))
 
 TRUE_FALSE_CHOICES = (
@@ -34,10 +37,10 @@ TRUE_FALSE_CHOICES = (
 )
 
 
-
 class AdminLoginForm(forms.Form):
-    username = forms.CharField(max_length=30)
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(max_length=30,required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), required= True)
+
 
 class TestForm(forms.ModelForm):
     on_or_off = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Some Label", 

@@ -36,20 +36,12 @@
                 <h6>Sign-In</h6>
             </div>
             <form name="AdminLoginForm" method="post">
-                {% csrf_token %}
-                {% if form.errors %}
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <div class="alert alert-danger">
-                                <strong>{{ error|escape }}</strong>
-                            </div>
+            {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                         {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                    {% endfor %}
+                    </ul>
                 {% endif %}
                 <div class="input-fields">
                     <div class="input-group">
@@ -59,6 +51,7 @@
                             </label>
                         </div>
                         <input type="text" name="username" id="inputSelect" class="form-control" placeholder="username">
+                        <p><strong>{{ form.username.errors }}</strong></p>
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -67,6 +60,7 @@
                             </label>
                         </div>
                         <input type="password" name="password" id="passwordSelect" class="form-control" placeholder="password">
+                        <p><strong>{{ form.password.errors }}</strong></p>
                     </div>
                 </div>
                 <div class="btn-field">

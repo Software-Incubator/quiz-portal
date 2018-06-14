@@ -44,8 +44,10 @@ class AdminAuth(generic.ListView):
                 auth.login(self.request, user)
                 return redirect("control_operation")
             else:
-                messages.error(self.request, "Invalid user. Please enter a valid username")
+                messages.error(self.request, "Invalid username or password.Please enter valid credentials.")
                 return redirect("admin_auth")
+
+        return render(request,self.template_name, {'form':form})
 
 
 class ControlOperation(View):

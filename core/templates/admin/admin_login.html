@@ -51,7 +51,7 @@
                                 <i class="fas fa-user"></i>
                             </label>
                         </div>
-                        <input type="text" name="username" id="inputSelect" class="form-control" placeholder="username">
+                        <input type="text" name="username" id="inputSelect" class="form-control" placeholder="username" value="{{ form.username.value|default_if_none:'' }}">
                         <p><strong>{{ form.username.errors }}</strong></p>
                     </div>
                     <div class="input-group">

@@ -36,7 +36,7 @@
                 <h6>Sign-In</h6>
             </div>
             <form name="AdminLoginForm" method="post">
-                 {% csrf_token %}
+                {% csrf_token %}
                 {% if messages %}
                     <ul class="messages">
                         {% for message in messages %}

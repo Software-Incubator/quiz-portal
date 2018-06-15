@@ -14,37 +14,38 @@
 {% block content %}
     <form name="TestForm" method="post">
         {% csrf_token %}
-        {% if form.errors %}
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
                 {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
+            </ul>
         {% endif %}
         {{ form.media }}
         {{ form.test_name.label_tag }}
         {{ form.test_name }}<br>
+        <p><strong>{{ form.test_name.errors }}</strong></p>
         {{ form.category.label_tag }}
         {{ form.category }}<br>
+        <p><strong>{{ form.category.errors }}</strong></p>
         {{ form.question_text.label_tag }}
         {{ form.question_text }}<br>
+        <p><strong>{{ form.question_text.errors }}</strong></p>
         {{ form.choice1.label_tag }}
         {{ form.choice1 }}<br>
+        <p><strong>{{ form.choice1.errors }}</strong></p>
         {{ form.choice2.label_tag }}
         {{ form.choice2 }}<br>
+        <p><strong>{{ form.choice2.errors }}</strong></p>
         {{ form.choice3.label_tag }}
         {{ form.choice3 }}<br>
+        <p><strong>{{ form.choice3.errors }}</strong></p>
         {{ form.choice4.label_tag }}
         {{ form.choice4 }}<br>
+        <p><strong>{{ form.choice4.errors }}</strong></p>
         {{ form.correct_choice.label_tag }}
         {{ form.correct_choice }}<br>
+        <p><strong>{{ form.correct_choice.errors }}</strong></p>
         <!-- {{ form.as_p }}<br> -->
         <button type="submit">submit</button><br>
     </form>

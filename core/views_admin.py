@@ -92,6 +92,7 @@ class TestName(View):
                      duration=request.POST['duration'], on_or_off=request.POST['on_or_off'])
                     return redirect('control_operation')
                 else:
+                    messages.error(self.request, "Data not valid.")
                     form = self.form_class
                     return render(self.request, self.template_name, {'form': form})
 
@@ -195,8 +196,9 @@ class AddQuestionView(View):
                 message = "Choices cannot be same"
                 return render(request, 'admin/error.html', {'message': message})
         else:
+            messages.error(self.request, "Invalid data.")
             form = self.form_class()
-        return render(self.request, self.template_name, {'form': form})
+            return render(self.request, self.template_name, {'form': form})
 
 class EditQuestionView(View):
     form_class = forms.QuestionForm
@@ -235,8 +237,9 @@ class EditQuestionView(View):
                 message = "Choices cannot be same"
                 return render(request, 'admin/error.html', {'message': message})
         else:
+            messages.error(self.request, "Invalid data.")
             form = self.form_class()
-        return render(self.request, self.template_name, {'form': form, 'question': question})
+            return render(self.request, self.template_name, {'form': form, 'question': question})
 
 class ShowQuestionsView(View):
     template_name = 'admin/showquestion.html'
@@ -296,8 +299,9 @@ class AddCategoryView(View):
                 Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname)
                 return redirect('control_operation')
             else:
+                messages.error(self.request, "Invalid data.")
                 form = self.form_class()
-            return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
+                return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
 class Editcategory(View):
     
@@ -486,8 +490,9 @@ class AdminInstructionView(View):
                 Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
                 return redirect('admin_auth')
         else:
+            messages.error(self.request, "Invalid data.")
             form = self.form_class()
-        return render(self.request, self.template_name, {'form': form})
+            return render(self.request, self.template_name, {'form': form})
 
 class EditInstructionView(View):
     form_class = forms.InstructionForm
@@ -510,15 +515,17 @@ class EditInstructionView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            if (Instruction.objects.filter(test=Tname)).count() > 0:
+            if (Instruction.objects.filter(test=Tname)).count() > 0 and question.test.test_name != (dict(request.POST)['test_name'])[0]:
                 message = "Instruction for this test already exits"
                 return render(request, 'admin/error.html', {'message': message})
             else:
-                Instruction.objects.filter(pk=pk).update(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
+                Instruction.objects.filter(pk=pk).delete()
+                Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
                 return redirect('control_operation')
         else:
+            messages.error(self.request, "Invalid data.")
             form = self.form_class()
-        return render(self.request, self.template_name, {'form': form, 'question': question})
+            return render(self.request, self.template_name, {'form': form, 'question': question})
 
 class ShowInstructionView(View):
     template_name = 'admin/showInstructions.html'

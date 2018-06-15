@@ -1,16 +1,4 @@
-{#{% extends 'candidate/base.html' %}#}
-{##}
-{#{% block content %}#}
-{#  <h2>Sign up</h2>#}
-{#  <form method="post">#}
-{#    {% csrf_token %}#}
-{#    {{ form.as_p }}#}
-{#    <button type="submit">Sign up</button>#}
-{#  </form>#}
-{#{% endblock %}#}
-{##}
-{##}
-{##}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,41 +36,41 @@
 
             <form name="CandidateRegistration" method="post">
                 {% csrf_token %}
-                <!--{% if form.errors %}-->
-                    <!--{% for field in form %}-->
-                        <!--{% for error in field.errors %}-->
-                            <!--<div class="alert alert-danger">-->
-                                <!--<strong>{{ error|escape }}</strong>-->
-                            <!--</div>-->
-                        <!--{% endfor %}-->
-                    <!--{% endfor %}-->
-                    <!--{% for error in form.non_field_errors %}-->
-                        <!--<div class="alert alert-danger">-->
-                            <!--<strong>{{ error|escape }}</strong>-->
-                        <!--</div>-->
-                    <!--{% endfor %}-->
-                <!--{% endif %}-->
+{#                <!--{% if form.errors %}-->#}
+{#                    <!--{% for field in form %}-->#}
+{#                        <!--{% for error in field.errors %}-->#}
+{#                            <!--<div class="alert alert-danger">-->#}
+{#                                <!--<strong>{{ error|escape }}</strong>-->#}
+{#                            <!--</div>-->#}
+{#                        <!--{% endfor %}-->#}
+{#                    <!--{% endfor %}-->#}
+{#                    <!--{% for error in form.non_field_errors %}-->#}
+{#                        <!--<div class="alert alert-danger">-->#}
+{#                            <!--<strong>{{ error|escape }}</strong>-->#}
+{#                        <!--</div>-->#}
+{#                    <!--{% endfor %}-->#}
+{#                <!--{% endif %}-->#}
                 <div class="form-group">
                     <label for="nameInput1" class="bmd-label-floating">Name</label>
-                    <input type="text" name="name" class="form-control" id="nameInput1">
+                    <input type="text" name="name" class="form-control" id="nameInput1" value="{{ form.name.value|default_if_none:'' }}">
                     <p><strong>{{ form.name.errors }}</strong></p>
                 </div>
 
                 <div class="form-group">
                     <label for="emailInput" class="bmd-label-floating">Email Address</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1">
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{ form.email.value|default_if_none:'' }}">
                     <p><strong>{{ form.email.errors}}</strong></p>
                 </div>
 
                 <div class="form-group">
                     <label for="nameInput2" class="bmd-label-floating">Father's Name</label>
-                    <input type="text" name="father_name" class="form-control" id="nameInput2">
+                    <input type="text" name="father_name" class="form-control" id="nameInput2" value="{{ form.father_name.value|default_if_none:'' }}">
                     <p><strong>{{ form.father_name.errors}}</strong></p>
                 </div>
 
                 <div class="form-group">
                     <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
-                    <input type="text" name="phone_number" class="form-control" id="phoneInput">
+                    <input type="text" name="phone_number" class="form-control" id="phoneInput" value="{{ form.phone_number.value|default_if_none:'' }}">
                     <p><strong>{{ form.phone_number.errors}}</strong></p>
                 </div>
                 <div class="btn-field">

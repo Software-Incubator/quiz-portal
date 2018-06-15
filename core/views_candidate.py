@@ -145,7 +145,8 @@ class CandidateRegistration(generic.ListView):
                 except:
                     self.request.session.set_expiry(1)
                 return redirect('home')
-        return render(self.request, self.template_name, {'form': form})
+
+        return render(self.request, self.template_name, {'form': form,})
 
 
 class UserAnswerView(generic.ListView):

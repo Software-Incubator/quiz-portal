@@ -22,7 +22,9 @@ class QuestionByCategory(generic.DetailView):
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        test_name = kwargs["test_name"]
+        email = request.session["email"]
+        candidate = Candidate.objects.get(email=email)
+        test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         category_name = kwargs["category_name"]
         context_dict = {'category_name': category_name}
@@ -37,7 +39,7 @@ class QuestionByCategory(generic.DetailView):
                 if id not in range(1, total_question + 1):
                     return redirect(reverse('category', kwargs={"category_name": category_name,
                                                                 "id": 1,
-                                                                "test_name": test_name}))
+                                                                }))
                 candidate_id = Candidate.objects.get(email=email).id
                 candidate = Candidate.objects.get(email=email)
                 which_question = random_question(total_question, int(candidate_id), id)
@@ -87,7 +89,9 @@ class InstructionView(generic.ListView):
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        test_name = kwargs["test_name"]
+        email = request.session["email"]
+        candidate = Candidate.objects.get(email=email)
+        test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         instruction = Instruction.objects.filter(test=test)
 
@@ -100,19 +104,6 @@ class InstructionView(generic.ListView):
         return render(request, self.template_name, {'instruction': instruction,
                                                     'category': category,
                                                     'test_name':test_name})
-
-
-class SelectTest(generic.ListView):
-    template_name = 'candidate/select_test.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.has_key("email"):
-            return redirect('signup')
-        return super(SelectTest, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        all_test = Test.objects.filter(on_or_off=True)
-        return render(request, self.template_name, {"all_test": all_test})
 
 
 class CandidateRegistration(generic.ListView):
@@ -134,17 +125,19 @@ class CandidateRegistration(generic.ListView):
             form.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
+            test_name = form.cleaned_data.get('test_name')
+
             candidate = Candidate.objects.get(name=name, email=email)
+
             if candidate:
                 self.request.session['email'] = email
-                self.request.session['name'] = name
                 try:
-                    test = Test.objects.all()[0]
+                    test = Test.objects.get(test_name=test_name)
                     time = test.duration
                     self.request.session.set_expiry(time*60)
                 except:
                     self.request.session.set_expiry(1)
-                return redirect('home')
+                return redirect('instruction')
 
         return render(self.request, self.template_name, {'form': form,})
 
@@ -162,7 +155,9 @@ class UserAnswerView(generic.ListView):
             candidate = Candidate.objects.get(email=email)
             option_number = request.GET["option_number"]
             question_id = request.GET["question_id"]
-            test_name = request.GET["test_name"]
+            email = request.session["email"]
+            candidate = Candidate.objects.get(email=email)
+            test_name = candidate.test_name
             test = Test.objects.get(test_name=test_name)
             question = Question.objects.get(id=int(question_id))
             try:
@@ -245,7 +240,7 @@ class EndPage(generic.ListView):
 def logout(request):
     try:
         del request.session['email']
-        del request.session['name']
+
     except:
         pass
     return redirect('ending')

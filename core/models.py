@@ -7,7 +7,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.db import models
-
 from django.contrib.sessions.models import Session
 
 
@@ -59,15 +58,24 @@ class Question(models.Model):
         return self.question_text
 
 
+def test_name_list():
+    test_name = []
+    all_test = Test.objects.all()
+    for test in all_test:
+        test_name.append((test.test_name, test.test_name))
+    return test_name
+
+
 class Candidate(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     father_name = models.CharField(max_length=100)
     phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
+    test_name = models.CharField(max_length=100, choices=test_name_list(), null=Test)
 
     def __str__(self):
-        return (self.name + ' - ' + self.email)
+        return self.name + ' - ' + self.email
 
 
 class SelectedAnswer(models.Model):

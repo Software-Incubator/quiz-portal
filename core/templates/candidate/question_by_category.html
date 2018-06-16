@@ -27,9 +27,11 @@
             </div>
         </div>
         <div class="inst-timer">
-            <button type="button" class="btn btn-info bmd-btn-fab" data-toggle="tooltip" data-placement="bottom" title="Instructios">
+            <a href={% url 'instruction' %}>
+            <button type="button" class="btn btn-info bmd-btn-fab" data-toggle="tooltip" data-placement="bottom" title="Instructions">
                 <i class="material-icons fas fa-info"></i>
             </button>
+            </a>
         <div id="clockdiv" class="clockdiv">
             <div class="bg-danger">
                 <span class="hours"></span>

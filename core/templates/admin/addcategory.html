@@ -63,7 +63,7 @@
             <p>No category available</p>
         {% endfor %}
     </ol>
-    <form method="post">
+    <form name="CategoryForm" method="post" novalidate>
         {% csrf_token %}
         {% if messages %}
             <ul class="messages">

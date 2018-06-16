@@ -12,7 +12,7 @@
 
 
 {% block content %}
-    <form name="TestForm" method="post">
+    <form name="QuestionForm" method="post" novalidate>
         {% csrf_token %}
         {% if messages %}
             <ul class="messages">

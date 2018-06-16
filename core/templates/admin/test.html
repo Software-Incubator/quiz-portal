@@ -39,7 +39,7 @@
             <div class="heading">
                 <h6>Edit Test Name</h6>
             </div>
-            <form name="TestForm" method="post">
+            <form name="TestForm" method="post" novalidate>
                 {% csrf_token %}
                 {% if messages %}
                     <ul class="messages">

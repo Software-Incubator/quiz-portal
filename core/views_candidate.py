@@ -134,7 +134,7 @@ class CandidateRegistration(generic.ListView):
                 try:
                     test = Test.objects.get(test_name=test_name)
                     time = test.duration
-                    self.request.session.set_expiry(time*60)
+                    self.request.session.set_expiry(600)
                 except:
                     self.request.session.set_expiry(1)
                 return redirect('instruction')
@@ -217,10 +217,25 @@ class SaveStatus(generic.ListView):
                 object = SelectedAnswer.objects.get(email=candidate,
                                                     question_text=question
                                                     )
-                object.status = status
-                object.save()
+                if object.selected_choice==-1 and status == 3:
+                    pass
+                else:
+                    object.status = status
+                    object.save()
             except:
-                status = 1
+                if status == 2:
+                    object = SelectedAnswer.objects.create(email=candidate,
+                                                        question_text=question,
+                                                        status=2,
+                                                        selected_choice=-1
+                                                           )
+                    if object:
+                        print(object)
+                else:
+                    pass
+
+
+
             data = {
                 "status": status
             }

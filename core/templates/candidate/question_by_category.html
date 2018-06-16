@@ -1,9 +1,55 @@
-{% extends 'candidate/base.html' %}
-{% block title %}{{ category }}{% endblock %}
+{% load static%}
+<!DOCTYPE html>
+<html>
 
-{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>question portal</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+        integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'core/css/question_portal_design.css' %}">
 
-{% block content %}
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <img id="check" src="{% static 'core/assets/images/akglogo.png' %}">
+            </div>
+            <div class="heading">
+                <h3>AKGEC-Aptitude Test</h3>
+            </div>
+        </div>
+        <div class="inst-timer">
+            <button type="button" class="btn btn-info bmd-btn-fab" data-toggle="tooltip" data-placement="bottom" title="Instructios">
+                <i class="material-icons fas fa-info"></i>
+            </button>
+        <div id="clockdiv" class="clockdiv">
+            <div class="bg-danger">
+                <span class="hours"></span>
+                <div class="smalltext">Hours</div>
+            </div>
+            <div class="bg-danger">
+                <span class="minutes"></span>
+                <div class="smalltext">Minutes</div>
+            </div>
+            <div class="bg-danger">
+                <span class="seconds"></span>
+                <div class="smalltext">Seconds</div>
+            </div>
+        </div>
+        </div>
+    </header>
+
+
+
+ <main class="question-area">
         <div class="row">
             <div class="col-9">
                 <div class="row">
@@ -92,13 +138,16 @@
                 </div>
             </div>
         </div>
-{% endblock %}
 
-{% block script %}
+ </main>
+
+
+
+    <script>
     $(document).ready(function() {
         $("input").on('change', function () {
             var option_number = $("input[name='optionsRadios']:checked").val();
-            var question_id = "{{ question_id }}"
+            var question_id = "{{ question_id }}";
 
             $.ajax({
                 url: '{% url 'answer' %}',
@@ -108,7 +157,7 @@
 
                 },
                 success: function (data) {
-                    var value = data.candidate_answer
+                    var value = data.candidate_answer;
                     if(value==-2){
                         window.location.href = data.url;
                     }
@@ -119,7 +168,8 @@
             })
         })
     })
-
+</script>
+    <script>
     $(window).on("load", function() {
         var question_id = "{{ question_id }}";
         $.ajax({
@@ -136,7 +186,8 @@
                 }}
             })
     })
-
+</script>
+    <script>
     $(document).ready(function() {
         $(".csq").on('click', function () {
             var status = $(this).attr("data-id");
@@ -155,5 +206,57 @@
         })
     })
 
+</script>
+    <script>
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60) % 60);
+            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            return {
+                'total': t,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
 
-{% endblock %}
+        function initializeClock(id, endtime) {
+            var clock = document.getElementById(id);
+            var daysSpan = clock.querySelector('.days');
+            var hoursSpan = clock.querySelector('.hours');
+            var minutesSpan = clock.querySelector('.minutes');
+            var secondsSpan = clock.querySelector('.seconds');
+
+            function updateClock() {
+                var t = getTimeRemaining(endtime);
+
+                hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                }
+            }
+
+            updateClock();
+            var timeinterval = setInterval(updateClock, 1000);
+        }
+
+        var deadline = new Date(Date.parse(new Date()) + 180 * 1000 * 60);
+        initializeClock('clockdiv', deadline);
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script> {#
+    <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>#}
+
+</body>
+
+</html>

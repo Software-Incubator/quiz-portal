@@ -255,7 +255,6 @@ class EndPage(generic.ListView):
 def logout(request):
     try:
         del request.session['email']
-
     except:
         pass
     return redirect('ending')

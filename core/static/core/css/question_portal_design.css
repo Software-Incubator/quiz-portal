@@ -17,9 +17,55 @@ header .navbar .heading{
     font-family: 'Montserrat', sans-serif;
 }
 
+header .inst-timer {
+    height: 100px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    font-family: sans-serif;
+    font-weight: 100;
+}
+
+header .inst-timer .btn{
+    margin: 10px;
+}
+
+header .clockdiv{
+    float: right;
+    font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 25px;
+}
+
+header .clockdiv > div{
+    padding: 5px;
+	border-radius: 3px;
+	display: inline-block;
+}
+
+header .clockdiv > div span{
+	padding: 10px 15px 0px 15px;
+	border-radius: 3px;
+	display: inline-block;
+}
+
+header .smalltext{
+	font-size: 16px;
+}
+
 main .categories{
     width: 100%;
     background-color: #fff;
+}
+
+main .categories .btn{
+    margin: 2px 2px 0px 2px;
+}
+
+main a:hover{
+    text-decoration: none;
 }
 
 main .question-options{
@@ -34,4 +80,3 @@ main .question-options .question{
 main .question-options .options{
     padding: 25px;
 }
-

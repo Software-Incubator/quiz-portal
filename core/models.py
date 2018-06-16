@@ -58,12 +58,12 @@ class Question(models.Model):
         return self.question_text
 
 
-def test_name_list():
-    test_name = []
-    all_test = Test.objects.all()
-    for test in all_test:
-        test_name.append((test.test_name, test.test_name))
-    return test_name
+# def test_name_list():
+#     test_name = []
+#     all_test = Test.objects.all()
+#     for test in all_test:
+#         test_name.append((test.test_name, test.test_name))
+#     return test_name
 
 
 class Candidate(models.Model):

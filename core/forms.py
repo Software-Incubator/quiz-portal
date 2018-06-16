@@ -18,6 +18,7 @@ def category_name_list():
 
     return CATEGORY_CHOICE
 
+
 def test_name_list():
     tests = Test.objects.all()
     TEST_CHOICE = ()
@@ -81,10 +82,11 @@ class QuestionForm(forms.Form):
 
 
 class CandidateRegistration(forms.ModelForm):
+    test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True))
 
     class Meta:
         model = Candidate
-        fields = '__all__'
+        fields = ['name','email','father_name','phone_number','test_name']
 
     def unique_email(self):
 

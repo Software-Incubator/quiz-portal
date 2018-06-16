@@ -243,8 +243,9 @@
             updateClock();
             var timeinterval = setInterval(updateClock, 1000);
         }
-
-        var deadline = new Date(Date.parse(new Date()) + 180 * 1000 * 60);
+        var time = {{ remain_time }};
+        console.log(time);
+        var deadline = new Date(Date.parse(new Date()) + time * 1000 );
         initializeClock('clockdiv', deadline);
     </script>
 
@@ -254,8 +255,7 @@
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
         crossorigin="anonymous"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script> {#
-    <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>#}
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script> 
 
 </body>
 

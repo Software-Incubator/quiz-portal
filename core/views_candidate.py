@@ -4,6 +4,7 @@ from . import forms
 from core.models import Category, Question, Instruction, Test, SelectedAnswer, Candidate
 import itertools
 from django.http import JsonResponse, Http404
+import datetime as dt
 
 
 def random_question(n, can_id, ques_id):
@@ -24,8 +25,14 @@ class QuestionByCategory(generic.DetailView):
     def get(self, request, *args, **kwargs):
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
+        # naive = dt.replace(tzinfo=None)
+        print("time->", candidate.time.replace(tzinfo=None), "now->", dt.datetime.now())
+        print("diff->", dt.datetime.now() - candidate.time.replace(tzinfo=None))
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
+        duration = test.duration
+        dif_time = (dt.datetime.now() - candidate.time.replace(tzinfo=None)).total_seconds()
+        remain_time = duration*60 - round(dif_time)
         category_name = kwargs["category_name"]
         context_dict = {'category_name': category_name}
 
@@ -47,6 +54,7 @@ class QuestionByCategory(generic.DetailView):
 
                 context_dict["which_question"] = which_question
                 context_dict["test_name"] = test_name
+                context_dict["remain_time"] = remain_time
                 context_dict['question'] = question
                 context_dict["question_id"] = question.id
                 context_dict['category'] = category
@@ -134,7 +142,7 @@ class CandidateRegistration(generic.ListView):
                 try:
                     test = Test.objects.get(test_name=test_name)
                     time = test.duration
-                    self.request.session.set_expiry(600)
+                    self.request.session.set_expiry(time*60)
                 except:
                     self.request.session.set_expiry(1)
                 return redirect('instruction')

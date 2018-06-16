@@ -112,7 +112,7 @@ class CandidateRegistration(generic.ListView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.session.has_key("email"):
-            return redirect('home')
+            return redirect('instruction')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):

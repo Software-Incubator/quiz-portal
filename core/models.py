@@ -11,9 +11,9 @@ from django.contrib.sessions.models import Session
 
 
 class Test(models.Model):
-    test_name = models.CharField(max_length=100, blank=False)
-    duration = models.PositiveIntegerField (blank = False)
-    on_or_off = models.BooleanField(blank = False)
+    test_name = models.CharField(max_length=100, blank=False, unique=True)
+    duration = models.PositiveIntegerField(blank=False)
+    on_or_off = models.BooleanField(blank=False)
 
     def __str__(self):
         return self.test_name
@@ -27,7 +27,7 @@ class Instruction(models.Model):
         verbose_name_plural = "Instructions"
 
     def __str__(self):
-        return (self.instruction)
+        return self.instruction
 
 
 class Category(models.Model):
@@ -38,7 +38,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return (self.category + "--" + self.test.test_name)
+        return self.category + "--" + self.test.test_name
 
 
 class Question(models.Model):
@@ -72,7 +72,8 @@ class Candidate(models.Model):
     father_name = models.CharField(max_length=100)
     phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
-    test_name = models.CharField(max_length=100, choices=test_name_list(), null=Test)
+    test_name = models.CharField(max_length=100, null=Test)
+    time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name + ' - ' + self.email

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
         crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'core/css/question_portal_design.css' %}">
-
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 
 <body>
@@ -145,7 +145,7 @@
 
 
 
-    <script>
+<script>
     $(document).ready(function() {
         $("input").on('change', function () {
             var option_number = $("input[name='optionsRadios']:checked").val();
@@ -169,27 +169,28 @@
                 }}
             })
         })
-    })
-</script>
-    <script>
+    });
+
+
     $(window).on("load", function() {
         var question_id = "{{ question_id }}";
+        console.log(question_id);
         $.ajax({
                 url: '{% url 'user_answer' %}',
                 data: {
                     'question_id': question_id,
                 },
                 success: function (data) {
-                    var value = data.candidate_answer
+                    var value = data.candidate_answer;
 
                     $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
                     if(value!=-1){
                     $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
                 }}
             })
-    })
-</script>
-    <script>
+    });
+
+
     $(document).ready(function() {
         $(".csq").on('click', function () {
             var status = $(this).attr("data-id");
@@ -206,10 +207,11 @@
                 }
             })
         })
-    })
+    });
 
 </script>
-    <script>
+         <script>
+
         function getTimeRemaining(endtime) {
             var t = Date.parse(endtime) - Date.parse(new Date());
             var seconds = Math.floor((t / 1000) % 60);

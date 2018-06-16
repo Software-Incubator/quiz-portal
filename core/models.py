@@ -73,7 +73,7 @@ class Candidate(models.Model):
 class SelectedAnswer(models.Model):
     email = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     question_text = models.ForeignKey(Question, on_delete=models.CASCADE)
-    selected_choice = models.PositiveIntegerField(blank=True)
+    selected_choice = models.IntegerField(blank=True)
     status = models.PositiveIntegerField(default=1)
 
     def __str__(self):

@@ -222,8 +222,11 @@ class SaveStatus(generic.ListView):
                 object = SelectedAnswer.objects.get(email=candidate,
                                                     question_text=question
                                                     )
-                object.status = status
-                object.save()
+                if object.selected_choice==-1 and status == 3:
+                    pass
+                else:
+                    object.status = status
+                    object.save()
             except:
                 if status == 2:
                     object = SelectedAnswer.objects.create(email=candidate,

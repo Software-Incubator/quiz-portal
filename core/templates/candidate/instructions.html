@@ -10,7 +10,6 @@
     </div>
     <div class="heading">
         <h1>{{ test_name }}</h1>
-<<<<<<< HEAD
     </div>
 </div>
 {% endblock %} {% block content %}
@@ -27,21 +26,5 @@
         </a>
 
 </div>
-=======
-
-  <h2>INSTRUCTIONS</h2>
-
-
-    <span>Hello</span>
-        <a href={% url 'session_out' %} >Logout</a>
-
-    {% for instr in instruction %}
-        {% autoescape off %}
-        {{ instr.instruction }}
-        {% endautoescape %}
-    {% endfor %}
-
-    <a href={% url 'category' category.category 1 %}>OK </a>
->>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
 
 {% endblock %}

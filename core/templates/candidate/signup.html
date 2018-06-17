@@ -75,7 +75,12 @@
                 </div>
                 <div class="form-group">
                     <label for="testInput" class="bmd-label-floating">Test Name</label>
-                    <input type="text" name="test_name" class="form-control" id="testInput">
+{#                    <input type="text" name="test_name" class="form-control" id="testInput">#}
+                    <select class="form-control" id="testInput" name='test_name'>
+                        {% for t in form.test_name %}
+                            <option value='{{t.id}}'>{{ t}}</option>
+                        {% endfor %}
+                    </select>
                     <p><strong>{{ form.test_name.errors}}</strong></p>
                 </div>
                 <div class="btn-field">

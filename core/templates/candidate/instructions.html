@@ -1,13 +1,38 @@
-{% extends 'candidate/base.html' %}
-
-{% block content %}
-
+{% extends 'candidate/base.html' %} {% block head %}
+<link rel="stylesheet" href="../../static/core/css/instruction.css"> {% endblock %} {% block logout %}
+<a href={% url 'session_out' %}>
+    <button type="button" class="btn btn-raised btn-primary">Log-Out</button>
+</a>
+{% endblock %} {% block header %}
+<div class="navbar greetings bg-secondary">
+    <div class="heading">
+        <h3>Hello {{ request.session.name}}</h3>
+    </div>
+    <div class="heading">
         <h1>{{ test_name }}</h1>
+<<<<<<< HEAD
+    </div>
+</div>
+{% endblock %} {% block content %}
+<div class="instructions-container">
+    <h3>INSTRUCTIONS</h2>
+        <div class="instructions">
+            <h6>
+                {% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}
+            </h6>
+        </div>
+
+        <a href={% url 'category' category.category 1 %}>
+            <button type="button" class="btn btn-raised btn-primary">OK</button>
+        </a>
+
+</div>
+=======
 
   <h2>INSTRUCTIONS</h2>
 
 
-    <span>Hello {{ request.session.name}}</span>
+    <span>Hello</span>
         <a href={% url 'session_out' %} >Logout</a>
 
     {% for instr in instruction %}
@@ -17,5 +42,6 @@
     {% endfor %}
 
     <a href={% url 'category' category.category 1 %}>OK </a>
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
 
 {% endblock %}

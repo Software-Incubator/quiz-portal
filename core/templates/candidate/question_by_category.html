@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
         crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'core/css/question_portal_design.css' %}">
-
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 
 <body>
@@ -28,30 +28,30 @@
         </div>
         <div class="inst-timer">
             <a href={% url 'instruction' %}>
-            <button type="button" class="btn btn-info bmd-btn-fab" data-toggle="tooltip" data-placement="bottom" title="Instructions">
-                <i class="material-icons fas fa-info"></i>
-            </button>
+                <button type="button" class="btn btn-info bmd-btn-fab" data-toggle="tooltip" data-placement="bottom" title="Instructions">
+                    <i class="material-icons fas fa-info"></i>
+                </button>
             </a>
-        <div id="clockdiv" class="clockdiv">
-            <div class="bg-danger">
-                <span class="hours"></span>
-                <div class="smalltext">Hours</div>
+            <div id="clockdiv" class="clockdiv">
+                <div class="bg-danger">
+                    <span class="hours"></span>
+                    <div class="smalltext">Hours</div>
+                </div>
+                <div class="bg-danger">
+                    <span class="minutes"></span>
+                    <div class="smalltext">Minutes</div>
+                </div>
+                <div class="bg-danger">
+                    <span class="seconds"></span>
+                    <div class="smalltext">Seconds</div>
+                </div>
             </div>
-            <div class="bg-danger">
-                <span class="minutes"></span>
-                <div class="smalltext">Minutes</div>
-            </div>
-            <div class="bg-danger">
-                <span class="seconds"></span>
-                <div class="smalltext">Seconds</div>
-            </div>
-        </div>
         </div>
     </header>
 
 
 
- <main class="question-area">
+    <main class="question-area">
         <div class="row">
             <div class="col-9">
                 <div class="row">
@@ -60,7 +60,7 @@
                         {% for category in all_category %}
                         <span class="category" id={{ category.category }}>
                             <a href={% url 'category' category.category 1 %}>
-                            <button type="button" class="btn btn-primary">{{ category.category }}</button>
+                                <button type="button" class="btn btn-primary">{{ category.category }}</button>
                             </a>
                         </span>
                         {% endfor %}
@@ -72,124 +72,173 @@
                                 {{ id }}.
                             </span>
                             <h6>
-                                 {% autoescape off %}
-                               {{ question.question_text|safe|escape }}
-                                {% endautoescape %}
+                                {% autoescape off %} {{ question.question_text|safe|escape }} {% endautoescape %}
                             </h6>
                         </div>
                         <div class="options" id={{ question_id }}>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios"  value="1" class="option1">
-                                    {{ question.choice1|safe|escape }}
+                                <input type="radio" name="optionsRadios" value="1" class="option1"> {{ question.choice1|safe|escape }}
                             </div>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios"  value="2" class="option2">
-                                    {{ question.choice2|safe|escape }}
+                                <input type="radio" name="optionsRadios" value="2" class="option2"> {{ question.choice2|safe|escape }}
                             </div>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios" value="3" class="option3">
-                                    {{ question.choice3|safe|escape }}
+                                <input type="radio" name="optionsRadios" value="3" class="option3"> {{ question.choice3|safe|escape }}
                             </div>
                             <div class="radio">
-                                    <input type="radio" name="optionsRadios" value="4" class="option4">
-                                    {{ question.choice4|safe|escape }}
+                                <input type="radio" name="optionsRadios" value="4" class="option4"> {{ question.choice4|safe|escape }}
                             </div>
                         </div>
                     </section>
 
                     <section class="col-12 ">
-                        {% if id == 1 %}
-                        <button type="button" class="btn btn-raised btn-primary csq" disabled>Previous</button>
-                        {% else %}
+                        <div class="response">
+                            {% if id == 1 %}
+                            <button type="button" class="btn btn-raised btn-primary csq" disabled>Previous</button>
+                            {% else %}
                             <a href={% url 'category' category.category id|add:"-1" %}>
-                            <button type="button" class="btn btn-raised btn-primary csq" data-id="2">Previous</button>
+                                <button type="button" class="btn btn-raised btn-primary csq" data-id="2">Previous</button>
                             </a>
-                        {% endif %}
+                            {% endif %}
 
-                        <a href={% url 'category' category.category id|add:"1" %}>
-                            <button type="button" class="btn btn-raised btn-warning csq" data-id="2">Mark for review & next</button>
-                        </a>
-                        <a href={% url 'category' category.category id|add:"1" %}>
-                            <button type="button" class="btn btn-raised btn-primary csq" data-id="3">Save and next</button>
-                        </a>
+                            <a href={% url 'category' category.category id|add:"1" %}>
+                                <button type="button" class="btn btn-raised btn-warning csq" data-id="2">Mark for review & next</button>
+                            </a>
+                            <a href={% url 'category' category.category id|add:"1" %}>
+                                <button type="button" class="btn btn-raised btn-primary csq" data-id="3">Save and next</button>
+                            </a>
+                        </div>
                     </section>
                 </div>
             </div>
             <div class="col-3">
-
-                <div class="row question_status">
+                <div class="row question-status">
                     {% for i, value in status_dict.items %}
                     <div class="col-4">
                         <a href={% url 'category' category.category i %}>
-                        {% if value == 1 %}
+                            {% if value == 1 %}
                             <button type="button" class="btn btn-raised btn-active status1" style="background-color: white">{{ i }}</button>
-                        {% elif value == 2 %}
+                            {% elif value == 2 %}
                             <button type="button" class="btn btn-raised btn-active status2" style="background-color: blue">{{ i }}</button>
-                        {% elif value == 3 %}
+                            {% elif value == 3 %}
                             <button type="button" class="btn btn-raised btn-active status3" style="background-color: red">{{ i }}</button>
-                        {% endif %}
+                            {% endif %}
                         </a>
                     </div>
                     {% endfor %}
-
+                </div>
+                <div class="end">
                     <div class="col-12">
                         <a href="{% url 'session_out' %}">
-                        <button type="submit" class="btn btn-raised btn-primary disabled">End Test</button>
+                            <button type="submit" class="btn btn-raised btn-primary disabled">End Test</button>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-
- </main>
-
+    </main>
 
 
+
+<<<<<<< HEAD
+<<<<<<< HEAD
     <script>
+        $(document).ready(function () {
+            $("input").on('change', function () {
+                var option_number = $("input[name='optionsRadios']:checked").val();
+                var question_id = "{{ question_id }}";
+=======
+=======
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
+<script>
     $(document).ready(function() {
         $("input").on('change', function () {
             var option_number = $("input[name='optionsRadios']:checked").val();
             var question_id = "{{ question_id }}";
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
 
-            $.ajax({
-                url: '{% url 'answer' %}',
-                data: {
-                    'option_number': option_number,
-                    'question_id': question_id,
+                $.ajax({
+                    url: '{% url 'answer' %}',
+                    data: {
+                        'option_number': option_number,
+                        'question_id': question_id,
 
-                },
-                success: function (data) {
-                    var value = data.candidate_answer;
-                    if(value==-2){
-                        window.location.href = data.url;
+                    },
+                    success: function (data) {
+                        var value = data.candidate_answer;
+                        if (value == -2) {
+                            window.location.href = data.url;
+                        }
+                        else {
+                            $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
+                            $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
+                        }
                     }
-                    else{
-                    $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
-                    $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
-                }}
+                })
             })
         })
-    })
-</script>
+<<<<<<< HEAD
+<<<<<<< HEAD
+    </script>
     <script>
+        $(window).on("load", function () {
+            var question_id = "{{ question_id }}";
+            $.ajax({
+=======
+=======
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
+    });
+
+
     $(window).on("load", function() {
         var question_id = "{{ question_id }}";
+        console.log(question_id);
         $.ajax({
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
                 url: '{% url 'user_answer' %}',
                 data: {
                     'question_id': question_id,
                 },
                 success: function (data) {
-                    var value = data.candidate_answer
+                    var value = data.candidate_answer;
 
                     $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
-                    if(value!=-1){
-                    $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
-                }}
+                    if (value != -1) {
+                        $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
+                    }
+                }
             })
-    })
-</script>
+<<<<<<< HEAD
+<<<<<<< HEAD
+        })
+    </script>
     <script>
+        $(document).ready(function () {
+            $(".csq").on('click', function () {
+                var status = $(this).attr("data-id");
+                console.log("st->", status);
+                var question_id = $(".options").attr("id");
+                $.ajax({
+                    url: '{% url 'save_status' %}',
+                    data: {
+                        'question_id': question_id,
+                        'status': status
+                    },
+                    success: function (data) {
+                        console.log(data.status);
+                    }
+                })
+            })
+        })
+
+    </script>
+    <script>
+=======
+=======
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
+    });
+
+
     $(document).ready(function() {
         $(".csq").on('click', function () {
             var status = $(this).attr("data-id");
@@ -206,10 +255,15 @@
                 }
             })
         })
-    })
+    });
 
 </script>
-    <script>
+         <script>
+
+<<<<<<< HEAD
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
+=======
+>>>>>>> 90c373cda638050d7cf2b010052959cb354c1211
         function getTimeRemaining(endtime) {
             var t = Date.parse(endtime) - Date.parse(new Date());
             var seconds = Math.floor((t / 1000) % 60);
@@ -247,7 +301,7 @@
         }
         var time = {{ remain_time }};
         console.log(time);
-        var deadline = new Date(Date.parse(new Date()) + time * 1000 );
+        var deadline = new Date(Date.parse(new Date()) + time * 1000);
         initializeClock('clockdiv', deadline);
     </script>
 
@@ -257,7 +311,7 @@
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
         crossorigin="anonymous"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script> 
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 
 </body>
 

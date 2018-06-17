@@ -1,0 +1,18 @@
+body{
+    background-color: #eee;
+}
+
+header .navbar{
+    height: 50px;
+    background-color: #fff;
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,.16), 0 0px 0px 0 rgba(0,0,0,.12);
+}
+
+header .navbar .logo img{
+    width: 40px;
+    height: auto;
+}
+
+header .navbar .heading{
+    font-family: 'Montserrat', sans-serif;
+}

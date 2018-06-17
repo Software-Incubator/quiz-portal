@@ -18,7 +18,7 @@ header .navbar .heading{
 }
 
 header .inst-timer {
-    height: 100px;
+    height: 80px;
     padding: 10px;
     background-color: #f5f5f5;
     font-family: sans-serif;
@@ -26,7 +26,7 @@ header .inst-timer {
 }
 
 header .inst-timer .btn{
-    margin: 10px;
+    margin: 5px;
 }
 
 header .clockdiv{
@@ -40,19 +40,28 @@ header .clockdiv{
 }
 
 header .clockdiv > div{
-    padding: 5px;
+    padding: 2px 5px 0px 5px;
 	border-radius: 3px;
 	display: inline-block;
 }
 
 header .clockdiv > div span{
-	padding: 10px 15px 0px 15px;
+	padding: 0px 15px;
 	border-radius: 3px;
 	display: inline-block;
 }
 
 header .smalltext{
 	font-size: 16px;
+}
+
+main .row{
+    margin: 0px;
+    padding: 0px;
+}
+
+main [class*="col-"]{
+    padding: 0px;
 }
 
 main .categories{
@@ -70,7 +79,9 @@ main a:hover{
 
 main .question-options{
     width: 100%;
-    background-color: rgb(255, 241, 241)
+    height: 600px;
+    background-color: rgb(255, 241, 241);
+    overflow-y: scroll;
 }
 
 main .question-options .question{
@@ -79,4 +90,26 @@ main .question-options .question{
 
 main .question-options .options{
     padding: 25px;
+}
+
+main .response{
+    width: 100%;
+    background-color: #fff;
+    padding: 5px;
+}
+
+main .question-status{
+    margin: 0px;
+    padding: 10px;
+    height: 640px;
+    background-color: #f7f7f7;
+    overflow-y: scroll;
+    text-align-last: center;
+}
+
+main .end{
+    width: 100%;
+    background-color: #fff;
+    padding: 4px;
+    text-align: center;
 }

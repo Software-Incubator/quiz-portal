@@ -1,0 +1,25 @@
+header .greetings{
+    height: 50px;
+    background-color: #fafafa;
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,.16), 0 0px 0px 0 rgba(0,0,0,.12);
+    color: #fff;
+}
+
+header .greetings .heading{
+    font-family: 'Montserrat', sans-serif;
+}
+
+main .instructions-container{
+    width: 100%;
+    min-height: 600px;
+    background-color: #fff;
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
+    border-radius: 0.225rem;
+    padding: 40px;
+    margin: 10px auto;
+    font-family: 'Montserrat', sans-serif;
+}
+
+main .instructions-container .instructions h6{
+    padding: 10px;
+}

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block head %}
+   <link rel="stylesheet" href="{% static 'core/css/edittestname.css' %}">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
         console.log(1);
@@ -40,22 +41,53 @@
 {% endblock %}
 
 {% block content %}
+<div class="test-list">
+    <h3 class="heading">Test List</h3>
+    <table class="table table-head">
+        <thead>
+            <tr>
+                <td style="width: 40px">#</td>
+                <td style="width: 230px">Test Name</td>
+                <td style="width: 180px">Maximum Marks</td>
+                <td style="width: 180px">Status</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+    </table>
     <ol>
         {% for test in tests %}
-            <li><div style="display:flex;">
-                <input id="test{{test.pk}}" type="text" name="category"  value={{ test.test_name }}>
-                <input id="dur{{test.pk}}" value={{ test.duration }} >
-                {% if test.on_or_off == True %}
-                <p>Status: Started</p>
-                {% else %}
-                    <p>Status: Not started yet.</p>
-                {% endif %}
-                <a href="{% url "toggle" test.pk %}" ><button>Toggle test status</button></a>
-                <button class="change" cat_data="{{test.pk}}" >Save after editing</button>
-                <br><br>
-            </div></li>
+            <li>
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input class="form-control" id="test{{test.pk}}" type="text" name="category" value={{ test.test_name }}>
+                            </td>
+                            <td>
+                                <input class="form-control" id="dur{{test.pk}}" value={{ test.duration }}>
+                            </td>
+                            <td>
+                                {% if test.on_or_off == True %}
+                                <p>Started</p>
+                                {% else %}
+                                <p>Not started yet</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url "toggle" test.pk %}">
+                                    <button type="button" class="btn btn-raised btn-warning">Toggle test status</button>
+                                </a>
+                                <a>
+                                    <button class="change btn btn-raised btn-primary" cat_data="{{test.pk}}">Save after editing</button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
         {% empty %}
             <p>No category available</p>
         {% endfor %}
     </ol>
+</div>
 {% endblock %}

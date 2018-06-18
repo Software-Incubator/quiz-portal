@@ -1,5 +1,6 @@
 body{
     background-color: #eee;
+    font-family: 'Montserrat', sans-serif;
 }
 
 header .navbar{
@@ -29,14 +30,17 @@ main .test-name{
     border-radius: 0.125rem;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
     margin: auto;
-    margin-top: 150px;
+    margin-top: 100px;
 }
 
 main .test-name .heading{
     padding: 10px;
     text-align: center;
-    background-color: #cacaca;
+    background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
     font-family: 'Montserrat', sans-serif;
+    border-top-left-radius: 0.125rem;
+    border-top-right-radius: 0.125rem;
+    color: #fff; 
     /* border-bottom: 2px solid #eee; */
 }
 

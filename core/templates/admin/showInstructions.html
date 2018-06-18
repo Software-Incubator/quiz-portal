@@ -1,25 +1,42 @@
 {% extends 'admin/base_for_admin.html' %}
-{% load static %}
+{% load static %} 
 
-{% block title %}
-    Show Instructions
-{% endblock %}
+{% block title %} 
+Show Instructions 
+{% endblock %} 
 
-{% block head %}
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-{% endblock %}
-
+{% block head%}
+<link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
+<script type="text/javascript" src="{% static " ckeditor/ckeditor-init.js " %}"></script>
+<script type="text/javascript" src="{% static " ckeditor/ckeditor/ckeditor.js " %}"></script> 
+{% endblock %} 
 
 {% block content %}
-    <ol>
-        {% for inst in insts %}
-            <li><p>Instructions for test {{inst.test}} </p></li>
-            {{ inst.instruction|safe|escape }}
-            <a href="{% url "Edit_Instruction" inst.pk %}" ><button>Edit</button></a>
-            <a href="{% url "Delete_Instruction" inst.pk %}" ><button>Delete</button></a>
-        {% empty %}
-            <p>No Instructions for this test.</p>
-        {% endfor %}
-    </ol>
+<div class="instruction-list">
+    <h3 class="heading">Instructions List</h3>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <ol>
+                        {% for inst in insts %}
+                        <li class="list">
+                            <h5>Instructions for test {{inst.test}}</h5>
+                            {{ inst.instruction|safe|escape }}
+                            <a href="{% url "Edit_Instruction" inst.pk %}">
+                                <button type="button" class="btn btn-raised btn-primary">Edit</button>
+                            </a>
+                            <a href="{% url "Delete_Instruction" inst.pk %}">
+                                <button type="button" class="btn btn-raised btn-danger">Delete</button>
+                            </a>
+                            {% empty %}
+                            <p>No Instructions for this test.</p>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 {% endblock %}

@@ -1,96 +1,113 @@
-{% extends 'admin/base_for_admin.html' %}
-{% load static %}
+{% extends 'admin/base_for_admin.html' %} 
+{% load static %} 
 
-{% block title %}
-    Show Result 
-{% endblock %}
+{% block title %} 
+Show Result 
+{% endblock %} 
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
+{% endblock %} 
 
 {% block content %}
+<div class="result">
+    <h3 class="heading">Result</h3>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Download Result as PDF</button>
-    </form><br>
+        <button type="submit" class="btn btn-raised btn-primary">Download Result as PDF</button>
+    </form>
 
-    <!-- {{ test.test_name }}<br> -->
-
-    {{ cand.name }}<br>
-    {{ cand.father_name }}<br>
-    {{ cand.email }}<br>
-    {{ cand.phone_number }}<br>
-    <table>
-        <tr>
-            <td>Subject</td>
-            <td>Total questions</td>
-            <td>Answered correctly</td>
-            <td>Percentage</td>
-        </tr>
-        {% for i in l %}
+    <h4>{{ cand.name }}</h4>
+    <h6>{{ cand.father_name }}</h6>
+    <h6>{{ cand.email }}</h6>
+    <h6>{{ cand.phone_number }}</h6>
+    <table class="table">
+        <thead class="table-head">
+            <tr>
+                <th scope="col">Subject</th>
+                <th scope="col">Total questions</th>
+                <th scope="col">Answered correctly</th>
+                <th scope="col">Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in l %}
             <tr>
                 {% for j in i %}
-                    <td>{{ j }}</td>
+                <td>{{ j }}</td>
                 {% empty %}
-                    <p>Nothing for this section</p>
+                <p>Nothing for this section</p>
                 {% endfor %}
             </tr>
-        {% empty %}
-            <p>Nothing attempted</p>> 
-        {% endfor %}
-        </tr>
+            {% empty %}
+            <p>Nothing attempted</p>> {% endfor %}
+            </tr>
+        </tbody>
     </table>
 
 
-    {% for select in selects %}
-        {% if select.question_text.correct_choice == select.selected_choice %}
-            <ol>
-                <div style="display: flex;">
-                    <p>Q. &nbsp;</p>
-                    <p>{{ select.question_text|safe|escape }}</p>
-                </div>
-                <li>{{ select.question_text.choice1|safe|escape }}</li>
-                {% if select.selected_choice == 1 %}
-                    <P>#</P>
-                {% endif %}
-                <li>{{ select.question_text.choice2|safe|escape }}</li>
-                {% if select.selected_choice == 2 %}
-                    <P>#</P>
-                {% endif %}
-                <li>{{ select.question_text.choice3|safe|escape }}</li>
-                {% if select.selected_choice == 3 %}
-                    <P>#</P>
-                {% endif %}
-                <li>{{ select.question_text.choice4|safe|escape }}</li>
-                {% if select.selected_choice == 4 %}
-                    <P>#</P>
-                {% endif %}
-                <p>Correct choice  -   {{ select.question_text.correct_choice }}</p>
-            </ol>
-        {% else %}
-            <ol>
-                <div style="display: flex;">
-                    <p>Q. &nbsp;</p>
-                    <p>{{ select.question_text|safe|escape }}</p>
-                </div>
-                <li>{{ select.question_text.choice1|safe|escape }}</li>
-                {% if select.selected_choice == 1 %}
-                    <P>---#</P>
-                {% endif %}
-                <li>{{ select.question_text.choice2|safe|escape }}</li>
-                {% if select.selected_choice == 2 %}
-                    <P>---#</P>
-                {% endif %}
-                <li>{{ select.question_text.choice3|safe|escape }}</li>
-                {% if select.selected_choice == 3 %}
-                    <P>---#</P>
-                {% endif %}
-                <li>{{ select.question_text.choice4|safe|escape }}</li>
-                {% if select.selected_choice == 4 %}
-                    <P>---#</P>
-                {% endif %}
-                <p>Correct choice  -  {{ select.question_text.correct_choice }}</p>
-            </ol>
-        {% endif %}
-    {% empty %}
-        <p>No questions attempted.</p>
-    {% endfor %}
-{% endblock %}
+    {% for select in selects %} {% if select.question_text.correct_choice == select.selected_choice %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <ol>
+                        <p>Q. &nbsp;</p>
+                        <p>{{ select.question_text|safe|escape }}</p>
+                        <li>{{ select.question_text.choice1|safe|escape }}</li>
+                        {% if select.selected_choice == 1 %}
+                        <P>#</P>
+                        {% endif %}
+                        <li>{{ select.question_text.choice2|safe|escape }}</li>
+                        {% if select.selected_choice == 2 %}
+                        <P>#</P>
+                        {% endif %}
+                        <li>{{ select.question_text.choice3|safe|escape }}</li>
+                        {% if select.selected_choice == 3 %}
+                        <P>#</P>
+                        {% endif %}
+                        <li>{{ select.question_text.choice4|safe|escape }}</li>
+                        {% if select.selected_choice == 4 %}
+                        <P>#</P>
+                        {% endif %}
+                        <p>Correct choice - {{ select.question_text.correct_choice }}</p>
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% else %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <ol>
+                        <div style="display: flex;">
+                            <p>Q. &nbsp;</p>
+                            <p>{{ select.question_text|safe|escape }}</p>
+                        </div>
+                        <li>{{ select.question_text.choice1|safe|escape }}</li>
+                        {% if select.selected_choice == 1 %}
+                        <P>---#</P>
+                        {% endif %}
+                        <li>{{ select.question_text.choice2|safe|escape }}</li>
+                        {% if select.selected_choice == 2 %}
+                        <P>---#</P>
+                        {% endif %}
+                        <li>{{ select.question_text.choice3|safe|escape }}</li>
+                        {% if select.selected_choice == 3 %}
+                        <P>---#</P>
+                        {% endif %}
+                        <li>{{ select.question_text.choice4|safe|escape }}</li>
+                        {% if select.selected_choice == 4 %}
+                        <P>---#</P>
+                        {% endif %}
+                        <p>Correct choice - {{ select.question_text.correct_choice }}</p>
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %} {% empty %}
+    <p>No questions attempted.</p>
+    {% endfor %} {% endblock %}

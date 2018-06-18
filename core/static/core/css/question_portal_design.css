@@ -5,8 +5,7 @@ body{
 header .navbar{
     height: 50px;
     background-color: #fff;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
-}
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,.16), 0 0px px 0 rgba(0,0,0,.12);}
 
 header .navbar .logo img{
     width: 40px;
@@ -79,7 +78,7 @@ main a:hover{
 
 main .question-options{
     width: 100%;
-    height: 600px;
+    height: 500px;
     background-color: rgb(255, 241, 241);
     overflow-y: scroll;
 }
@@ -101,7 +100,7 @@ main .response{
 main .question-status{
     margin: 0px;
     padding: 10px;
-    height: 640px;
+    height: 540px;
     background-color: #f7f7f7;
     overflow-y: scroll;
     text-align-last: center;

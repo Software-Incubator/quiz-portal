@@ -1,84 +1,121 @@
-{% extends 'admin/base_for_admin.html' %}
-{% load static %}
-
-{% block title %}
-    Add Category 
-{% endblock %}
-
-{% block head %}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-        console.log(1);
-        $(document).ready(function(){
-            console.log(2);
-            $(".change").on('click', function(event) {
-                console.log(3);
-                var imgid;
-                var name;
-                var test;
-                imgid = $(this).attr("cat_data");
-                console.log(imgid);
-                name = $('#cat' + imgid).val();
-                test = $('#test' + imgid).val();
-                console.log(name);
-                console.log(test);
-                if (name != ''){
-                    console.log(4);
+{% extends 'admin/base_for_admin.html' %} {% load static %} {% block title %} Add Category {% endblock %} {% block head %}
+<link rel="stylesheet" href="../../static/core/css/addcategory.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    console.log(1);
+    $(document).ready(function () {
+        console.log(2);
+        $(".change").on('click', function (event) {
+            console.log(3);
+            var imgid;
+            var name;
+            var test;
+            imgid = $(this).attr("cat_data");
+            console.log(imgid);
+            name = $('#cat' + imgid).val();
+            test = $('#test' + imgid).val();
+            console.log(name);
+            console.log(test);
+            if (name != '') {
+                console.log(4);
                 $.ajax({
                     url: '{% url 'Edit_Category' %}',
                     data: {
-                        'imgid': imgid, 
+                        'imgid': imgid,
                         'name': name,
-                        'test':test,
-                        },
+                        'test': test,
+                    },
                     dataType: 'json',
                     success: function (data) {
                         console.log(5)
                     }
                 });
-                }
-            })
-        });
-    </script>
-{% endblock %}
-
+            }
+        })
+    });
+</script> 
+{% endblock %} 
 {% block content %}
-    <ol>
-        {% for cat in cats %}
-            <li><div style="display:flex;">
-                <input id="cat{{cat.pk}}" type="text" name="category"  value={{ cat.category }}>
-                <input id="test{{cat.pk}}" list="tests" value={{ cat.test.test_name }} >
-                <datalist id="tests">
-                    {% for test in tests %}
-                        <option value="{{test.test_name}}">{{test.test_name}}</option>
-                    {% empty %}
-                        <option></option>
-                    {% endfor %}
-                </datalist>
-                <button class="change" cat_data="{{cat.pk}}" >Save after editing</button>
-                <a href="{% url "Delete_Category" cat.pk %}" ><button>Delete</button></a>
-                <br><br>
-            </div></li>
-        {% empty %}
+<div class="category-list">
+    <div class="heading">
+        <h3>Categories(Add/Edit/Delete)</h3>
+    </div>
+    <table class="table table-head">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Test Category Name</th>
+                <th scope="col">Test Name</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+    </table>
+        <ol>
+            {% for cat in cats %}
+            <li>
+                <table class="table-hover">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input class="form-control" id="cat{{cat.pk}}" type="text" name="category" value={{ cat.category }}>
+                            </td>
+                            <td>
+                                <select class="t-name form-control" id="test{{cat.pk}}">
+                                    <option>{{ cat.test.test_name }}</option>
+                                    {% for test in tests %}
+                                    <option>{{test.test_name}}</option>
+                                    {% empty %}
+                                    <option></option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <a>
+                                    <button type="button" class="btn btn-raised btn-primary change" cat_data="{{cat.pk}}">Save after editing</button>
+                                </a>
+                                <a href="{% url "Delete_Category" cat.pk %}">
+                                    <button type="button" class="btn btn-raised btn-danger">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+            {% empty %}
             <p>No category available</p>
-        {% endfor %}
-    </ol>
-    <form name="CategoryForm" method="post" novalidate>
-        {% csrf_token %}
+            {% endfor %}
+        </ol>
+    <form name="CategoryForm" class="addcategory" method="post" novalidate>
+        {% csrf_token %} 
         {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
         {% endif %}
         <!-- <{{ form }}</b><br> -->
-        {{ form.category.label_tag }}
-        {{ form.category }}<br>
-        <p><strong>{{ form.category.errors }}</strong></p>
-        {{ form.test_name.label_tag }}
-        {{ form.test_name }}<br>
-        <p><strong>{{ form.test.errors }}</strong></p>
-        <button type="submit">Add</button>
-    </form><br>
+        <table class="table">
+            <tbody>
+                <tr>
+        <td>
+        {{ form.category.label_tag }} {{ form.category }}
+        <p>
+            <strong>{{ form.category.errors }}</strong>
+        </p>
+        </td>
+        <td>
+        {{ form.test_name.label_tag }} {{ form.test_name }}
+        <p>
+            <strong>{{ form.test.errors }}</strong>
+        </p>
+        </td>
+        <td>
+        <button type="submit" class="btn btn-raised btn-primary">Add</button>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+    </form>
+</div>
 {% endblock %}

@@ -1,40 +1,50 @@
 {% extends 'admin/base_for_admin.html' %}
-{% load static %}
+{% load static %} 
 
-{% block title %}
-    Instructions
-{% endblock %}
+{% block title %} 
+Instructions 
+{% endblock %} 
 
 {% block head %}
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-{% endblock %}
-
+<link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
+<script type="text/javascript" src="{% static " ckeditor/ckeditor-init.js " %}"></script>
+<script type="text/javascript" src="{% static " ckeditor/ckeditor/ckeditor.js " %}"></script> 
+{% endblock %} 
 
 {% block content %}
-    <!-- <p>Previously Stored</p>
+<!-- <p>Previously Stored</p>
     {% if Iname == '' %}
         <p>No instructions Feeded</p>
     {% else %}
         {{ Iname|safe|escape }}<br><br>
     {% endif %} -->
-
+<div class="instruction">
     <form name="InstructionForm" method="post" novalidate>
-        {% csrf_token %}
-        {% if messages %}
+        <div>
+            {% csrf_token %} {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                    <li>{{ message }}</li>
+                <li>{{ message }}</li>
                 {% endfor %}
             </ul>
-        {% endif %}
-        {{ form.media }}
-        {{ form.instruction.label_tag }}
-        {{ form.instruction }}<br>
-        <p><strong>{{ form.instruction.errors }}</strong></p>
-        {{ form.test_name.label_tag }}
-        {{ form.test_name }}<br>
-        <p><strong>{{ form.test_name.errors }}</strong></p>
-        <button type="submit">submit</button><br>
+            {% endif %} {{ form.media }}
+        </div>
+        <div>
+            <h3>
+                {{ form.instruction.label_tag }}
+            </h3>
+            {{ form.instruction }}
+            <p>
+                <strong>{{ form.instruction.errors }}</strong>
+            </p>
+        </div>
+        <div>
+            {{ form.test_name.label_tag }} {{ form.test_name }}
+            <span>
+                <strong>{{ form.test_name.errors }}</strong>
+            </span>
+            <button type="submit" class="btn btn-raised btn-primary">submit</button>
+        </div>
     </form>
+</div>
 {% endblock %}

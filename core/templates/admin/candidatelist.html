@@ -1,50 +1,48 @@
-{% extends 'admin/base_for_admin.html' %}
+{% extends 'admin/base_for_admin.html' %} 
 {% load static %}
 
-{% block title %}
-    Candidate List 
+{% block title %} 
+Candidate List 
 {% endblock %}
 
-{% block head %}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-        console.log(1);
-        $(document).ready(function(){
-            console.log(2);
-            $("#test").on('change', function(event) {
-                console.log(3);
-                var test;
-                test = $(this).val();
-                console.log(test);
-                if (test != ''){
-                    console.log(4);
-                $.ajax({
-                    url: '{% url 'Show_Candidates' %}',
-                    data: {
-                        'test':test,
-                        },
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(5);
-                        console.log(data);
-                        $( "#put" ).html(data);
-                    }
-                });
-                }
-            })
-        });
-    </script>
-{% endblock %}
-
-
+{% block head%}
+<link rel="stylesheet" href="{% static 'core/css/candidatelist.css' %}"> 
+{% endblock %} 
 
 {% block content %}
-    <p>Select test for candidates.</p>
-    <select id="test" >
-        {% for test in tests %}
-            <option  value="{{ test.test_name }}">{{ test.test_name }}</option>
+<div class="candidate-list">
+    <div class="heading">
+        <h3>Candidate List</h3>
+    </div>
+    <table class="table table-head">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Candidate Name-Email Id</th>
+                <th scope="col">View Result</th>
+            </tr>
+        </thead>
+    </table>
+    <ol>
+        {% for cand in cands %}
+        <li>
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ cand }}
+                        </td>
+                        <td>
+                            <a href="{% url "View_result" cand.pk %}">
+                                <button type="button" class="btn btn-raised btn-primary">View result</button>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
         {% empty %}
-            <option value=" ">No test present</option>
+        <p>No candidate present.</p>
         {% endfor %}
     </select>
 
@@ -60,4 +58,5 @@
             {% endfor %}
         </div>
     </ol>
+</div>
 {% endblock %}

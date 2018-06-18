@@ -1,0 +1,23 @@
+body{
+    background-color: #eee;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header .navbar{
+    height: 50px;
+    background-color: #fff;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,.16), 0 1px 8px 0 rgba(0,0,0,.12);
+}
+
+header .navbar .logo img{
+    width: 40px;
+    height: auto;
+}
+
+header .navbar .heading{
+    font-family: 'Montserrat', sans-serif;
+}
+
+header .navbar .button-field a:hover{
+    text-decoration: none;
+}

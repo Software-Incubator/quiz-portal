@@ -6,41 +6,62 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% endblock %}
 
-
 {% block content %}
+<div class="questions-list">
+    <h3 class="heading">Questions List</h3>
     {% for test in tests %}
-        <p>Questions for which test name is {{ test.test_name }} </p>
+    <div>
+        <h4>
+            <span>Test name: {{ test.test_name }}</span>
+        </h4>
         {% for cat in cats %}
+        <h5>
             {% if cat.test == test %}
-                <P> and  category is {{ cat.category }}</P>
-                {% for que in ques %}
-                    {% if cat == que.category %}
+            <span>Category: {{ cat.category }}</span>
+        </h5>
+        {% for que in ques %} {% if cat == que.category %}
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <td>
                         <ol>
-                            <div style="display: flex;">
-                                <p>Q. &nbsp;</p>
-                                <P>{{ que.question_text|safe|escape }}</p>
+                            <div>
+                            <span>Q. &nbsp;</span>
+                            <span>{{ que.question_text|safe|escape }}</span>
                             </div>
                             <li>{{ que.choice1|safe|escape }}</li>
                             <li>{{ que.choice2|safe|escape }}</li>
                             <li>{{ que.choice3|safe|escape }}</li>
                             <li>{{ que.choice4|safe|escape }}</li>
-                        <p>Correct Choice  -  {{ que.correct_choice|safe|escape }}</p>
+                            <p>Correct Choice - {{ que.correct_choice|safe|escape }}</p>
                         </ol>
-                        <a href="{% url "Edit_Question" que.pk %}" ><button>Edit</button></a>
-                        <a href="{% url "Delete_Question" que.pk %}" ><button>Delete</button></a>
-                    {% endif %}
-                {% empty %}
-                    <p>No Questions present.</p>
-                {% endfor %}<br>
-            {% endif %}
+                        <a href="{% url "Edit_Question" que.pk %}">
+                            <button type="button" class="btn btn-raised btn-primary">Edit</button>
+                        </a>
+                        <a href="{% url "Delete_Question" que.pk %}">
+                            <button type="button" class="btn btn-raised btn-danger">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %} {% empty %}
+        <p>No Questions present.</p>
+    
+        {% endfor %} 
+        {% endif %} 
         {% empty %}
-            <p>No questions available in database for this category.</p>
+        <span>No questions available in database for this category.</span>
+    
         {% endfor %}
-    {% empty %}
+        {% empty %}
         <p>No question for this test.</p>
-    {% endfor %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

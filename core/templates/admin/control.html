@@ -16,7 +16,7 @@
 
 <body>
   <header>
-    <div class="navbar">
+    <div class="navbar fixed-top">
       <div class="logo">
         <img src="../../static/core/assets/images/akglogo.png">
       </div>
@@ -72,70 +72,70 @@
         </div>
 
         <div class="col-4">
-            <a href="{% url 'Show_Candidates' %}">
-              <div class="control-option text-primary">
-                <div class="icon">
-                  <i class="far fa-id-badge"></i>
-                </div>
-                <div class="txt">
-                  <p>See Candidates</p>
-                </div>
+          <a href="{% url 'Show_Candidates' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-id-badge"></i>
               </div>
-            </a>
-          </div>
-
-        
-          <div class="col-4">
-              <a href="{% url 'Instruction' %}">
-                <div class="control-option text-primary">
-                  <div class="icon">
-                    <i class="far fa-clipboard"></i>
-                  </div>
-                  <div class="txt">
-                    <p>Add Instructions</p>
-                  </div>
-                </div>
-              </a>
+              <div class="txt">
+                <p>See Candidates</p>
+              </div>
             </div>
+          </a>
+        </div>
 
-            <div class="col-4">
-                <a href="{% url 'Show_Questions' %}">
-                  <div class="control-option text-primary">
-                    <div class="icon">
-                        <i class="far fa-copy"></i>
-                    </div>
-                    <div class="txt">
-                      <p>See, Edit delete Questions</p>
-                    </div>
-                  </div>
-                </a>
+
+        <div class="col-4">
+          <a href="{% url 'Instruction' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-clipboard"></i>
               </div>
+              <div class="txt">
+                <p>Add Instructions</p>
+              </div>
+            </div>
+          </a>
+        </div>
 
-              <div class="col-4">
-                  <a href="{% url 'See_Test' %}">
-                    <div class="control-option text-primary">
-                      <div class="icon">
-                          <i class="far fa-copy"></i>
-                      </div>
-                      <div class="txt">
-                        <p>See All Tests</p>
-                      </div>
-                    </div>
-                  </a>
-                </div>
+        <div class="col-4">
+          <a href="{% url 'Show_Questions' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-copy"></i>
+              </div>
+              <div class="txt">
+                <p>See, Edit delete Questions</p>
+              </div>
+            </div>
+          </a>
+        </div>
 
-                <div class="col-4">
-                    <a href="{% url 'Show_Instruction' %}">
-                      <div class="control-option text-primary">
-                        <div class="icon">
-                            <i class="far fa-copy"></i>
-                        </div>
-                        <div class="txt">
-                          <p>Show all Instruction</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
+        <div class="col-4">
+          <a href="{% url 'See_Test' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-newspaper"></i>
+              </div>
+              <div class="txt">
+                <p>See All Tests</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-4">
+          <a href="{% url 'Show_Instruction' %}">
+            <div class="control-option text-primary">
+              <div class="icon">
+                <i class="far fa-eye"></i>
+              </div>
+              <div class="txt">
+                <p>Show all Instruction</p>
+              </div>
+            </div>
+          </a>
+        </div>
 
       </div>
     </div>

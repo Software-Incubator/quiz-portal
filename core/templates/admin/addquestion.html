@@ -6,13 +6,17 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% endblock %}
 
 
 {% block content %}
+    <div class="editquestion">
+        <h3 class="heading">Add Question</h3>
     <form name="QuestionForm" method="post" novalidate>
+        <div>
         {% csrf_token %}
         {% if messages %}
             <ul class="messages">
@@ -22,29 +26,56 @@
             </ul>
         {% endif %}
         {{ form.media }}
+        </div>
         <!-- {{ form.test_name.label_tag }}
         {{ form.test_name }}<br> -->
+        <div class="select-category">
         {{ form.category.label_tag }}
-        {{ form.category }}<br>
+        {{ form.category }}
         <p><strong>{{ form.category.errors }}</strong></p>
+        </div>
+        <div>
+        <h6>
         {{ form.question_text.label_tag }}
-        {{ form.question_text }}<br>
+        </h6>
+        {{ form.question_text }}
         <p><strong>{{ form.question_text.errors }}</strong></p>
+        </div>
+        <h5>Enter choices</h5>
+        <div>
+        <h6>
         {{ form.choice1.label_tag }}
-        {{ form.choice1 }}<br>
+        </h6>
+        {{ form.choice1 }}
         <p><strong>{{ form.choice1.errors }}</strong></p>
+        </div>
+        <div>
+            <h6>
         {{ form.choice2.label_tag }}
-        {{ form.choice2 }}<br>
+        </h6>
+        {{ form.choice2 }}
         <p><strong>{{ form.choice2.errors }}</strong></p>
+        </div>
+        <div>
+            <h6>
         {{ form.choice3.label_tag }}
-        {{ form.choice3 }}<br>
+        </h6>
+        {{ form.choice3 }}
         <p><strong>{{ form.choice3.errors }}</strong></p>
+        </div>
+        <div>
+            <h6>
         {{ form.choice4.label_tag }}
-        {{ form.choice4 }}<br>
+        </h6>
+        {{ form.choice4 }}
         <p><strong>{{ form.choice4.errors }}</strong></p>
+        </div>
+        <div>
         {{ form.correct_choice.label_tag }}
-        {{ form.correct_choice }}<br>
-        <p><strong>{{ form.correct_choice.errors }}</strong></p>
-        <button type="submit">submit</button><br>
+        {{ form.correct_choice }}
+        <span><strong>{{ form.correct_choice.errors }}</strong></span>
+        <button type="submit" class="btn btn-primary btn-raised">submit</button>
+        </div>
     </form>
+    </div>
 {% endblock %}

@@ -1,0 +1,35 @@
+main .questions-list,.instruction-list,.result {
+    width: 100%;
+    min-height: 600px;
+    background-color: #fff;
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
+    border-radius: 0.225rem;
+    padding: 60px !important;
+    margin: 10px auto;
+    margin-top: 65px !important;
+}
+
+main .questions-list .heading{
+    text-align: center;
+}
+
+main .instruction-list .heading{
+    text-align: center;
+}
+
+main .result .heading{
+    text-align: center;
+}
+
+main .result .table-head{
+    background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
+    color: #fff !important;
+}
+
+main .questions-list,.instruction-list .list{
+    padding: 25px;
+}
+
+main .questions-list,.instruction-list table tr td{
+    padding: 25px;
+}

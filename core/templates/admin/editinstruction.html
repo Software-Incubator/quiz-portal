@@ -6,13 +6,17 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% endblock %}
 
 
 {% block content %}
+<div class="instruction">
+        <h3 class="heading">Edit Question</h3>
     <form name="InstructionForm" method="post" novalidate>
+        <div>
         {% csrf_token %}
         {% if messages %}
             <ul class="messages">
@@ -21,13 +25,21 @@
                 {% endfor %}
             </ul>
         {% endif %}
+        </div>
+        <div>
         {{ form.media }}
+        <h6>
         {{ form.instruction.label_tag }}
-        {{ form.instruction }}<br>
+        </h6>
+        {{ form.instruction }}
         <p><strong>{{ form.instruction.errors }}</strong></p>
+        </div>
+        <div>
         {{ form.test_name.label_tag }}
-        {{ form.test_name }}<br>
-        <p><strong>{{ form.test_name.errors }}</strong></p>
-        <button type="submit">submit</button><br>
+        {{ form.test_name }}
+        <strong>{{ form.test_name.errors }}</strong>
+        <button type="submit" class="btn btn-raised btn-primary">submit</button>
+        </div>
     </form>
+</div>
 {% endblock %}

@@ -27,6 +27,9 @@
             <div class="heading">
                 <h3>Admin Panel</h3>
             </div>
+            <div class="heading">
+                <h6>Welcome</h6>
+            </div>
         </div>
     </header>
 
@@ -36,14 +39,15 @@
                 <h6>Sign-In</h6>
             </div>
             <form name="AdminLoginForm" method="post" novalidate>
-                {% csrf_token %}
-                {% if messages %}
+                <div>
+                    {% csrf_token %} {% if messages %}
                     <ul class="messages">
                         {% for message in messages %}
-                            <li>{{ message }}</li>
+                        <li>{{ message }}</li>
                         {% endfor %}
                     </ul>
-                {% endif %}
+                    {% endif %}
+                </div>
                 <div class="input-fields">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -52,8 +56,10 @@
                             </label>
                         </div>
                         <input type="text" name="username" id="inputSelect" class="form-control" placeholder="username" value="{{ form.username.value|default_if_none:'' }}">
-                        <p><strong>{{ form.username.errors }}</strong></p>
                     </div>
+                    <p>
+                        <strong>{{ form.username.errors }}</strong>
+                    </p>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="passwordSelect">
@@ -61,8 +67,10 @@
                             </label>
                         </div>
                         <input type="password" name="password" id="passwordSelect" class="form-control" placeholder="password">
-                        <p><strong>{{ form.password.errors }}</strong></p>
                     </div>
+                    <p>
+                        <strong>{{ form.password.errors }}</strong>
+                    </p>
                 </div>
                 <div class="btn-field">
                     <button type="submit" class="btn btn-primary">Log-In</button>
@@ -91,4 +99,3 @@
 </body>
 
 </html>
-

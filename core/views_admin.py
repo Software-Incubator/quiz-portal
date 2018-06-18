@@ -338,6 +338,7 @@ class DeleteCategoryView(View):
 
 
 class ShowCandidateListView(View):
+    form_class = forms.ChooseTestForm
     template_name = 'admin/candidatelist.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -346,22 +347,21 @@ class ShowCandidateListView(View):
         return super(ShowCandidateListView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        form = self.form_class()
         tests = Test.objects.all()
-        if request.is_ajax():
-            test = request.GET['test']
-            print("test",test)
-            cands = Candidate.objects.filter(test_name=test)
-            print("cands",cands)
-            context = {'cands': cands}
-            print(context)
-            t = loader.get_template('admin/candidatelist.html')
-            print(t)
-            return HttpResponse(t.render(context, request))
-        else:
-            cands=[]
-            return render(request, self.template_name, {'cands': cands, 'tests':tests})
+        cands = Candidate.objects.filter(test_name=tests[0])
+        return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
 
-        
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(self.request.POST)
+        tests = Test.objects.all()
+        if form.is_valid():
+            test = form.cleaned_data.get('test_name')
+            cands = Candidate.objects.filter(test_name=test)
+            return render(request, self.template_name, {'cands': cands, 'form':form, 'test':test})
+        else:
+            cands = Candidate.objects.filter(test_name=tests[0])
+            return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
 
 
 class ViewResultView(View):

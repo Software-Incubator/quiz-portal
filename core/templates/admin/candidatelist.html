@@ -10,9 +10,18 @@ Candidate List
 {% endblock %} 
 
 {% block content %}
+
+    
 <div class="candidate-list">
+
+    <form name="CategoryForm" class="addcategory" method="post" novalidate>
+        {% csrf_token %} 
+        {{ form.test_name.label_tag }} {{ form.test_name }}<br>
+        <button type="submit" class="btn btn-raised btn-primary">Search</button><br><br>
+    </form>
+
     <div class="heading">
-        <h3>Candidate List</h3>
+        <h3>Candidate List for {{ test }}</h3>
     </div>
     <table class="table table-head">
         <thead>
@@ -44,19 +53,5 @@ Candidate List
         {% empty %}
         <p>No candidate present.</p>
         {% endfor %}
-    </select>
-
-    <ol>
-        <div id="put">
-            {% for cand in cands %}
-                <li>
-                    {{ cand }}
-                    <a href="{% url "View_result" cand.pk %}" ><button>View result</button></a>
-                </li>
-            {% empty %}
-                <p>No candidate present.</p>
-            {% endfor %}
-        </div>
-    </ol>
 </div>
 {% endblock %}

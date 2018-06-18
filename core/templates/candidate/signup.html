@@ -81,7 +81,7 @@
 
                     <select class="form-control" id="testInput" name='test_name'>
                         {% for t in form.test_name %}
-                            <option value='{{t.id}}' {{ t }}></option>
+                            {{ t}}
                         {% endfor %}
                     </select>
                     <p><strong>{{ form.test_name.errors}}</strong></p>

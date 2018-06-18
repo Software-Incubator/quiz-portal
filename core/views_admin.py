@@ -377,9 +377,9 @@ class ViewResultView(View):
         overall_total = 0
         overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
-        cats = Category.objects.all()
-        selects = SelectedAnswer.objects.filter(email=cand)
-        # test = Test.objects.get(on_or_off=True)
+        test = Test.objects.get(test_name=cand.test_name)
+        cats = Category.objects.filter(test=test)
+        selects = SelectedAnswer.objects.filter(email=cand) 
         if len(selects) != 0:
             for cat in cats:
                 total = 0
@@ -423,9 +423,9 @@ class ViewResultView(View):
         overall_total = 0
         overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
-        cats = Category.objects.all()
+        test = Test.objects.get(test_name=cand.test_name)
+        cats = Category.objects.filter(test=test)
         selects = SelectedAnswer.objects.filter(email=cand)
-        # test = Test.objects.get(on_or_off=True)
         if len(selects) != 0:
             for cat in cats:
                 total = 0

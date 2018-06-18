@@ -5,16 +5,59 @@
     Candidate List 
 {% endblock %}
 
+{% block head %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        console.log(1);
+        $(document).ready(function(){
+            console.log(2);
+            $("#test").on('change', function(event) {
+                console.log(3);
+                var test;
+                test = $(this).val();
+                console.log(test);
+                if (test != ''){
+                    console.log(4);
+                $.ajax({
+                    url: '{% url 'Show_Candidates' %}',
+                    data: {
+                        'test':test,
+                        },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(5);
+                        console.log(data);
+                        $( "#put" ).html(data);
+                    }
+                });
+                }
+            })
+        });
+    </script>
+{% endblock %}
+
+
 
 {% block content %}
-    <ol>
-        {% for cand in cands %}
-            <li>
-                {{ cand }}
-                <a href="{% url "View_result" cand.pk %}" ><button>View result</button></a>
-            </li>
+    <p>Select test for candidates.</p>
+    <select id="test" >
+        {% for test in tests %}
+            <option  value="{{ test.test_name }}">{{ test.test_name }}</option>
         {% empty %}
-            <p>No candidate present.</p>
+            <option value=" ">No test present</option>
         {% endfor %}
+    </select>
+
+    <ol>
+        <div id="put">
+            {% for cand in cands %}
+                <li>
+                    {{ cand }}
+                    <a href="{% url "View_result" cand.pk %}" ><button>View result</button></a>
+                </li>
+            {% empty %}
+                <p>No candidate present.</p>
+            {% endfor %}
+        </div>
     </ol>
 {% endblock %}

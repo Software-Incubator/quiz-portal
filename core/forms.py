@@ -82,7 +82,7 @@ class QuestionForm(forms.Form):
 
 
 class CandidateRegistration(forms.ModelForm):
-    test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label=None)
+    test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label='Please Choose')
 
     class Meta:
         model = Candidate

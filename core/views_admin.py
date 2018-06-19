@@ -18,6 +18,10 @@ from django.template import Context
 from django.template.loader import get_template
 import datetime
 from xhtml2pdf import pisa
+from django.template.loader import render_to_string
+from django.template import loader
+# from my_project.snippets.template import render_block_to_string 
+from django.template import loader
 
 
 class AdminAuth(generic.ListView):
@@ -311,7 +315,6 @@ class Editcategory(View):
         return super(Editcategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        print("I am here")
         img_id = 0
         img_id = request.GET['imgid']
         if img_id:
@@ -335,6 +338,7 @@ class DeleteCategoryView(View):
 
 
 class ShowCandidateListView(View):
+    form_class = forms.ChooseTestForm
     template_name = 'admin/candidatelist.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -343,8 +347,21 @@ class ShowCandidateListView(View):
         return super(ShowCandidateListView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        cands = Candidate.objects.all()
-        return render(request, self.template_name, {'cands': cands})
+        form = self.form_class()
+        tests = Test.objects.all()
+        cands = Candidate.objects.filter(test_name=tests[0])
+        return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(self.request.POST)
+        tests = Test.objects.all()
+        if form.is_valid():
+            test = form.cleaned_data.get('test_name')
+            cands = Candidate.objects.filter(test_name=test)
+            return render(request, self.template_name, {'cands': cands, 'form':form, 'test':test})
+        else:
+            cands = Candidate.objects.filter(test_name=tests[0])
+            return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
 
 
 class ViewResultView(View):
@@ -360,9 +377,9 @@ class ViewResultView(View):
         overall_total = 0
         overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
-        cats = Category.objects.all()
-        selects = SelectedAnswer.objects.filter(email=cand)
-        # test = Test.objects.get(on_or_off=True)
+        test = Test.objects.get(test_name=cand.test_name)
+        cats = Category.objects.filter(test=test)
+        selects = SelectedAnswer.objects.filter(email=cand) 
         if len(selects) != 0:
             for cat in cats:
                 total = 0
@@ -406,9 +423,9 @@ class ViewResultView(View):
         overall_total = 0
         overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
-        cats = Category.objects.all()
+        test = Test.objects.get(test_name=cand.test_name)
+        cats = Category.objects.filter(test=test)
         selects = SelectedAnswer.objects.filter(email=cand)
-        # test = Test.objects.get(on_or_off=True)
         if len(selects) != 0:
             for cat in cats:
                 total = 0

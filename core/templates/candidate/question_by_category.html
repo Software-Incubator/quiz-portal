@@ -242,6 +242,7 @@
 
                 if (t.total <= 0) {
                     clearInterval(timeinterval);
+                    window.location = "{% url 'ending' %}"
                 }
             }
 

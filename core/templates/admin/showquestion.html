@@ -15,10 +15,12 @@
 <div class="questions-list">
     <h3 class="heading">Questions List</h3>
     {% for test in tests %}
+
     <div>
         <h4>
             <span>Test name: {{ test.test_name }}</span>
         </h4>
+
         {% for cat in cats %}
         <h5>
             {% if cat.test == test %}
@@ -52,12 +54,12 @@
         </table>
         {% endif %} {% empty %}
         <p>No Questions present.</p>
-    
-        {% endfor %} 
-        {% endif %} 
+
+        {% endfor %}
+        {% endif %}
         {% empty %}
         <span>No questions available in database for this category.</span>
-    
+
         {% endfor %}
         {% empty %}
         <p>No question for this test.</p>

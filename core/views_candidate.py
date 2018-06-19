@@ -253,11 +253,11 @@ class SaveStatus(generic.ListView):
             raise Http404
 
 
-class EndPage(generic.ListView):
-    template_name = 'candidate/end.html'
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+# class EndPage(generic.ListView):
+#     template_name = 'candidate/end.html'
+#
+#     def get(self, request, *args, **kwargs):
+#         return render(request, self.template_name)
 
 
 def logout(request):
@@ -265,4 +265,4 @@ def logout(request):
         del request.session['email']
     except:
         pass
-    return redirect('ending')
+    return render(request,'candidate/end.html')

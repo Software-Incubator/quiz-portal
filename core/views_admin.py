@@ -217,16 +217,13 @@ class EditQuestionView(View):
         question = Question.objects.get(pk=pk)
         form = self.form_class()
         (dict(form.__dict__['fields'])['question_text']).initial = question.question_text
-        # (dict(form.__dict__['fields'])['category']).initial = question.category.category
-        # (dict(form.__dict__['fields'])['category']).show_hidden_initial = True
+        (dict(form.__dict__['fields'])['category']).initial = question.category.category
+        (dict(form.__dict__['fields'])['category']).show_hidden_initial = True
         (dict(form.__dict__['fields'])['choice1']).initial = question.choice1
         (dict(form.__dict__['fields'])['choice2']).initial = question.choice2
         (dict(form.__dict__['fields'])['choice3']).initial = question.choice3
         (dict(form.__dict__['fields'])['choice4']).initial = question.choice4
         (dict(form.__dict__['fields'])['correct_choice']).initial = question.correct_choice
-        a = json.loads(json.dumps((dict(form.__dict__['fields'])['category']), default=lambda o: o.__dict__))
-        for i in a:
-            print(i,"  ---  ",a[i])
         return render(request, self.template_name, {'form': form, 'que':question})
 
     def post(self, request, pk, *args, **kwargs):

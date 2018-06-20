@@ -255,10 +255,21 @@ class ShowQuestionsView(View):
         return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        l=[]
         tests = Test.objects.all()
-        cats = Category.objects.all()
-        ques = Question.objects.all()
-        return render(request, self.template_name, {'ques': ques, 'cats':cats, 'tests':tests})
+        for test in tests:
+            l1=[]
+            l3=[]
+            l1.append(test)
+            cats = Category.objects.filter(test=test)
+            for cat in cats:
+                l2=[]
+                l2.append(cat)
+                l2.append(Question.objects.filter(category=cat))
+                l3.extend([l2])
+            l1.extend([l3])
+            l.extend([l1])
+        return render(request, self.template_name, {'l':l})
 
 class DeleteQuestionView(View):
     

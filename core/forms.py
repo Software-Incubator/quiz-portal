@@ -75,7 +75,7 @@ class QuestionForm(forms.Form):
     choice2 = forms.CharField(widget=CKEditorUploadingWidget())
     choice3 = forms.CharField(widget=CKEditorUploadingWidget())
     choice4 = forms.CharField(widget=CKEditorUploadingWidget())
-    correct_choice = forms.ChoiceField(choices=answer_choice, label="Select answer")
+    correct_choice = forms.ChoiceField(choices=answer_choice, label="Select correct choice")
 
     class Meta:
         fields = ['category', 'question_text','choice1','choice2','choice3','choice4', 'correct_choice']

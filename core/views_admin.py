@@ -17,11 +17,12 @@ from django.conf import settings
 from django.template import Context
 from django.template.loader import get_template
 import datetime
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 from django.template import loader
-# from my_project.snippets.template import render_block_to_string 
-from django.template import loader
+import pdfkit
+from io import BytesIO
+import xhtml2pdf.pisa as pisa
 
 
 class AdminAuth(generic.ListView):
@@ -478,18 +479,48 @@ class ViewResultView(View):
             except:
                 pass
             data = {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1}
-            template = get_template(self.template_name)
+            con = Context(data)
+            template = get_template('admin/result2.html')
             html = template.render(data)
-            print(cand.name)
-            st1 = str(cand.name) + " - " + str(cand.email) + ".pdf"
-            file = open('core/' + 'media/' + st1, "w+b")
-            pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
-                                        encoding='utf-8')
-            file.seek(0)
-            pdf = file.read()
-            file.close()
-        return render(self.request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
+            st1 = str(cand.name) + " - " + str(cand.email)
+            #  + ".pdf"
+            # file = open('core/' + 'media/' + st1, "w+b")
+            # pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
+            #                             encoding='utf-8')
+            # file.seek(0)
+            # pdf = file.read()
+            # file.close()
+            # pdfkit.from_file(html, st1)
+        # return render(self.request, 
+        # self.template_name,
+        # 'admin/result2.html',
+        #  {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
+            options = {
+                'page-size': 'A4',
+                'margin-top': '0.55in',
+                'margin-right': '0.55in',
+                'margin-bottom': '0.55in',
+                'margin-left': '0.55in',
+                'encoding': "UTF-8",
+                    }
 
+            content = render_to_string(
+                'admin/result2.html', 
+                {
+                    'selects': selects, 
+                    'cats': cats, 
+                    'l': l1,
+                    'cand': cand, 
+                }
+            )
+
+        pdf = pdfkit.PDFKit(content, "string", options=options).to_pdf()
+
+        response = HttpResponse(pdf)
+        response['Content-Type'] = 'application/pdf'
+        # change attachment to inline if you want open file in browser tab instead downloading
+        response['Content-disposition'] = 'filename={}.pdf'.format(st1)
+        return response
 
 
 class AdminInstructionView(View):

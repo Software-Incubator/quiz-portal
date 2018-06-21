@@ -313,7 +313,9 @@ class AddCategoryView(View):
         else:
             if form.is_valid():
                 Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-                Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname)
+                c = Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname, 
+                                        number_of_questions = (dict(request.POST)['number_of_questions'])[0])
+                print("C",c)
                 return redirect('control_operation')
             else:
                 messages.error(self.request, "Invalid data.")
@@ -333,8 +335,9 @@ class Editcategory(View):
         if img_id:
             name = request.GET['name']
             test = request.GET['test']
+            num = request.GET['num']
             Tname = Test.objects.get(test_name=test)
-            Category.objects.filter(pk=img_id).update(category=name, test=Tname)
+            Category.objects.filter(pk=img_id).update(category=name, test=Tname, number_of_questions=int(num))
             return HttpResponse(Tname.test_name)
 
 
@@ -483,18 +486,6 @@ class ViewResultView(View):
             template = get_template('admin/result2.html')
             html = template.render(data)
             st1 = str(cand.name) + " - " + str(cand.email)
-            #  + ".pdf"
-            # file = open('core/' + 'media/' + st1, "w+b")
-            # pisaStatus = pisa.CreatePDF(html.encode('utf-8'), dest=file,
-            #                             encoding='utf-8')
-            # file.seek(0)
-            # pdf = file.read()
-            # file.close()
-            # pdfkit.from_file(html, st1)
-        # return render(self.request, 
-        # self.template_name,
-        # 'admin/result2.html',
-        #  {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
             options = {
                 'page-size': 'A4',
                 'margin-top': '0.55in',
@@ -503,7 +494,6 @@ class ViewResultView(View):
                 'margin-left': '0.55in',
                 'encoding': "UTF-8",
                     }
-
             content = render_to_string(
                 'admin/result2.html', 
                 {
@@ -513,12 +503,9 @@ class ViewResultView(View):
                     'cand': cand, 
                 }
             )
-
         pdf = pdfkit.PDFKit(content, "string", options=options).to_pdf()
-
         response = HttpResponse(pdf)
         response['Content-Type'] = 'application/pdf'
-        # change attachment to inline if you want open file in browser tab instead downloading
         response['Content-disposition'] = 'filename={}.pdf'.format(st1)
         return response
 

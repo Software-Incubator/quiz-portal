@@ -14,8 +14,10 @@
             console.log(imgid);
             name = $('#cat' + imgid).val();
             test = $('#test' + imgid).val();
+            num = $('#num' + imgid).val();
             console.log(name);
             console.log(test);
+            console.log(num);
             if (name != '') {
                 console.log(4);
                 $.ajax({
@@ -24,6 +26,7 @@
                         'imgid': imgid,
                         'name': name,
                         'test': test,
+                        'num':num,
                     },
                     dataType: 'json',
                     success: function (data) {
@@ -70,6 +73,9 @@
                                 </select>
                             </td>
                             <td>
+                                <input class="form-control" id="num{{cat.pk}}" type="text" name="number_of_questions" value={{ cat.number_of_questions }}>
+                            </td>
+                            <td>
                                 <a>
                                     <button type="button" class="btn btn-raised btn-primary change" cat_data="{{cat.pk}}">Save after editing</button>
                                 </a>
@@ -107,7 +113,13 @@
         <td>
         {{ form.test_name.label_tag }} {{ form.test_name }}
         <p>
-            <strong>{{ form.test.errors }}</strong>
+            <strong>{{ form.test_name.errors }}</strong>
+        </p>
+        </td>
+        <td>
+        {{ form.number_of_questions.label_tag }} {{ form.number_of_questions }}
+        <p>
+            <strong>{{ form.number_of_questions.errors }}</strong>
         </p>
         </td>
         <td>

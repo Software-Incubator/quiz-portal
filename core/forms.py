@@ -54,7 +54,7 @@ class TestForm(forms.ModelForm):
 
 class InstructionForm(forms.ModelForm):
     test_name = forms.ChoiceField(choices=test_name_list,label="Test Category", widget=forms.Select() )
-
+    
     class Meta:
         model = Instruction
         fields = ['instruction','test_name']
@@ -62,10 +62,11 @@ class InstructionForm(forms.ModelForm):
 
 class CategoryForm(forms.ModelForm):
     test_name = forms.ChoiceField(choices=test_name_list,label="Test Category", widget=forms.Select() )
+    number_of_questions = forms.CharField(label="Number of Questions to be selected for candidate's test")
 
     class Meta:
         model = Category
-        fields = ['category', 'test_name']
+        fields = ['category', 'test_name','number_of_questions']
 
 
 class QuestionForm(forms.Form):

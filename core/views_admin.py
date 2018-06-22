@@ -87,19 +87,17 @@ class TestName(View):
             message = "Test duration cannot be zero"
             return render(request, 'admin/error.html', {'message': message})
         else:
-            if (Test.objects.filter(test_name=request.POST['test_name'])).count() > 0:
-                message = "No two test can have same name"
-                return render(request, 'admin/error.html', {'message': message})
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                Test.objects.create(test_name=request.POST['test_name'],
+                                    duration=request.POST['duration'],
+                                    on_or_off=request.POST['on_or_off'])
+                return redirect('control_operation')
             else:
-                form = self.form_class(request.POST)
-                if form.is_valid():
-                    Test.objects.create(test_name=request.POST['test_name'],
-                     duration=request.POST['duration'], on_or_off=request.POST['on_or_off'])
-                    return redirect('control_operation')
-                else:
-                    messages.error(self.request, "Data not valid.")
-                    form = self.form_class
-                    return render(self.request, self.template_name, {'form': form})
+                messages.error(self.request, "Data not valid.")
+                form = self.form_class
+                return render(self.request, self.template_name, {'form': form})
+
 
 class ShowTestView(View):
     template_name = 'admin/edittestname.html'
@@ -112,6 +110,7 @@ class ShowTestView(View):
     def get(self, request, *args, **kwargs):
         tests = Test.objects.all()
         return render(request, self.template_name, {'tests':tests})
+
 
 class EditTest(View):
     
@@ -133,6 +132,7 @@ class EditTest(View):
                 Test.objects.filter(pk=img_id).update(duration=dur, test_name=test)
                 return HttpResponse(img_id)
 
+
 class ToggleTestStatus(View):
     
     def dispatch(self, request, *args, **kwargs):
@@ -143,7 +143,7 @@ class ToggleTestStatus(View):
     def get(self, request, pk, *args, **kwargs):
         if pk:
             test = Test.objects.get(pk=pk)
-            if test.on_or_off == True:
+            if test.on_or_off:
                 Test.objects.filter(pk=pk).update(on_or_off=False)
             else:
                 Test.objects.filter(pk=pk).update(on_or_off=True)
@@ -205,6 +205,7 @@ class AddQuestionView(View):
             form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
+
 class EditQuestionView(View):
     form_class = forms.QuestionForm
     template_name = 'admin/editquestion.html'
@@ -247,6 +248,7 @@ class EditQuestionView(View):
             form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
+
 class ShowQuestionsView(View):
     template_name = 'admin/showquestion.html'
 
@@ -256,21 +258,22 @@ class ShowQuestionsView(View):
         return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        l=[]
+        l = []
         tests = Test.objects.all()
         for test in tests:
-            l1=[]
-            l3=[]
+            l1 = []
+            l3 = []
             l1.append(test)
             cats = Category.objects.filter(test=test)
             for cat in cats:
-                l2=[]
+                l2 = []
                 l2.append(cat)
                 l2.append(Question.objects.filter(category=cat))
                 l3.extend([l2])
             l1.extend([l3])
             l.extend([l1])
-        return render(request, self.template_name, {'l':l})
+        return render(request, self.template_name, {'l': l})
+
 
 class DeleteQuestionView(View):
     
@@ -282,6 +285,7 @@ class DeleteQuestionView(View):
     def get(self, request, pk, *args, **kwargs):
         Question.objects.filter(pk=pk).delete()
         return redirect('control_operation')
+
 
 class AddCategoryView(View):
     form_class = forms.CategoryForm
@@ -321,6 +325,7 @@ class AddCategoryView(View):
                 messages.error(self.request, "Invalid data.")
                 form = self.form_class()
                 return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
+
 
 class Editcategory(View):
     
@@ -541,6 +546,7 @@ class AdminInstructionView(View):
             form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
+
 class EditInstructionView(View):
     form_class = forms.InstructionForm
     template_name = 'admin/editinstruction.html'
@@ -574,6 +580,7 @@ class EditInstructionView(View):
             form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
+
 class ShowInstructionView(View):
     template_name = 'admin/showInstructions.html'
 
@@ -584,7 +591,8 @@ class ShowInstructionView(View):
 
     def get(self, request, *args, **kwargs):
         insts = Instruction.objects.all()
-        return render(request, self.template_name, {'insts':insts})
+        return render(request, self.template_name, {'insts': insts})
+
 
 class DeleteInstructionView(View):
     
@@ -600,19 +608,19 @@ class DeleteInstructionView(View):
 
 def error404(request):
     message = 'Error 404 \n Page not found'
-    return render(request, 'admin/error.html', {'message':message})
+    return render(request, 'admin/error.html', {'message': message})
 
 
 def error400(request):
     message = 'Error 400 \n Bad Request'
-    return render(request, 'admin/error.html', {'message':message})
+    return render(request, 'admin/error.html', {'message': message})
 
 
 def error403(request):
     message = 'Error 403 \n Permission Denied'
-    return render(request, 'admin/error.html', {'message':message})
+    return render(request, 'admin/error.html', {'message': message})
 
 
 def error500(request):
     message = 'Error 500 \n Server Error'
-    return render(request, 'admin/error.html', {'message':message})
+    return render(request, 'admin/error.html', {'message': message})

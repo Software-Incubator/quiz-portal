@@ -33,6 +33,7 @@ class Instruction(models.Model):
 class Category(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     category = models.CharField(max_length=225)
+    total_question_display = models.PositiveIntegerField()
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -43,7 +44,6 @@ class Category(models.Model):
 
 class Question(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    question_number = models.PositiveIntegerField(blank=True)
     question_text = RichTextUploadingField()
     choice1 = RichTextUploadingField()
     choice2 = RichTextUploadingField()

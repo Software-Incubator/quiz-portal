@@ -25,9 +25,6 @@ class QuestionByCategory(generic.DetailView):
     def get(self, request, *args, **kwargs):
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
-        # naive = dt.replace(tzinfo=None)
-        print("time->", candidate.time.replace(tzinfo=None), "now->", dt.datetime.now())
-        print("diff->", dt.datetime.now() - candidate.time.replace(tzinfo=None))
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         duration = test.duration
@@ -38,7 +35,7 @@ class QuestionByCategory(generic.DetailView):
 
         try:
             category = Category.objects.get(category=category_name, test=test)
-            total_question = Question.objects.filter(category=category).count()
+            total_question = category.total_question_display
             if total_question:
                 email = request.session["email"]
                 id = kwargs["id"]
@@ -68,6 +65,7 @@ class QuestionByCategory(generic.DetailView):
                         obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                         status_dict[i] = obj.status
                     except:
+                        obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
                         status_dict[i] = 1
 
                 context_dict["status_dict"] = status_dict
@@ -75,7 +73,6 @@ class QuestionByCategory(generic.DetailView):
             else:
                 message = "NO QUESTIONS IN THIS CATEGORY!"
                 return render(request, 'candidate/error.html', {'message':message})
-
 
             """
             status=1 (not attempted)

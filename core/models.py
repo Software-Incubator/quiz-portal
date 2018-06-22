@@ -33,7 +33,7 @@ class Instruction(models.Model):
 class Category(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     category = models.CharField(max_length=225)
-    number_of_questions = models.IntegerField(null=False)
+    total_question_display = models.PositiveIntegerField()
 
     class Meta:
         verbose_name_plural = "Categories"

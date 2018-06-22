@@ -44,7 +44,6 @@ class Category(models.Model):
 
 class Question(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    question_number = models.PositiveIntegerField(blank=True)
     question_text = RichTextUploadingField()
     choice1 = RichTextUploadingField()
     choice2 = RichTextUploadingField()
@@ -57,14 +56,6 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question_text
-
-
-# def test_name_list():
-#     test_name = []
-#     all_test = Test.objects.all()
-#     for test in all_test:
-#         test_name.append((test.test_name, test.test_name))
-#     return test_name
 
 
 class Candidate(models.Model):

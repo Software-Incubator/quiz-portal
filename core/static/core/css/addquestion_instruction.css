@@ -1,4 +1,9 @@
-main .editquestion,.instruction {
+main .editquestion-area, .instruction-area{
+    padding: 60px;
+    position: relative;
+}
+
+main .editquestion, .instruction {
     width: 100%;
     min-height: 600px;
     background-color: #fff;

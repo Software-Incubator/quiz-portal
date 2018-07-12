@@ -1,9 +1,10 @@
 {% extends 'admin/base_for_admin.html' %}
-{% load static %}
 
-{% block title %}
-    Edit Test 
-{% endblock %}
+{% load static %} 
+
+{% block title %} 
+Edit Test
+{% endblock %}  
 
 {% block head %}
    <link rel="stylesheet" href="{% static 'core/css/edittestname.css' %}">
@@ -41,6 +42,7 @@
 {% endblock %}
 
 {% block content %}
+<main class="container">
 <div class="test-list">
     <h3 class="heading">Test List</h3>
     <table class="table table-head">
@@ -90,4 +92,5 @@
         {% endfor %}
     </ol>
 </div>
+</main>
 {% endblock %}

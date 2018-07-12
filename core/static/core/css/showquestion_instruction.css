@@ -13,6 +13,7 @@ main .questions-list .heading{
     text-align: center;
 }
 
+
 main .instruction-list .heading{
     text-align: center;
 }
@@ -21,7 +22,21 @@ main .result .heading{
     text-align: center;
 }
 
-main .result .table-head{
+main .result .candidate-details {
+    margin: 8px 0px;
+     
+}
+
+main .result .dwd-button{
+    margin-top: 20px;   
+}
+
+main .result .dwd-button .btn{
+    margin: 8px 0px;
+    float: right;     
+}
+
+main .result .table-head th{
     background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
     color: #fff !important;
 }

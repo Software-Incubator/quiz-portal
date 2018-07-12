@@ -13,9 +13,9 @@ main .candidate-list .heading{
     text-align: center;
 }
 
-main .candidate-list .table-head{
+main .candidate-list .table-head th{
     background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
-    color: #fff;
+    color: #fff !important;
     margin-bottom: 2px;
 }
 

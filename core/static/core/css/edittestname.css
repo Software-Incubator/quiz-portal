@@ -7,6 +7,7 @@ main .test-list{
     padding: 40px;
     margin: 10px auto;
     margin-top: 60px;
+    z-index: 10;
 }
 
 main .test-list .heading{

@@ -1,4 +1,12 @@
-{% extends 'admin/base_for_admin.html' %} {% load static %} {% block title %} Add Category {% endblock %} {% block head %}
+{% extends 'admin/base_for_admin.html' %}
+
+{% load static %}
+
+{% block title %} 
+Add Category 
+{% endblock %} 
+
+{% block head %}
 <link rel="stylesheet" href="../../static/core/css/addcategory.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
@@ -37,8 +45,10 @@
         })
     });
 </script> 
-{% endblock %} 
+{% endblock %}
+
 {% block content %}
+<main class="category-container">
 <div class="category-list">
     <div class="heading">
         <h3>Categories(Add/Edit/Delete)</h3>
@@ -49,6 +59,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Test Category Name</th>
                 <th scope="col">Test Name</th>
+                <th scope="col">No. of Question</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -92,11 +103,12 @@
             {% endfor %}
         </ol>
     <form name="CategoryForm" class="addcategory" method="post" novalidate>
+    <div class="footer-table">
         {% csrf_token %} 
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <li class="text-danger">{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}
@@ -104,30 +116,33 @@
         <table class="table">
             <tbody>
                 <tr>
-        <td>
-        {{ form.category.label_tag }} {{ form.category }}
-        <p>
-            <strong>{{ form.category.errors }}</strong>
-        </p>
-        </td>
-        <td>
-        {{ form.test_name.label_tag }} {{ form.test_name }}
-        <p>
-            <strong>{{ form.test_name.errors }}</strong>
-        </p>
-        </td>
-        <td>
-        {{ form.number_of_questions.label_tag }} {{ form.number_of_questions }}
-        <p>
-            <strong>{{ form.number_of_questions.errors }}</strong>
-        </p>
-        </td>
-        <td>
-        <button type="submit" class="btn btn-raised btn-primary">Add</button>
-        </td>
-        </tr>
-        </tbody>
+                    <td>
+                        {{ form.category.label_tag }} {{ form.category }}
+                        <p>
+                            <strong class="text-danger">{{ form.category.errors }}</strong>
+                        </p>
+                        <td>
+                            {{ form.number_of_questions.label_tag }} {{ form.number_of_questions }}
+                            <p>
+                                <strong class="text-danger">{{ form.number_of_questions.errors }}</strong>
+                            </p>
+                        </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.test_name.label_tag }} {{ form.test_name }}
+                        <p>
+                            <strong class="text-danger">{{ form.test_name.errors }}</strong>
+                        </p>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-raised btn-primary">Add</button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
-    </form>
+        </form>
+    </div>
 </div>
+</main>
 {% endblock %}

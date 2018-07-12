@@ -1,20 +1,9 @@
-body{
-    background-color: #eee;
+header .navbar .button-field{
+    display: none;
 }
 
-header .navbar{
-    height: 50px;
-    background-color: #fff;
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,.16), 0 0px 0px 0 rgba(0,0,0,.12);
-}
-
-header .navbar .logo img{
-    width: 40px;
-    height: auto;
-}
-
-header .navbar .heading{
-    font-family: 'Montserrat', sans-serif;
+main .sign-in-container{
+    padding-top: 150px;
 }
 
 main .sign-in{
@@ -24,14 +13,14 @@ main .sign-in{
     border-radius: 0.125rem;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
     margin: auto;
-    margin-top: 150px;
-    font-family: 'Montserrat', sans-serif;
+    position: relative;
 }
 
 main .sign-in .heading{
     padding: 10px;
     text-align: center;
-    background: linear-gradient(to right, #007bff, #0076f5, #0071eb, #006de2, #0068d8);
+    /* background: linear-gradient(to right, #007bff, #0076f5, #0071eb, #006de2, #0068d8); */
+    background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
     color: #fff;
     border-top-left-radius: 0.125rem;
     border-top-right-radius: 0.125rem;
@@ -46,6 +35,18 @@ main .sign-in .input-group{
     padding: 10px;
 }
 
+input{
+    font-family: 'FontAwesome', 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}
+
+main .sign-in .input-group #passwordSelect + .glyphicon{
+cursor: pointer;
+   pointer-events: all;
+}
+
 main .btn-field{
     padding: 10px 40px 20px;
 }
@@ -55,4 +56,10 @@ main .btn-field .btn{
     font-family: 'Montserrat', sans-serif;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
     border-radius: 0.125rem;
+}
+
+
+canvas{
+    height: 100% !important;
+    display: block;
 }

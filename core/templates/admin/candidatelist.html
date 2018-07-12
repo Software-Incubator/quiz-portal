@@ -10,10 +10,8 @@ Candidate List
 {% endblock %} 
 
 {% block content %}
-
-    
+  
 <div class="candidate-list">
-
     <form name="CategoryForm" class="addcategory" method="post" novalidate>
         {% csrf_token %} 
         {{ form.test_name.label_tag }} {{ form.test_name }}<br>

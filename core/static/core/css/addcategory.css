@@ -1,3 +1,8 @@
+main .category-container{
+    position: relative;
+    padding-top: 60px;
+}
+
 main .category-list{
     width: 100%;
     min-height: 600px;
@@ -6,17 +11,32 @@ main .category-list{
     border-radius: 0.225rem;
     padding: 40px;
     margin: 10px auto;
-    margin-top: 60px;
 }
 
 main .category-list .heading{
     text-align: center;
 }
 
-main .category-list .table-head{
+main .category-list .table-head th{
     background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
-    color: #fff;
+    color: #fff !important;
     margin-bottom: 2px;
+}
+
+main .category-list .table-head th:nth-child(1){
+    width: 37px !important;
+}
+
+main .category-list .table-head th:nth-child(2){
+    width: 400px !important;
+}
+
+main .category-list .table-head th:nth-child(3){
+    width: 180px !important;
+}
+
+main .category-list .table-head th:nth-child(4){
+    width: 180px !important;
 }
 
 main ol{
@@ -37,13 +57,23 @@ main ol li table td{
 }
 
 main ol li table tbody td:nth-child(1){
-    width: 520px !important;
+    width: 400px !important;
 }
 
 main ol li table tbody td:nth-child(2){
     width: 180px !important;
 }
 
-main .category-list form .table {
-    width: 650px !important;
+main ol li table tbody td:nth-child(3){
+    width: 180px !important;
+}
+
+main ol li table tbody td .btn{
+ width: 100%;
+}
+
+
+main .footer-table{
+    min-width: 100% !important;
+    text-align: center;
 }

@@ -1,158 +1,132 @@
-<!DOCTYPE html>
-<html>
+{% extends 'admin/base_for_admin.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Navigation Panel</title>
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
-    integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-    crossorigin="anonymous">
-  <link rel="stylesheet" href="../../static/core/css/control_design.css">
-</head>
+{% load static %} 
 
-<body>
-  <header>
-    <div class="navbar fixed-top">
-      <div class="logo">
-        <img src="../../static/core/assets/images/akglogo.png">
+{% block title %} 
+Admin login_design
+{% endblock %} 
+
+{% block head%}
+<link rel="stylesheet" href="{% static 'core/css/control_design.css' %}">
+{% endblock %} 
+
+{% block header %}
+    
+{% endblock %}
+
+{% block content %}
+
+  <div class="control-options">
+    <div class="row">
+      <div class="col-4">
+        <a href="{% url 'Test_name' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-edit"></i>
+            </div>
+            <div class="txt">
+              <p>Add Test</p>
+            </div>
+          </div>
+        </a>
       </div>
-      <div class="heading">
-        <h3>AKGECAT ADMIN PANEL</h3>
+
+      <div class="col-4">
+        <a href="{% url 'Add_Category' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-list-alt"></i>
+            </div>
+            <div class="txt">
+              <p>Add/Edit/Delete</p>
+              <p></p>Category</p>
+            </div>
+          </div>
+        </a>
       </div>
-      <a href="{% url 'logout' %}">
-        <button type="button" class="btn btn-raised btn-primary">Logout</button>
-      </a>
+
+      <div class="col-4">
+        <a href="{% url 'Add_Question' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-question-circle"></i>
+            </div>
+            <div class="txt">
+              <p>Add Questions</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4">
+        <a href="{% url 'Show_Candidates' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-id-badge"></i>
+            </div>
+            <div class="txt">
+              <p>See Candidates</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+
+      <div class="col-4">
+        <a href="{% url 'Instruction' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-clipboard"></i>
+            </div>
+            <div class="txt">
+              <p>Add Instructions</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4">
+        <a href="{% url 'Show_Questions' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-copy"></i>
+            </div>
+            <div class="txt">
+              <p>See/Edit/Delete</p> 
+              <p>Questions</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4">
+        <a href="{% url 'See_Test' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-newspaper"></i>
+            </div>
+            <div class="txt">
+              <p>See All Tests</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-4">
+        <a href="{% url 'Show_Instruction' %}">
+          <div class="control-option text-primary btn">
+            <div class="icon">
+              <i class="far fa-eye"></i>
+            </div>
+            <div class="txt">
+              <p>Show</p> 
+              <p>all Instruction</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
     </div>
-  </header>
+  </div>
 
-  <main class="container">
-    <div class="control-options">
-      <div class="row">
-        <div class="col-4">
-          <a href="{% url 'Test_name' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-edit"></i>
-              </div>
-              <div class="txt">
-                <p>Add Test</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-4">
-          <a href="{% url 'Add_Category' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-list-alt"></i>
-              </div>
-              <div class="txt">
-                <p>Add, Edit & Delete Category</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-4">
-          <a href="{% url 'Add_Question' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-question-circle"></i>
-              </div>
-              <div class="txt">
-                <p>Add Questions</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-4">
-          <a href="{% url 'Show_Candidates' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-id-badge"></i>
-              </div>
-              <div class="txt">
-                <p>See Candidates</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-
-        <div class="col-4">
-          <a href="{% url 'Instruction' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-clipboard"></i>
-              </div>
-              <div class="txt">
-                <p>Add Instructions</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-4">
-          <a href="{% url 'Show_Questions' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-copy"></i>
-              </div>
-              <div class="txt">
-                <p>See, Edit delete Questions</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-4">
-          <a href="{% url 'See_Test' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-newspaper"></i>
-              </div>
-              <div class="txt">
-                <p>See All Tests</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-4">
-          <a href="{% url 'Show_Instruction' %}">
-            <div class="control-option text-primary">
-              <div class="icon">
-                <i class="far fa-eye"></i>
-              </div>
-              <div class="txt">
-                <p>Show all Instruction</p>
-              </div>
-            </div>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </main>
-
-  <footer>
-
-  </footer>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
-    crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
-    crossorigin="anonymous"></script>
-  <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>
-
-</body>
-
-</html>
+{% endblock %}

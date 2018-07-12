@@ -1,18 +1,30 @@
 body{
     background-color: #eee;
+    font-family: 'Montserrat', sans-serif;
 }
 
 header .navbar{
     height: 50px;
     background-color: #fff;
     box-shadow: 0 0px 0px 0 rgba(0,0,0,.16), 0 0px 0px 0 rgba(0,0,0,.12);
+    padding: 1vh 5vw;
 }
 
 header .navbar .logo img{
     width: 40px;
     height: auto;
 }
+ 
+main .secondary-container{
+    position: relative;
+    padding: 60px;
+}
 
-header .navbar .heading{
-    font-family: 'Montserrat', sans-serif;
+
+
+#particles-js{
+    width: 100%; 
+    height: 100%; 
+    background-color: #009688;
+    position: fixed;
 }

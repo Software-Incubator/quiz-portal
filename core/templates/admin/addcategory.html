@@ -13,7 +13,7 @@ Add Category
     console.log(1);
     $(document).ready(function () {
         console.log(2);
-        $(".btn btn-raised btn-primary change").on('click', function (event) {
+        $(".change").on('click', function (event) {
             console.log(3);
             var imgid;
             var name;
@@ -38,7 +38,6 @@ Add Category
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(5)
                     }
                 });
             }
@@ -88,7 +87,7 @@ Add Category
                             </td>
                             <td>
                                 <a>
-                                    <button type="button" class="btn btn-raised btn-primary change" cat_data="{{cat.pk}}">Save after editing</button>
+                                    <button class="change btn btn-raised btn-primary" cat_data="{{cat.pk}}">Save after editing</button>
                                 </a>
                                 <a href="{% url "Delete_Category" cat.pk %}">
                                     <button type="button" class="btn btn-raised btn-danger">Delete</button>
@@ -146,3 +145,4 @@ Add Category
 </div>
 </main>
 {% endblock %}
+

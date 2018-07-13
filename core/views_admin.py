@@ -339,7 +339,7 @@ class Editcategory(View):
             test = request.GET['test']
             num = request.GET['num']
             Tname = Test.objects.get(test_name=test)
-            Category.objects.filter(pk=img_id).update(category=name, test=Tname, number_of_questions=int(num))
+            Category.objects.filter(pk=img_id).update(category=name, test=Tname, total_question_display=int(num))
             return HttpResponse(Tname.test_name)
 
 

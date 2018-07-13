@@ -13,7 +13,7 @@ Add Category
     console.log(1);
     $(document).ready(function () {
         console.log(2);
-        $(".change").on('click', function (event) {
+        $(".btn btn-raised btn-primary change").on('click', function (event) {
             console.log(3);
             var imgid;
             var name;
@@ -84,7 +84,7 @@ Add Category
                                 </select>
                             </td>
                             <td>
-                                <input class="form-control" id="num{{cat.pk}}" type="text" name="number_of_questions" value={{ cat.number_of_questions }}>
+                                <input class="form-control" id="num{{cat.pk}}" type="text" name="number_of_questions" value={{ cat.total_question_display }}>
                             </td>
                             <td>
                                 <a>

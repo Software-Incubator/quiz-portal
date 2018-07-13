@@ -17,7 +17,6 @@ from django.conf import settings
 from django.template import Context
 from django.template.loader import get_template
 import datetime
-# from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 from django.template import loader
 import pdfkit
@@ -316,7 +315,7 @@ class AddCategoryView(View):
             if form.is_valid():
                 Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
                 c = Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname, 
-                                        number_of_questions = (dict(request.POST)['number_of_questions'])[0])
+                                        total_question_display = (dict(request.POST)['number_of_questions'])[0])
                 print("C",c)
                 return redirect('control_operation')
             else:

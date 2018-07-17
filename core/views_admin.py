@@ -281,7 +281,7 @@ class DeleteQuestionView(View):
 
     def get(self, request, pk, *args, **kwargs):
         Question.objects.filter(pk=pk).delete()
-        return redirect('control_operation')
+        return redirect('Show_Questions')
 
 
 class AddCategoryView(View):
@@ -352,7 +352,7 @@ class DeleteCategoryView(View):
 
     def get(self, request, pk, *args, **kwargs):
         Category.objects.filter(pk=pk).delete()
-        return redirect('control_operation')
+        return redirect('Add_Category')
 
 
 class ShowCandidateListView(View):
@@ -610,7 +610,7 @@ class DeleteInstructionView(View):
 
     def get(self, request, pk, *args, **kwargs):
         Instruction.objects.filter(pk=pk).delete()
-        return redirect('control_operation')
+        return redirect('Show_Instruction')
 
 
 def error404(request):

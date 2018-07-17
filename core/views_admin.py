@@ -381,6 +381,16 @@ class ShowCandidateListView(View):
             cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
             return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
 
+class DeleteResultView(View):
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(DeleteResultView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk, *args, **kwargs):
+        Candidate.objects.filter(pk=pk).delete()
+        return redirect('Show_Candidates')
 
 class ViewResultView(View):
     template_name = 'admin/result.html'

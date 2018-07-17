@@ -82,6 +82,9 @@ Edit Test
                                 <a>
                                     <button class="change btn btn-raised btn-primary" cat_data="{{test.pk}}">Save after editing</button>
                                 </a>
+                                <a href="{% url "Delete_Test" test.pk %}">
+                                    <button type="button" class="btn btn-raised btn-danger">Delete Test</button>
+                                </a>
                             </td>
                         </tr>
                     </tbody>

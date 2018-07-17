@@ -158,7 +158,7 @@ class DeleteTest(View):
 
     def get(self, request, pk, *args, **kwargs):
         Test.objects.filter(pk=pk).delete()
-        return redirect('control_operation')
+        return redirect('See_Test')
 
 
 class AddQuestionView(View):

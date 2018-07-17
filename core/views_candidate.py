@@ -10,6 +10,7 @@ import datetime as dt
 def random_question(n, can_id, ques_id):
     a = [x for x in range(1, n + 1)]
     a = list(itertools.permutations(a))
+    print(n)
     l = len(a)
     return a[can_id % l][ques_id % n]
 
@@ -28,14 +29,15 @@ class QuestionByCategory(generic.DetailView):
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         duration = test.duration
-        dif_time = (dt.datetime.now() - candidate.time.replace(tzinfo=None)).total_seconds()
+        dif_time = (dt.datetime.utcnow() - candidate.time.replace(tzinfo=None)).total_seconds()
         remain_time = duration*60 - round(dif_time)
         category_name = kwargs["category_name"]
         context_dict = {'category_name': category_name}
-
+        print("remain time")
+        print(remain_time)
         try:
             category = Category.objects.get(category=category_name, test=test)
-            total_question = category.total_question_display
+            total_question = Question.objects.filter(category=category).count()
             if total_question:
                 email = request.session["email"]
                 id = kwargs["id"]
@@ -60,6 +62,8 @@ class QuestionByCategory(generic.DetailView):
                 status_dict = {}
                 for i in range(1, total_question+1):
                     now_question = random_question(total_question, int(candidate_id), i)
+                    print("This is our")
+                    print(now_question)
                     per_question = Question.objects.filter(category=category)[now_question - 1]
                     try:
                         obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
@@ -139,9 +143,11 @@ class CandidateRegistration(generic.ListView):
                 try:
                     test = Test.objects.get(test_name=test_name)
                     time = test.duration
+                    print("inside try", time)
                     self.request.session.set_expiry(time*60)
                 except:
-                    self.request.session.set_expiry(1)
+                    print("inside except")
+                    self.request.session.set_expiry(100)
                 return redirect('instruction')
 
         return render(self.request, self.template_name, {'form': form})

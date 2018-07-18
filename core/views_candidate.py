@@ -44,17 +44,18 @@ class QuestionByCategory(generic.DetailView):
         try:
             category = Category.objects.get(category=category_name, test=test)
             total_question = Question.objects.filter(category=category).count()
+            required_question = category.total_question_display
             if total_question:
                 email = request.session["email"]
                 id = kwargs["id"]
 
-                if id not in range(1, total_question + 1):
+                if id not in range(1, required_question + 1):
                     return redirect(reverse('category', kwargs={"category_name": category_name,
                                                                 "id": 1,
                                                                 }))
                 candidate_id = Candidate.objects.get(email=email).id
                 candidate = Candidate.objects.get(email=email)
-                required_question = category.total_question_display
+
                 if required_question > total_question:
                     message = "More than required question select"
                     return render(request, 'candidate/error.html', {'message': message})

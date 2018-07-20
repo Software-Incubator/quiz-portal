@@ -5,3 +5,4 @@ __pycache__/
 /quiz_portal/static/
 /quiz_portal/media/
 db.sqlite
+db.sqlite3

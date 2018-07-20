@@ -61,7 +61,7 @@ Show Result
                 <td>
                     <ol>
                         <div style="display: flex;">
-                            <span style="float: left;">Q &nbsp;</span>
+                            <b><span style="float: left;">Q. &nbsp;</span></b>
                             <span style="float: left;">{{ select.question_text|safe|escape }}</span>
                         </div><br><br>
                         <div style="display: flex;">
@@ -88,7 +88,7 @@ Show Result
                             <b><span style="color: green; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  Y  </span></b>
                           {% endif %}
                         </div><br><br>
-                        <p>Correct choice - {{ select.question_text.correct_choice }}</p>
+                        <b><p>Correct choice - {{ select.question_text.correct_choice }}</p></b>
                     </ol>
                 </td>
             </tr>
@@ -101,7 +101,7 @@ Show Result
                 <td>
                     <ol>
                         <div style="display: flex;">
-                            <span style="float: left;">Q &nbsp;</span>
+                            <b><span style="float: left;">Q. &nbsp;</span></b>
                             <span style="float: left;">{{ select.question_text|safe|escape }}</span>
                         </div><br><br>
                         <div style="display: flex;">
@@ -128,7 +128,7 @@ Show Result
                             <b><span style="color: red; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  N  </span></b>
                             {% endif %}
                         </div><br><br>
-                        <p>Correct choice - {{ select.question_text.correct_choice }}</p>
+                        <b><p>Correct choice - {{ select.question_text.correct_choice }}</p></b>
                     </ol>
                 </td>
             </tr>

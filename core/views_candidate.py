@@ -6,11 +6,17 @@ import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
 
+a = []
+
+
+def make_permutation(n, required_question):
+    global a
+    a = [x for x in range(1, n + 1)]
+    a = list(itertools.combinations(a, required_question))
+
 
 def random_question(n, can_id, ques_id):
-    a = [x for x in range(1, n + 1)]
-    a = list(itertools.permutations(a))
-    print(n)
+    global a
     l = len(a)
     return a[can_id % l][ques_id % n]
 
@@ -38,17 +44,23 @@ class QuestionByCategory(generic.DetailView):
         try:
             category = Category.objects.get(category=category_name, test=test)
             total_question = Question.objects.filter(category=category).count()
+            required_question = category.total_question_display
             if total_question:
                 email = request.session["email"]
                 id = kwargs["id"]
 
-                if id not in range(1, total_question + 1):
+                if id not in range(1, required_question + 1):
                     return redirect(reverse('category', kwargs={"category_name": category_name,
                                                                 "id": 1,
                                                                 }))
                 candidate_id = Candidate.objects.get(email=email).id
                 candidate = Candidate.objects.get(email=email)
-                which_question = random_question(total_question, int(candidate_id), id)
+
+                if required_question > total_question:
+                    message = "More than required question select"
+                    return render(request, 'candidate/error.html', {'message': message})
+                make_permutation(total_question, required_question)
+                which_question = random_question(required_question, int(candidate_id), id)
                 question = Question.objects.filter(category=category)[which_question - 1]
 
                 context_dict["which_question"] = which_question
@@ -60,8 +72,8 @@ class QuestionByCategory(generic.DetailView):
                 context_dict["id"] = id
                 context_dict["all_category"] = Category.objects.filter(test=test)
                 status_dict = {}
-                for i in range(1, total_question+1):
-                    now_question = random_question(total_question, int(candidate_id), i)
+                for i in range(1, required_question+1):
+                    now_question = random_question(required_question, int(candidate_id), i)
                     print("This is our")
                     print(now_question)
                     per_question = Question.objects.filter(category=category)[now_question - 1]

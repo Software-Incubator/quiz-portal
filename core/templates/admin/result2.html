@@ -25,12 +25,6 @@ Show Result
                 <h6>{{ cand.email }}</h6>
                 <h6>{{ cand.phone_number }}</h6>
             </div>
-            <div class="col-6 dwd-button">
-                <form method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-raised btn-primary">Download Result as PDF</button>
-                </form>
-            </div>
         </div>
     <table class="table table-hover">
         <thead class="table-head">
@@ -65,33 +59,35 @@ Show Result
         <tbody>
             <tr>
                 <td>
-                    
-                        <p style="margin-left: -15px">Q - {{ select.question_text|safe|escape }}</p>
                     <ol>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice1|safe|escape }}</li>
+                            <span style="float: left;">Q &nbsp;</span>
+                            <span style="float: left;">{{ select.question_text|safe|escape }}</span>
+                        </div><br><br>
+                        <div style="display: flex;">
+                            <span style="float: left;"><li>{{ select.question_text.choice1|safe|escape }}</li></span>
                             {% if select.selected_choice == 1 %}
-                            <b><p style="color: green; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  Y  </p></b>
-                            {% endif %}
-                        </div>
+                            <b><span style="color: green; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  Y  </span></b>
+                          {% endif %}
+                        </div><br><br>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice2|safe|escape }}</li>
+                            <span style="float: left;"><li>{{ select.question_text.choice2|safe|escape }}</li></span>
                             {% if select.selected_choice == 2 %}
-                            <b><p style="color: green; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  Y  </p></b>
-                            {% endif %}
-                        </div>
+                            <b><span style="color: green; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  Y  </span></b>
+                          {% endif %}
+                        </div><br><br>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice3|safe|escape }}</li>
+                            <span style="float: left;"><li>{{ select.question_text.choice3|safe|escape }}</li></span>
                             {% if select.selected_choice == 3 %}
-                            <b><p style="color: green; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  Y  </p></b>
-                            {% endif %}
-                        </div>
+                            <b><span style="color: green; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  Y  </span></b>
+                          {% endif %}
+                        </div><br><br>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice4|safe|escape }}</li>
+                            <span style="float: left;"><li>{{ select.question_text.choice4|safe|escape }}</li></span>
                             {% if select.selected_choice == 4 %}
-                            <b><p style="color: green; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  Y  </p></b>
-                            {% endif %}
-                        </div>
+                            <b><span style="color: green; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  Y  </span></b>
+                          {% endif %}
+                        </div><br><br>
                         <p>Correct choice - {{ select.question_text.correct_choice }}</p>
                     </ol>
                 </td>
@@ -104,31 +100,34 @@ Show Result
             <tr>
                 <td>
                     <ol>
-                        <p>Q - {{ select.question_text|safe|escape }}</p>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice1|safe|escape }}</li>
+                            <span style="float: left;">Q &nbsp;</span>
+                            <span style="float: left;">{{ select.question_text|safe|escape }}</span>
+                        </div><br><br>
+                        <div style="display: flex;">
+                            <span style="float: left;"><li>{{ select.question_text.choice1|safe|escape }}</li></span>
                             {% if select.selected_choice == 1 %}
-                            <b><p style="color: red; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  N  </p></b>
+                            <b><span style="color: red; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  N  </span></b>
                             {% endif %}
-                        </div>
+                        </div><br><br>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice2|safe|escape }}</li>
+                            <span style="float: left;"><li>{{ select.question_text.choice2|safe|escape }}</li></span>
                             {% if select.selected_choice == 2 %}
-                            <b><p style="color: red; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  N  </p></b>
+                            <b><span style="color: red; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  N  </span></b>
                             {% endif %}
-                        </div>
+                        </div><br><br>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice3|safe|escape }}</li>
+                            <span style="float: left;"><li>{{ select.question_text.choice3|safe|escape }}</li></span>
                             {% if select.selected_choice == 3 %}
-                            <b><p style="color: red; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  N  </p></b>
+                            <b><span style="color: red; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  N  </span></b>
                             {% endif %}
-                        </div>
+                        </div><br><br>
                         <div style="display: flex;">
-                            <li>{{ select.question_text.choice4|safe|escape }}</li>
+                            <span style="float: left;"><li>{{ select.question_text.choice4|safe|escape }}</li></span>
                             {% if select.selected_choice == 4 %}
-                            <b><p style="color: red; font-size: 25px; display: -webkit-flex; display: flex;">&nbsp;  N  </p></b>
+                            <b><span style="color: red; font-size: 25px; display: -webkit-flex; float: left;">&nbsp;  N  </span></b>
                             {% endif %}
-                        </div>
+                        </div><br><br>
                         <p>Correct choice - {{ select.question_text.correct_choice }}</p>
                     </ol>
                 </td>

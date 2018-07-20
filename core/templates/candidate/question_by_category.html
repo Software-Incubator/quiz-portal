@@ -68,7 +68,7 @@
                     </section>
                     <section class="col-12 question-options">
                         <div class="question">
-                            <span class="question-no.">
+                            <span class="question-no." style="float: left">
                                 {{ id }}.
                             </span>
                             <h6>
@@ -77,23 +77,27 @@
                                 {% endautoescape %}
                             </h6>
                         </div>
-                        <div class="options" id={{ question_id }}>
+                        <div class="options"  id={{ question_id }}>
                             <div class="radio">
                                     <input type="radio" name="optionsRadios"  value="1" class="option1">
-                                    {{ question.choice1|safe|escape }}
+                                <label style="color:#000;">{{ question.choice1|safe|escape }}</label>
                             </div>
+                            <br><br>
                             <div class="radio">
                                     <input type="radio" name="optionsRadios"  value="2" class="option2">
-                                    {{ question.choice2|safe|escape }}
+                                <label style="color:#000;">{{ question.choice2|safe|escape}}</label>
                             </div>
+                            <br><br>
                             <div class="radio">
                                     <input type="radio" name="optionsRadios" value="3" class="option3">
-                                    {{ question.choice3|safe|escape }}
+                                <label style="color:#000;">{{ question.choice3|safe|escape }}</label>
                             </div>
+                            <br><br>
                             <div class="radio">
                                     <input type="radio" name="optionsRadios" value="4" class="option4">
-                                    {{ question.choice4|safe|escape }}
+                                    <label style="color:#000;">{{ question.choice4|safe|escape }}</label>
                             </div>
+                            <br>
                         </div>
                     </section>
 

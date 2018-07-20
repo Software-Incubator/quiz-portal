@@ -24,7 +24,7 @@ Instructions
             {% csrf_token %} {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                <li>{{ message }}</li>
+                    <p class="text-danger">{{ message }}</p>
                 {% endfor %}
             </ul>
             {% endif %} {{ form.media }}

@@ -21,25 +21,27 @@
 <body>
     
     <div id="particles-js"></div>
-        <header>
-            <div class="navbar fixed-top">
-                <div class="logo">
-                    <img src="{% static 'core/assets/images/silogo.png' %}">
+        {% block newhead %}
+            <header>
+                <div class="navbar fixed-top">
+                    <div class="logo">
+                        <img src="{% static 'core/assets/images/silogo.png' %}">
+                    </div>
+                    <div class="heading">
+                        <h3>ADMIN PANEL</h3>
+                    </div>
+                    <div class="button-field">
+                        <a href="{% url 'control_operation' %}">
+                            <button type="button" id="back-btn" class="btn btn-raised btn-primary">Back</button>
+                        </a>
+                        <a href="{% url 'logout' %}">
+                            <button type="button" id="logout-btn"  class="btn btn-raised btn-primary">Logout</button>
+                        </a>
+                    </div>
+                    {% block header %} {% endblock %}
                 </div>
-                <div class="heading">
-                    <h3>ADMIN PANEL</h3>
-                </div>
-                <div class="button-field">
-                    <a href="{% url 'control_operation' %}">
-                        <button type="button" id="back-btn" class="btn btn-raised btn-primary">Back</button>
-                    </a>
-                    <a href="{% url 'logout' %}">
-                        <button type="button" id="logout-btn"  class="btn btn-raised btn-primary">Logout</button>
-                    </a>
-                </div>
-                {% block header %} {% endblock %}
-            </div>
-        </header>
+            </header>
+        {% endblock %}
 
         <main id="main-container" class="container">
             <div class="secondary-container">

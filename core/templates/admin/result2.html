@@ -3,16 +3,18 @@
 
 {% block title %} 
 Show Result 
-{% endblock %} 
+{% endblock %}
+
+{% block newhead %}
+{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
 {% endblock %} 
 
 {% block content %}
-<br><br><br><br><br><br>
 <div class="result">
-    <h3 class="heading">Result</h3>
+    <h2 class="heading">Result</h2><br>
     <div class="row">
             <div class="col-6 candidate-details">
                 <h4 style="float: left;"><i class="fas fa-user-graduate"></i>&nbsp;&nbsp;</h4><h4 style="float: left;">{{ cand.name }}</h4><br><br>      

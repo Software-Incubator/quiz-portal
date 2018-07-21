@@ -104,14 +104,6 @@ Add Category
     <form name="CategoryForm" class="addcategory" method="post" novalidate>
     <div class="footer-table">
         {% csrf_token %} 
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <p class="text-danger">{{ message }}</p>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        <!-- <{{ form }}</b><br> -->
         <table class="table">
             <tbody>
                 <tr>
@@ -134,6 +126,11 @@ Add Category
                             <strong class="text-danger">{{ form.test_name.errors }}</strong>
                         </p>
                     </td>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p class="text-danger">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
                     <td>
                         <button type="submit" class="btn btn-raised btn-primary">Add</button>
                     </td>

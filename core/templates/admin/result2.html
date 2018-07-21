@@ -10,20 +10,15 @@ Show Result
 {% endblock %} 
 
 {% block content %}
+<br><br><br><br><br><br>
 <div class="result">
     <h3 class="heading">Result</h3>
     <div class="row">
-            <div class="col-1 candidate-details">
-                <h4><i class="fas fa-user-graduate"></i></h4>
-                <h6><i class="fas fa-user-friends"></i></h6>
-                <h6><i class="fas fa-envelope"></i></h6>
-                <h6><i class="fas fa-mobile-alt"></i></h6>
-            </div>
-            <div class="col-5 candidate-details">
-                <h4>{{ cand.name }}</h4>
-                <h6>{{ cand.father_name }}</h6>
-                <h6>{{ cand.email }}</h6>
-                <h6>{{ cand.phone_number }}</h6>
+            <div class="col-6 candidate-details">
+                <h4 style="float: left;"><i class="fas fa-user-graduate"></i></h4><h4 style="float: left;">{{ cand.name }}</h4><br><br>      
+                <h6 style="float: left;"><i class="fas fa-user-friends"></i></h6><h6 style="float: left;">{{ cand.father_name }}</h6><br><br>
+                <h6 style="float: left;"><i class="fas fa-envelope"></i></h6><h6 style="float: left;">{{ cand.email }}</h6><br><br>
+                <h6 style="float: left;"><i class="fas fa-mobile-alt"></i></h6><h6 style="float: left;">{{ cand.phone_number }}</h6><br>
             </div>
         </div>
     <table class="table table-hover">

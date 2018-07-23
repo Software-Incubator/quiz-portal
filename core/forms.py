@@ -103,3 +103,10 @@ class ChooseTestForm(forms.Form):
     class Meta:
         fields = ['test_name']
 
+class AlgorithmForm(forms.Form):
+    question_text = forms.CharField(widget=CKEditorUploadingWidget())
+    test_name = forms.ChoiceField(choices=test_name_list,label="Choose Test", widget=forms.Select() )
+
+    class Meta:
+        fields = ['category', 'test_name']
+

@@ -1,0 +1,81 @@
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Add Algorithm
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="editquestion-area">
+    <div class="editquestion">
+        <h3 class="heading">Add Algorithm</h3>
+    <form name="QuestionForm" method="post" novalidate>
+        <div>
+        {% csrf_token %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {{ form.media }}
+        </div>
+        <div class="select-category">
+        {{ form.test_name.label_tag }}
+        {{ form.test_name }}
+        <p><strong>{{ form.category.errors }}</strong></p>
+        </div>
+        <div>
+        <h6>
+        {{ form.question_text.label_tag }}
+        </h6>
+        {{ form.question_text }}
+        <p><strong>{{ form.question_text.errors }}</strong></p>
+        </div>
+        <br><button type="submit" class="btn btn-primary btn-raised">submit</button>
+    </form>
+    {% for i in l %}
+        <div>
+            <h4>
+                <br><br><span>Algorithm Questions for test - {{ i.0 }}</span>
+            </h4>
+            {% for j in i.1 %}
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <ol>
+                                        <div>
+                                        <span style="float: left;">Q. &nbsp;</span>
+                                        <span style="float: left;">{{ j.question_text|safe|escape }}</span><br><br>
+                                        </div>
+                                    </ol>
+                                    <a href="{% url "Edit_Algorithm" j.pk %}">
+                                        <button type="button" class="btn btn-raised btn-primary">Edit</button>
+                                    </a>
+                                    <a href="{% url "Delete_Algorithm" j.pk %}">
+                                        <button type="button" class="btn btn-raised btn-danger">Delete</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            {% empty %}
+                <span style="color: red;">No Algorithm question available for this test.</span>
+            {% endfor %}
+        </div>
+    {% empty %}
+        <p>No Test avilable.</p>
+    {% endfor %}
+    </div>
+    
+</div>
+{% endblock %}

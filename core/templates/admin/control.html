@@ -3,7 +3,7 @@
 {% load static %} 
 
 {% block title %} 
-Navigation Panel
+Admin login_design
 {% endblock %} 
 
 {% block head%}
@@ -125,6 +125,20 @@ Navigation Panel
           </div>
         </a>
       </div>
+
+      <div class="row">
+        <div class="col-4">
+          <a href="{% url 'Add_Algorithm' %}">
+            <div class="control-option text-primary btn">
+              <div class="icon">
+                <i class="far fa-edit"></i>
+              </div>
+              <div class="txt">
+                <p>Add Algorithm</p>
+              </div>
+            </div>
+          </a>
+        </div>
 
     </div>
   </div>

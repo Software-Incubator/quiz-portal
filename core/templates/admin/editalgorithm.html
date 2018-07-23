@@ -1,0 +1,45 @@
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Edit Algorithm
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="instruction">
+        <h3 class="heading">Edit Question</h3>
+    <form name="InstructionForm" method="post" novalidate>
+        <div>
+        {% csrf_token %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        </div>
+        <div>
+        {{ form.media }}
+        <h6>
+        {{ form.test_name.label_tag }}
+        </h6>
+        {{ form.test_name }}
+        <p><strong>{{ form.instruction.errors }}</strong></p>
+        </div>
+        <div>
+        {{ form.question_text.label_tag }}
+        {{ form.question_text }}
+        <strong>{{ form.test_name.errors }}</strong>
+        </div>
+        <br><button type="submit" class="btn btn-raised btn-primary">submit</button>
+    </form>
+</div>
+{% endblock %}

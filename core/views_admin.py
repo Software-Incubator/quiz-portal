@@ -281,24 +281,9 @@ class ShowQuestionsView(View):
         return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, pk, *args, **kwargs):
-        # l = []
-        # tests = Test.objects.all()
-        # for test in tests:
-        #     l1 = []
-        #     l1.append(test)
-        #     cats = Category.objects.filter(test=test)
-        #     l1.append(cats)
-        #     # for cat in cats:
-        #     #     l2 = []
-        #     #     l2.append(cat)
-        #     #     l2.append(Question.objects.filter(category=cat))
-        #     #     l3.extend([l2])
-        #     # l1.extend([l2])
-        #     l.extend([l1])
-        #     print(l)
         cat = Category.objects.get(pk=pk)
         ques = Question.objects.filter(category=cat)
-        return render(request, self.template_name, {'ques':ques})
+        return render(request, self.template_name, {'ques':ques, 'cat':cat})
 
 
 class DeleteQuestionView(View):
@@ -311,7 +296,6 @@ class DeleteQuestionView(View):
     def get(self, request, pk, *args, **kwargs):
         Question.objects.filter(pk=pk).delete()
         return redirect('Show_Category')
-
 
 class AddCategoryView(View):
     form_class = forms.CategoryForm

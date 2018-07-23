@@ -101,6 +101,8 @@ class QuestionByCategory(generic.DetailView):
                 question = Question.objects.filter(category=category)[which_question - 1]
                 algo_count = Algorithm.objects.filter(test=test).count()
                 context_dict["algo_count"] = algo_count
+                instruction = Instruction.objects.filter(test=test)
+                context_dict["instruction"] = instruction
                 context_dict["which_question"] = which_question
                 context_dict["test_name"] = test_name
                 context_dict["remain_time"] = remain_time

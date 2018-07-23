@@ -6,7 +6,7 @@ header .greetings{
 }
 
 header .greetings .heading{
-    font-family: 'Montserrat', sans-serif;
+  
 }
 
 main .instructions-container{
@@ -17,7 +17,7 @@ main .instructions-container{
     border-radius: 0.225rem;
     padding: 40px;
     margin: 10px auto;
-    font-family: 'Montserrat', sans-serif;
+   
 }
 
 main .instructions-container .instructions h6{

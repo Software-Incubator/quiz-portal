@@ -1,5 +1,7 @@
 body{
     background-color: #eee;
+    height: 100vh;
+    overflow: hidden;
 }
 
 header .navbar{
@@ -13,7 +15,7 @@ header .navbar .logo img{
 }
 
 header .navbar .heading{
-    font-family: 'Montserrat', sans-serif;
+  
 }
 
 header .inst-timer {

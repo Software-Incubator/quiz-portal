@@ -12,7 +12,7 @@ main .control-options .control-option{
     width: 225px;
     height: 200px;
     background-color: #fff;
-    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.6);
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
     border-radius: 0.225rem;
     text-align: center;
     padding-top: 40px;
@@ -20,7 +20,7 @@ main .control-options .control-option{
 }
 
 main .control-options .control-option:hover{
-    box-shadow: 2px 4px 8px 0 rgba(46,61,73,.6);
+    box-shadow: 2px 4px 8px 0 rgba(46,61,73,.2);
 }
 
 main .control-options .control-option .icon{
@@ -29,12 +29,11 @@ main .control-options .control-option .icon{
 }
 
 main .control-options a:hover{
-    color: #009688;
+    color: #3b95ed;
     text-decoration: none;
 }
 
 main .control-options .control-option .txt{
-    font-family: 'Montserrat', sans-serif;
     font-size: 125%;
 }
 

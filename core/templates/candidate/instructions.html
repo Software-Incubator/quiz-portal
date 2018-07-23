@@ -1,18 +1,15 @@
-{% extends 'candidate/base.html' %} {% block head %}
-<link rel="stylesheet" href="../../static/core/css/instruction.css"> {% endblock %} {% block logout %}
+{% extends 'candidate/base.html' %} 
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'core/css/instruction.css' %}"> {% endblock %} {% block logout %}
 <a href={% url 'session_out' %}>
     <button type="button" class="btn btn-raised btn-primary">Log-Out</button>
 </a>
-{% endblock %} {% block header %}
-<div class="navbar greetings bg-secondary">
-    <div class="heading">
-        <h3>Hello {{ request.session.name}}</h3>
-    </div>
-    <div class="heading">
-        <h1>{{ test_name }}</h1>
-    </div>
-</div>
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <div class="instructions-container">
     <h3>INSTRUCTIONS</h3>
         <div class="instructions">
@@ -26,5 +23,4 @@
         </a>
 
 </div>
-
 {% endblock %}

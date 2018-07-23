@@ -80,3 +80,10 @@ class SelectedAnswer(models.Model):
     def __str__(self):
         st = str(self.question_text) + ' - ' + str(self.selected_choice)
         return st
+
+
+class Algorithm(models.Model):
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    question_text = RichTextUploadingField()
+
+

@@ -60,6 +60,22 @@ class AlgorithmQuestionDisplay(generic.DetailView):
         return render(self.request, self.template_name, context_dict)
 
 
+def category_name_to_number(all_category, all_category_count):
+    category_dict = {}
+    counter = 1
+    for category in all_category:
+        category_dict[category.category] = counter
+        counter = counter + 1
+    return category_dict
+
+
+def category_number_to_name(all_category, all_category_count):
+    category_dict = {}
+    for i in range(1, all_category_count+1):
+        category_dict[i] = all_category[i-1].category
+    return category_dict
+
+
 class QuestionByCategory(generic.DetailView):
     template_name = 'candidate/question_by_category.html'
 
@@ -69,20 +85,33 @@ class QuestionByCategory(generic.DetailView):
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        # user credential
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
+        candidate_id = candidate.id
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         duration = test.duration
         dif_time = (dt.datetime.utcnow() - candidate.time.replace(tzinfo=None)).total_seconds()
         remain_time = duration*60 - round(dif_time)
+        # category info
+        all_category = Category.objects.filter(test=test)
+        all_category_count = all_category.count()
         category_name = kwargs["category_name"]
         context_dict = {'category_name': category_name}
+        category_dict_by_number =category_number_to_name(all_category, all_category_count)
+        category_dict_by_name = category_name_to_number(all_category, all_category_count)
 
         try:
             category = Category.objects.get(category=category_name, test=test)
             total_question = Question.objects.filter(category=category).count()
             required_question = category.total_question_display
+
+            if required_question > total_question:
+                message = "More than required question select"
+                return render(request, 'candidate/error.html', {'message': message})
+            last_question = 0
+            first_question = 0
             if total_question:
                 email = request.session["email"]
                 id = kwargs["id"]
@@ -91,17 +120,30 @@ class QuestionByCategory(generic.DetailView):
                     return redirect(reverse('category', kwargs={"category_name": category_name,
                                                                 "id": 1,
                                                                 }))
-                candidate_id = Candidate.objects.get(email=email).id
+                # if last question of current category
+                if required_question==id:
+                    last_question = 1
+                    next_category = category_dict_by_number[(category_dict_by_name[category_name])%all_category_count + 1]
+                    context_dict["next_category"] = next_category
 
-                if required_question > total_question:
-                    message = "More than required question select"
-                    return render(request, 'candidate/error.html', {'message': message})
+                # if first question of current category
+                if id==1:
+                    first_question = 1
+                    prev_category = category_dict_by_number[(category_dict_by_name[category_name]-2+all_category_count)%all_category_count + 1]
+
+                    context_dict["prev_category"] = prev_category
+                    prev_category_obj = Category.objects.get(test=test, category=prev_category)
+                    context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()
+
+
                 make_permutation(total_question, required_question)
                 which_question = random_question(required_question, int(candidate_id), id)
                 question = Question.objects.filter(category=category)[which_question - 1]
                 algo_count = Algorithm.objects.filter(test=test).count()
                 context_dict["algo_count"] = algo_count
                 instruction = Instruction.objects.filter(test=test)
+                context_dict["last_question"] = last_question
+                context_dict["first_question"] = first_question
                 context_dict["instruction"] = instruction
                 context_dict["which_question"] = which_question
                 context_dict["test_name"] = test_name

@@ -64,13 +64,15 @@
                             </a>
                         </span>
                         {% endfor %}
-                        {% if algo_count != 0 %}
+                        {# for category #}
+                        <span class="category" id="algorithm">
                             <a href={% url 'algorithm' 1 %}>
-                                <button type="button" class="btn btn-primary">Algorithm</button>
+                                <button type="button" class="btn btn-primary">algorithm</button>
                             </a>
-                        {% endif %}
+                        </span>
 
                     </section>
+
                     <section class="col-12 question-options">
                         <div class="question">
                             <span class="question-no.">
@@ -82,61 +84,39 @@
                                 {% endautoescape %}
                             </h6>
                         </div>
-                        <div class="options" id={{ question_id }}>
-                            <div class="radio">
-                                    <input type="radio" name="optionsRadios"  value="1" class="option1">
-                                    {{ question.choice1|safe|escape }}
-                            </div>
-                            <div class="radio">
-                                    <input type="radio" name="optionsRadios"  value="2" class="option2">
-                                    {{ question.choice2|safe|escape }}
-                            </div>
-                            <div class="radio">
-                                    <input type="radio" name="optionsRadios" value="3" class="option3">
-                                    {{ question.choice3|safe|escape }}
-                            </div>
-                            <div class="radio">
-                                    <input type="radio" name="optionsRadios" value="4" class="option4">
-                                    {{ question.choice4|safe|escape }}
-                            </div>
-                        </div>
+
                     </section>
 
                     <section class="col-12 ">
+
                         <div class="response">
                             {% if id == 1 %}
-                            <button type="button" class="btn btn-raised btn-primary csq" disabled>Previous</button>
+                            <button type="button" class="btn btn-raised btn-primary" disabled>Previous</button>
                             {% else %}
-                            <a href={% url 'category' category.category id|add:"-1" %}>
-                                <button type="button" class="btn btn-raised btn-primary csq" data-id="2">Previous</button>
+                            <a href={% url 'algorithm' id|add:"-1" %}>
+                                <button type="button" class="btn btn-raised btn-primary" >Previous</button>
                             </a>
                             {% endif %}
 
-                            <a href={% url 'category' category.category id|add:"1" %}>
-                                <button type="button" class="btn btn-raised btn-warning csq" data-id="2">Mark for review & next</button>
+                            <a href={% url 'algorithm' id|add:"1" %}>
+                                <button type="button" class="btn btn-raised btn-warning">Next</button>
                             </a>
-                            <a href={% url 'category' category.category id|add:"1" %}>
-                                <button type="button" class="btn btn-raised btn-primary csq" data-id="3">Save and next</button>
-                            </a>
+
                         </div>
                     </section>
                 </div>
             </div>
             <div class="col-3">
                 <div class="row question-status">
-                    {% for i, value in status_dict.items %}
+                    {% for i in question_list_number %}
                     <div class="col-4">
-                        <a href={% url 'category' category.category i %}>
-                        {% if value == 1 %}
-                            <button type="button" class="btn btn-raised btn-active status1" style="background-color: white">{{ i }}</button>
-                            {% elif value == 2 %}
-                            <button type="button" class="btn btn-raised btn-active status2" style="background-color: blue">{{ i }}</button>
-                            {% elif value == 3 %}
-                            <button type="button" class="btn btn-raised btn-active status3" style="background-color: red">{{ i }}</button>
-                            {% endif %}
+                        <a href={% url 'algorithm' i %}>
+                            <button type="button" class="btn btn-raised btn-active status3" >{{ i }}</button>
+
                         </a>
                     </div>
                     {% endfor %}
+
                 </div>
                 <div class="end">
                     <div class="col-12">
@@ -151,71 +131,7 @@
 
 
 
-<script>
-    $(document).ready(function() {
-        $("input").on('change', function () {
-            var option_number = $("input[name='optionsRadios']:checked").val();
-            var question_id = "{{ question_id }}";
 
-            $.ajax({
-                url: '{% url 'answer' %}',
-                data: {
-                    'option_number': option_number,
-                    'question_id': question_id,
-
-                },
-                success: function (data) {
-                    var value = data.candidate_answer;
-                    if(value==-2){
-                        window.location.href = data.url;
-                    }
-                    else{
-                    $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
-                    $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
-                }}
-            })
-        })
-    });
-
-
-    $(window).on("load", function() {
-        var question_id = "{{ question_id }}";
-        console.log(question_id);
-        $.ajax({
-                url: '{% url 'user_answer' %}',
-                data: {
-                    'question_id': question_id,
-                },
-                success: function (data) {
-                    var value = data.candidate_answer;
-
-                    $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
-                    if(value!=-1){
-                    $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
-                }}
-            })
-    });
-
-
-    $(document).ready(function() {
-        $(".csq").on('click', function () {
-            var status = $(this).attr("data-id");
-            console.log("st->",status);
-            var question_id = $(".options").attr("id");
-            $.ajax({
-                url: '{% url 'save_status' %}',
-                data: {
-                    'question_id': question_id,
-                    'status': status
-                },
-                success: function (data) {
-                    console.log(data.status);
-                }
-            })
-        })
-    });
-
-</script>
          <script>
 
         function getTimeRemaining(endtime) {

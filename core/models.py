@@ -82,8 +82,6 @@ class SelectedAnswer(models.Model):
         return st
 
 
-
-
 class Algorithm(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     question_text = RichTextUploadingField()

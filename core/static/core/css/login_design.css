@@ -20,7 +20,7 @@ main .sign-in .heading{
     padding: 10px;
     text-align: center;
     /* background: linear-gradient(to right, #007bff, #0076f5, #0071eb, #006de2, #0068d8); */
-    background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
     color: #fff;
     border-top-left-radius: 0.125rem;
     border-top-right-radius: 0.125rem;
@@ -36,7 +36,7 @@ main .sign-in .input-group{
 }
 
 input{
-    font-family: 'FontAwesome', 'Montserrat', sans-serif;
+    font-family: 'FontAwesome', 'Roboto', sans-serif;
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit;

@@ -14,11 +14,27 @@ main .test-list .heading{
     text-align: center;
 }
 
-main .test-list .table-head{
-    background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
+main .test-list .table-head th{
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
     color: #fff;
     margin-bottom: 2px;
     text-align: center;
+}
+
+main .test-list .table-head th:nth-child(1){
+    width: 20px !important;
+}
+
+main .test-list .table-head th:nth-child(2){
+    width: 120px !important;
+}
+
+main .test-list .table-head th:nth-child(3){
+    width: 150px !important;
+}
+
+main .test-list .table-head th:nth-child(4){
+    width: 120px !important;
 }
 
 main ol{
@@ -40,13 +56,13 @@ main ol li table td{
 }
 
 main ol li table tbody td:nth-child(1){
-    width: 230px !important;
+    width: 120px !important;
 }
 
 main ol li table tbody td:nth-child(2){
-    width: 180px !important;
+    width: 150px !important;
 }
 
 main ol li table tbody td:nth-child(3){
-    width: 180px !important;
+    width: 120px !important;
 }

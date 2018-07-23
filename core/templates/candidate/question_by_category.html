@@ -20,18 +20,50 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <img id="check" src="{% static 'core/assets/images/akglogo.png' %}">
+                <img id="check" src="{% static 'core/assets/images/silogo.png' %}">
             </div>
             <div class="heading">
-                <h3>AKGEC-Aptitude Test</h3>
+                <h3>Test Name</h3>
+            </div>
+            <div class="end">
+                <div class="col-12">
+                    <a href="{% url 'session_out' %}">
+                        <button type="submit" class="btn btn-raised btn-primary disabled">End Test</button>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="inst-timer">
-            <a href={% url 'instruction' %}>
-                <button type="button" class="btn btn-info bmd-btn-fab" data-toggle="tooltip" data-placement="bottom" title="Instructions">
+            <a>
+                <button type="button" class="btn btn-info bmd-btn-fab" data-toggle="modal" data-target="#inst-modal">
                     <i class="material-icons fas fa-info"></i>
                 </button>
             </a>
+            <div class="modal fade" id="inst-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Instruction</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="instructions-container">
+                            <div class="instructions">
+                                <h6>
+                                    {% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}
+                                </h6>
+                            </div>
+            
+                            <a href={% url 'category' category.category 1 %}>
+                                <button type="button" class="btn btn-raised btn-primary">OK</button>
+                            </a>
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="clockdiv" class="clockdiv">
                 <div class="bg-danger">
                     <span class="hours"></span>
@@ -136,13 +168,6 @@
                         </a>
                     </div>
                     {% endfor %}
-                </div>
-                <div class="end">
-                    <div class="col-12">
-                        <a href="{% url 'session_out' %}">
-                        <button type="submit" class="btn btn-raised btn-primary disabled">End Test</button>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

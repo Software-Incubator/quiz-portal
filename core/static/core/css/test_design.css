@@ -1,5 +1,4 @@
 main .test-container{
-    position: relative;
     padding-top: 150px;
 }
 
@@ -15,8 +14,7 @@ main .test-name{
 main .test-name .heading{
     padding: 10px;
     text-align: center;
-    background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
-    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
     border-top-left-radius: 0.125rem;
     border-top-right-radius: 0.125rem;
     color: #fff; 
@@ -30,5 +28,4 @@ main .test-name form{
 main .test-name form .btn{
     width: 100%;
     margin: 25px 0;
-    font-family: 'Montserrat', sans-serif;
 }

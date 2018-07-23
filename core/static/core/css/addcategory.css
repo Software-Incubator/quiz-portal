@@ -18,7 +18,7 @@ main .category-list .heading{
 }
 
 main .category-list .table-head th{
-    background: linear-gradient(to left bottom, #009688, #009e8e, #00a694, #00ae99, #00b69f);
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
     color: #fff !important;
     margin-bottom: 2px;
 }

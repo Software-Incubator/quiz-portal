@@ -62,7 +62,8 @@ class QuestionByCategory(generic.DetailView):
                 make_permutation(total_question, required_question)
                 which_question = random_question(required_question, int(candidate_id), id)
                 question = Question.objects.filter(category=category)[which_question - 1]
-
+                instruction = Instruction.objects.filter(test=test)
+                context_dict["instruction"] = instruction
                 context_dict["which_question"] = which_question
                 context_dict["test_name"] = test_name
                 context_dict["remain_time"] = remain_time

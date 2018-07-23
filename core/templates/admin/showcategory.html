@@ -1,0 +1,31 @@
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Show Questions
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="questions-list">
+        <h3 class="heading">Category List</h3>
+        <div id="accordian">
+            {% for i in l %}
+                <p>Categories for Test - {{ i.0 }}</p>
+                {% for j in i.1 %}
+                    <a href="{% url "Show_Questions" j.pk %}">
+                    <button class="btn" >See questions for {{ j.category }} category</button></a><br>
+                {% empty %}
+                    <p class="danger">No category for this test</p>
+                {% endfor %}
+            {% empty %}
+                <p class="danger" >No test present.</p>
+            {% endfor %}
+        </div>
+        </div>
+{% endblock%}

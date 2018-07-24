@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render_to_response
-from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Algorithm
+from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Algorithm, Marks
 import json
 import itertools
 import os
@@ -635,7 +635,6 @@ class AddAlgorithmView(View):
             else:
                 cats = Category.objects.filter(category='algorithm')
                 print('cats',cats)
-                # print(tests)
                 for cat in cats:
                     print(cat.test)
                     algo = Algorithm.objects.filter(test=cat.test)
@@ -703,6 +702,27 @@ class DeleteAlgorithmView(View):
         Algorithm.objects.filter(pk=pk).delete()
         return redirect('Add_Algorithm')
 
+
+class MarksCalculation(View):
+
+    def get(self, request, pk, *args, **kwargs):
+        cand = Candidate.objects.get(pk=pk)
+        test = Test.objects.get(test_name=cand.test_name)
+        cats = Category.objects.filter(test=test)
+        selects = SelectedAnswer.objects.filter(email=cand)
+        print(selects)
+        score = 0
+        for select in selects:
+            if select.question_text.negative() == 1:
+                if select.selected_choice == select.question_text.correct_choice:
+                    score += select.question_text.marks
+                else:
+                    score -= select.question_text.negative_marks
+            else:
+                score += 1
+        return redirect('Add_Algorithm')
+
+
 def error404(request):
     message = 'Error 404 \n Page not found'
     return render(request, 'admin/error.html', {'message': message})
@@ -721,3 +741,5 @@ def error403(request):
 def error500(request):
     message = 'Error 500 \n Server Error'
     return render(request, 'admin/error.html', {'message': message})
+
+

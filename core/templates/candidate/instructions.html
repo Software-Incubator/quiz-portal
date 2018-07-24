@@ -7,15 +7,23 @@
 <a href={% url 'session_out' %}>
     <button type="button" class="btn btn-raised btn-primary">Log-Out</button>
 </a>
-{% endblock %} 
+{% endblock %}
 
 {% block content %}
 <div class="instructions-container">
     <h3>INSTRUCTIONS</h3>
         <div class="instructions">
-            <h6>
-                {% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}
-            </h6>
+            <table class="table table-hover">
+                <tr>
+                    {% for instr in instruction %} 
+                        {% autoescape off %} 
+                        <td>
+                        {{ instr.instruction }}
+                        {% endautoescape %} 
+                        </td>
+                        {% endfor %}
+                </tr>
+            </table>
         </div>
 
         <a href={% url 'category' category.category 1 %}>

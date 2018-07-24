@@ -86,4 +86,8 @@ class Algorithm(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     question_text = RichTextUploadingField()
 
+class Marks(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    marks = models.IntegerField(blank=False)
+
 

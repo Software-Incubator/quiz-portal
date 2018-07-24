@@ -246,30 +246,44 @@ class EditQuestionView(View):
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
 
-class ShowQuestionsView(View):
-    template_name = 'admin/showquestion.html'
+class ShowCategoryView(View):
+    template_name = 'admin/showcategory.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('admin_auth')
-        return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
+        return super(ShowCategoryView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         l = []
         tests = Test.objects.all()
         for test in tests:
             l1 = []
-            l3 = []
             l1.append(test)
             cats = Category.objects.filter(test=test)
-            for cat in cats:
-                l2 = []
-                l2.append(cat)
-                l2.append(Question.objects.filter(category=cat))
-                l3.extend([l2])
-            l1.extend([l3])
+            l1.append(cats)
+            # for cat in cats:
+            #     l2 = []
+            #     l2.append(cat)
+            #     l2.append(Question.objects.filter(category=cat))
+            #     l3.extend([l2])
+            # l1.extend([l2])
             l.extend([l1])
+            print(l)
         return render(request, self.template_name, {'l': l})
+
+class ShowQuestionsView(View):
+    template_name = 'admin/showquestions.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('admin_auth')
+        return super(ShowQuestionsView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk, *args, **kwargs):
+        cat = Category.objects.get(pk=pk)
+        ques = Question.objects.filter(category=cat)
+        return render(request, self.template_name, {'ques':ques, 'cat':cat})
 
 
 class DeleteQuestionView(View):
@@ -281,8 +295,7 @@ class DeleteQuestionView(View):
 
     def get(self, request, pk, *args, **kwargs):
         Question.objects.filter(pk=pk).delete()
-        return redirect('Show_Questions')
-
+        return redirect('Show_Category')
 
 class AddCategoryView(View):
     form_class = forms.CategoryForm

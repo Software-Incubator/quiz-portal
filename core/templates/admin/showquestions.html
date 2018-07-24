@@ -1,0 +1,49 @@
+{% extends 'admin/base_for_admin.html' %}
+{% load static %}
+
+{% block title %}
+    Show Questions
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="questions-list">
+        <h3 class="heading">Questions for category - {{ cat.category }}</h3>
+        <div id="accordian">
+            {% for que in ques %}
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ol>
+                                    <div>
+                                        <span style="float: left;">Q. &nbsp;</span>
+                                        <span style="float: left;">{{ que.question_text|safe|escape }}</span>
+                                    </div><br><br>
+                                    <li>{{ que.choice1|safe|escape }}</li>
+                                    <li>{{ que.choice2|safe|escape }}</li>
+                                    <li>{{ que.choice3|safe|escape }}</li>
+                                    <li>{{ que.choice4|safe|escape }}</li>
+                                    <p>Correct Choice - {{ que.correct_choice|safe|escape }}</p>
+                                </ol>
+                                <a href="{% url "Edit_Question" que.pk %}">
+                                    <button type="button" class="btn btn-raised btn-primary">Edit</button>
+                                </a>
+                                <a href="{% url "Delete_Question" que.pk %}">
+                                    <button type="button" class="btn btn-raised btn-danger">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% empty %}
+                <p style="color: red;" >No Questions for this category present.</p>
+            {% endfor %}
+        </div>
+        </div>
+{% endblock%}

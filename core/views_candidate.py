@@ -312,8 +312,6 @@ class SaveStatus(generic.ListView):
 
 
 
-
-
 def logout(request):
     try:
         del request.session['email']

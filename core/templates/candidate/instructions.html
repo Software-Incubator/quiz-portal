@@ -10,17 +10,22 @@
 {% endblock %} 
 
 {% block content %}
-<div class="instructions-container">
-    <h3>INSTRUCTIONS</h3>
+<div class="instructions-container row">
+    <div class="col-4 bg-img">
+            <img src="{% static 'core/assets/images/instruction.png' %}" class="img">
+            <!-- <button type="btn" class="btn btn-primary btn-raised">Sign Up</button> -->
+    </div>
+    <div class="col-8">
         <div class="instructions">
             <h6>
                 {% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}
             </h6>
-        </div>
-
+        
         <a href={% url 'category' category.category 1 %}>
             <button type="button" class="btn btn-raised btn-primary">OK</button>
         </a>
 
+        </div>
+    </div>
 </div>
 {% endblock %}

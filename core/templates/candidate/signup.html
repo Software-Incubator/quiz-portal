@@ -18,12 +18,13 @@ Admin login_design
 
 {% block content %}
     <main>
-        <div class="sign-up">
-            <div class="heading">
-                <h6>Sign-Up</h6>
+        <div class="sign-up row" >
+            <div class="col-4 bg-img">
+                <img src="{% static 'core/assets/images/student.png' %}" class="img">
+                <!-- <button type="btn" class="btn btn-primary btn-raised">Sign Up</button> -->
             </div>
-
-            <form name="CandidateRegistration" method="post">
+            <div class="col-8">
+            <form class="row" name="CandidateRegistration" method="post">
                 {% csrf_token %}
 {#                <!--{% if form.errors %}-->#}
 {#                    <!--{% for field in form %}-->#}
@@ -39,30 +40,37 @@ Admin login_design
 {#                        <!--</div>-->#}
 {#                    <!--{% endfor %}-->#}
 {#                <!--{% endif %}-->#}
-                <div class="form-group">
-                    <label for="nameInput1" class="bmd-label-floating">Name</label>
-                    <input type="text" name="name" class="form-control" id="nameInput1" value="{{ form.name.value|default_if_none:'' }}">
-                    <p><strong>{{ form.name.errors }}</strong></p>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="nameInput1" class="bmd-label-floating">&#xf007 Name</label>
+                        <input type="text" name="name" class="form-control" id="nameInput1" value="{{ form.name.value|default_if_none:'' }}">
+                        <p>
+                            <strong class="text-danger">{{ form.name.errors }}</strong>
+                        </p>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="emailInput" class="bmd-label-floating">&#xf0e0 Email Address</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{ form.email.value|default_if_none:'' }}">
+                        <p>
+                            <strong class="text-danger">{{ form.email.errors}}</strong>
+                        </p>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="nameInput2" class="bmd-label-floating">&#xf061 Student no.</label>
+                        <input type="text" name="father_name" class="form-control" id="nameInput2" value="{{ form.father_name.value|default_if_none:'' }}">
+                        <p>
+                            <strong class="text-danger">{{ form.father_name.errors}}</strong>
+                        </p>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="phoneInput" class="bmd-label-floating">&#xf10b Mobile Number</label>
+                        <input type="text" name="phone_number" class="form-control" id="phoneInput" value="{{ form.phone_number.value|default_if_none:'' }}">
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="emailInput" class="bmd-label-floating">Email Address</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{ form.email.value|default_if_none:'' }}">
-                    <p><strong>{{ form.email.errors}}</strong></p>
-                </div>
-
-                <div class="form-group">
-                    <label for="nameInput2" class="bmd-label-floating">Father's Name</label>
-                    <input type="text" name="father_name" class="form-control" id="nameInput2" value="{{ form.father_name.value|default_if_none:'' }}">
-                    <p><strong>{{ form.father_name.errors}}</strong></p>
-                </div>
-
-                <div class="form-group">
-                    <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
-                    <input type="text" name="phone_number" class="form-control" id="phoneInput" value="{{ form.phone_number.value|default_if_none:'' }}">
-                    <p><strong>{{ form.phone_number.errors}}</strong></p>
-                </div>
-                <div class="form-group select-category">
+                <!-- <div class="form-group select-category">
                     <label for="testInput" class="bmd-label-floating">Select a test</label>
 
                     <select class="form-control" id="testInput" name='test_name'>
@@ -70,7 +78,41 @@ Admin login_design
                             {{ t}}
                         {% endfor %}
                     </select>
-                    <p><strong>{{ form.test_name.errors}}</strong></p>
+                    <p><strong class="text-danger">{{ form.test_name.errors}}</strong></p>
+                </div> -->
+                <div class="col-6">
+                    <div class="form-group sel">
+                        <label for="branchSelect" class="bmd-label-floating">Branch</label>
+                        <select class="form-control" name="branchSelect" id="branchSelect">                            
+                            <option value="" disabled>Branch</option>
+                            <option value="CSE">CSE</option>
+                            <option value="IT">IT</option>
+                            <option value="ECE">ECE</option>
+                            <option value="EN">EN</option>
+                            <option value="ME">ME</option>
+                            <option value="CIVIL">CIVIL</option>
+                        </select>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="hostelerDays" id="hostelerDas1" value="option1"> Hosteler
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="hostelerDays" id="hostelerDas2" value="option2"> Day Scholer
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="techInput" class="bmd-label-floating">Mention your Tech</label>
+                        <input type="text" class="form-control" id="techInput">
+                        <span class="bmd-help">eg. HTML,CSS Python etc.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="techInput" class="bmd-label-floating">Familiar with any designing tool?</label>
+                        <input type="text" class="form-control" id="techInput">
+                        <span class="bmd-help">eg. Photoshopt, Coral Redraw etc.</span>
+                    </div>
                 </div>
                 <div class="btn-field">
                   <button type="submit" class="btn btn-raised btn-primary">Sign-Up</button>
@@ -79,4 +121,54 @@ Admin login_design
 
         </div>
     </main>
+{% endblock %}
+
+{% block script %}
+    
+    <!-- <script>$('.sel').each(function() {
+            $(this).children('select').css('display', 'none');
+            
+            var $current = $(this);
+            
+            $(this).find('option').each(function(i) {
+              if (i == 0) {
+                $current.prepend($('<div>', {
+                  class: $current.attr('class').replace(/sel/g, 'sel__box')
+                }));
+                
+                var placeholder = $(this).text();
+                $current.prepend($('<span>', {
+                  class: $current.attr('class').replace(/sel/g, 'sel__placeholder'),
+                  text: placeholder,
+                  'data-placeholder': placeholder
+                }));
+                
+                return;
+              }
+              
+              $current.children('div').append($('<span>', {
+                class: $current.attr('class').replace(/sel/g, 'sel__box__options'),
+                text: $(this).text()
+              }));
+            });
+          });
+          
+          // Toggling the `.active` state on the `.sel`.
+          $('.sel').click(function() {
+            $(this).toggleClass('active');
+          });
+          
+          // Toggling the `.selected` state on the options.
+          $('.sel__box__options').click(function() {
+            var txt = $(this).text();
+            var index = $(this).index();
+            
+            $(this).siblings('.sel__box__options').removeClass('selected');
+            $(this).addClass('selected');
+            
+            var $currentSel = $(this).closest('.sel');
+            $currentSel.children('.sel__placeholder').text(txt);
+            $currentSel.children('select').prop('selectedIndex', index + 1);
+          });
+          </script> -->
 {% endblock %}

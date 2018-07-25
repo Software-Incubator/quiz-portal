@@ -59,13 +59,21 @@ class Question(models.Model):
 
 
 class Candidate(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=100,blank=False)
+    std_no_regex = RegexValidator(regex=r"^\d{7}$")
+    std_no=models.CharField(unique=True,validators=[std_no_regex],blank=False,max_length=7)
+    email = models.EmailField(unique=True,blank=False)
     father_name = models.CharField(max_length=100)
     phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
-    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=False)
+    branch = models.CharField(max_length=5)
+    skills = models.CharField(max_length=255,blank=True)
+    hosteler = models.CharField(max_length=3,blank=False)
+    designer = models.CharField(
+        max_length=255,blank=False)
     test_name = models.CharField(max_length=100, null=Test)
     time = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.name + ' - ' + self.email

@@ -1,9 +1,6 @@
 {% extends 'admin/base_for_admin.html' %} 
 {% load static %} 
 
-{% block title %} 
-Show Result 
-{% endblock %} 
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
@@ -145,7 +142,7 @@ Show Result
     {% endfor %}
     <div style="margin: auto;">
         <a href="{% url "Delete_result" cand.pk %}">
-            <button type="button" class="btn btn-raised btn-danger">Delete_result</button>
+            <button type="button" class="btn btn-raised btn-danger">Delete Result</button>
         </a>
     </div>{% endblock %}
     

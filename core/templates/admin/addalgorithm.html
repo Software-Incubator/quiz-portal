@@ -1,10 +1,6 @@
 {% extends 'admin/base_for_admin.html' %}
 {% load static %}
 
-{% block title %}
-    Add Algorithm
-{% endblock %}
-
 {% block head %}
     <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
@@ -40,7 +36,7 @@
         {{ form.question_text }}
         <p><strong>{{ form.question_text.errors }}</strong></p>
         </div>
-        <br><button type="submit" class="btn btn-primary btn-raised">submit</button>
+        <br><button type="submit" class="btn btn-primary btn-raised">Submit</button>
     </form>
     {% for i in l %}
         <div>

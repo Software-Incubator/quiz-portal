@@ -1,9 +1,6 @@
 {% extends 'admin/base_for_admin.html' %}
 {% load static %}
 
-{% block title %}
-    Edit Questions 
-{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
@@ -76,7 +73,7 @@
         {{ form.correct_choice }}
         <span><strong>{{ form.correct_choice.errors }}</strong></span>
         </div>
-        <br><button type="submit" class="btn btn-raised btn-primary">submit</button><br>
+        <br><button type="submit" class="btn btn-raised btn-primary">Submit</button><br>
     </form>
 </div>
 {% endblock %}

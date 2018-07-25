@@ -70,7 +70,7 @@ class Candidate(models.Model):
     skills = models.CharField(max_length=255,blank=True)
     hosteler = models.CharField(max_length=3,blank=False)
     designer = models.CharField(
-        max_length=255,blank=False)
+        max_length=255,blank=True)
     test_name = models.CharField(max_length=100, null=Test)
     time = models.DateTimeField(auto_now_add=True)
 
@@ -93,6 +93,7 @@ class SelectedAnswer(models.Model):
 class Algorithm(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     question_text = RichTextUploadingField()
+
 
 class Marks(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)

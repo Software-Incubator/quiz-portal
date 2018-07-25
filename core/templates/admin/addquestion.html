@@ -1,10 +1,6 @@
 {% extends 'admin/base_for_admin.html' %}
 {% load static %}
 
-{% block title %}
-    Add Question 
-{% endblock %}
-
 {% block head %}
     <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
@@ -76,7 +72,7 @@
         {{ form.correct_choice }}
         <span><strong>{{ form.correct_choice.errors }}</strong></span>
         </div>
-        <br><button type="submit" class="btn btn-primary btn-raised">submit</button>
+        <br><button type="submit" class="btn btn-primary btn-raised">Submit</button>
     </form>
     </div>
 </div>

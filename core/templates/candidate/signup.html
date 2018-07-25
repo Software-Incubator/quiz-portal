@@ -9,6 +9,11 @@ Admin login_design
 {% block head%}
 <link rel="stylesheet" href="{% static 'core/css/signup_design.css' %}">
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+     <script>
+window.location.hash="no-back-button";
+window.location.hash="Again-No-back-button";
+window.onhashchange=function(){window.location.hash="#";}
+</script>
 {% endblock %} 
 
 {% block header %}
@@ -26,20 +31,6 @@ Admin login_design
 
             <form name="CandidateRegistration" method="post">
                 {% csrf_token %}
-{#                <!--{% if form.errors %}-->#}
-{#                    <!--{% for field in form %}-->#}
-{#                        <!--{% for error in field.errors %}-->#}
-{#                            <!--<div class="alert alert-danger">-->#}
-{#                                <!--<strong>{{ error|escape }}</strong>-->#}
-{#                            <!--</div>-->#}
-{#                        <!--{% endfor %}-->#}
-{#                    <!--{% endfor %}-->#}
-{#                    <!--{% for error in form.non_field_errors %}-->#}
-{#                        <!--<div class="alert alert-danger">-->#}
-{#                            <!--<strong>{{ error|escape }}</strong>-->#}
-{#                        <!--</div>-->#}
-{#                    <!--{% endfor %}-->#}
-{#                <!--{% endif %}-->#}
                 <div class="form-group">
                     <label for="nameInput1" class="bmd-label-floating">Name</label>
                     <input type="text" name="name" class="form-control" id="nameInput1" value="{{ form.name.value|default_if_none:'' }}">

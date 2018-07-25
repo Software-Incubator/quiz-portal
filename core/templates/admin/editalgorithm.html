@@ -1,9 +1,6 @@
 {% extends 'admin/base_for_admin.html' %}
 {% load static %}
 
-{% block title %}
-    Edit Algorithm
-{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'core/css/addquestion_instruction.css' %}">
@@ -39,7 +36,7 @@
         {{ form.question_text }}
         <strong>{{ form.test_name.errors }}</strong>
         </div>
-        <br><button type="submit" class="btn btn-raised btn-primary">submit</button>
+        <br><button type="submit" class="btn btn-raised btn-primary">Submit</button>
     </form>
 </div>
 {% endblock %}

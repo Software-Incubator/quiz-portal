@@ -2,9 +2,6 @@
 
 {% load static %} 
 
-{% block title %} 
-Test Name
-{% endblock %} 
 
 {% block head%}
 <link rel="stylesheet" href="{% static 'core/css/test_design.css' %}">
@@ -59,7 +56,7 @@ Test Name
                     <strong class="text-danger">{{ form.duration.errors }}</strong>
                 </p>
             </div>
-            <button type="submit" class="btn btn-raised btn-primary">ADD</button>
+            <button type="submit" class="btn btn-raised btn-primary">Add</button>
         </form>
     </div>
 </main>

@@ -17,6 +17,7 @@ Admin login_design
 {% endblock %}
 
 {% block content %}
+    {% csrf_token %}
     <main>
         <div class="sign-up">
             <div class="heading">
@@ -46,6 +47,12 @@ Admin login_design
                 </div>
 
                 <div class="form-group">
+                    <label for="std_noInput" class="bmd-label-floating">Student No.</label>
+                    <input type="text" name="std_no" class="form-control" id="std_noInput" value="{{ form.std_no.value|default_if_none:'' }}">
+                    <p><strong>{{ form.std_no.errors }}</strong></p>
+                </div>
+
+                <div class="form-group">
                     <label for="emailInput" class="bmd-label-floating">Email Address</label>
                     <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{ form.email.value|default_if_none:'' }}">
                     <p><strong>{{ form.email.errors}}</strong></p>
@@ -62,6 +69,41 @@ Admin login_design
                     <input type="text" name="phone_number" class="form-control" id="phoneInput" value="{{ form.phone_number.value|default_if_none:'' }}">
                     <p><strong>{{ form.phone_number.errors}}</strong></p>
                 </div>
+
+                 <div class="form-group select-category">
+                    <label for="branchInput" class="bmd-label-floating">Choose your branch</label>
+
+                    <select class="form-control" id="branchInput" name='branch'>
+                        {% for b in form.branch %}
+                            {{b}}
+                        {% endfor %}
+                    </select>
+                    <p><strong>{{ form.branch.errors}}</strong></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="skillInput" class="bmd-label-floating">Mention your Technical skills</label>
+                    <input type="text" name="skills" class="form-control" id="skillInput" value="{{ form.skills.value|default_if_none:'' }}">
+                    <p><strong>{{ form.skills.errors}}</strong></p>
+                </div>
+
+                <div class="form-group select-category">
+                    <label for="hostelerInput" class="bmd-label-floating">Are you a hosteler</label>
+
+                    <select class="form-control" id="hostelerInput" name='hosteler'>
+                        {% for h in form.hosteler %}
+                            {{ h}}
+                        {% endfor %}
+                    </select>
+                    <p><strong>{{ form.hosteler.errors}}</strong></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="designerInput" class="bmd-label-floating">Design</label>
+                    <input type="text" name="designer" class="form-control" id="designerInput" value="{{ form.designer.value|default_if_none:'' }}">
+                    <p><strong>{{ form.designer.errors}}</strong></p>
+                </div>
+
                 <div class="form-group select-category">
                     <label for="testInput" class="bmd-label-floating">Select a test</label>
 

@@ -8,6 +8,18 @@ from django.contrib.auth.models import User
 import re
 
 
+BRANCH_CHOICES = (('cse', 'CSE'),
+                  ('it', 'IT'),
+                  ('ec', 'ECE'),
+                  ('en', 'EN'),
+                  ('me', 'ME'),
+                  ('ce', 'CE'),
+                  ('ei', 'EI'),
+                  ('mca', 'MCA'),
+                  )
+YES_OR_NO = (('y', 'yes'),
+             ('n', 'no'))
+
 def category_name_list():
     categories = Category.objects.all()
     CATEGORY_CHOICE = ()
@@ -83,19 +95,19 @@ class QuestionForm(forms.Form):
 
 
 class CandidateRegistration(forms.ModelForm):
-    test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label='Please Choose')
 
+    test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label='Please Choose')
+    branch = forms.ChoiceField(
+        choices=BRANCH_CHOICES,
+    )
+
+    hosteler = forms.ChoiceField(
+        choices=YES_OR_NO,
+    )
     class Meta:
         model = Candidate
-        fields = ['name','email','father_name','phone_number','test_name']
+        fields = ['name','email','father_name','std_no','phone_number','branch','hosteler','skills','designer','test_name']
 
-    def unique_email(self):
-
-        email = self.cleaned_data.get('email')
-
-        if Candidate.objects.all().filter(email=email).exists():
-            raise forms.ValidationError("Email already exist in data base")
-        return email
 
 class ChooseTestForm(forms.Form):
     test_name = forms.ChoiceField(choices=test_name_list,label="Choose Test", widget=forms.Select() )

@@ -162,9 +162,10 @@ class QuestionByCategory(generic.DetailView):
                         obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                         status_dict[i] = obj.status
                     except:
+                        print("something wrong")
                         obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
                         status_dict[i] = 1
-
+                print(status_dict)
                 context_dict["status_dict"] = status_dict
 
             else:
@@ -270,6 +271,7 @@ class UserAnswerView(generic.ListView):
                                                     )
                 object.selected_choice = int(option_number)
                 object.save()
+                print(option_number, "on")
             except:
                 object = SelectedAnswer.objects.create(email=candidate,
                                                     question_text=question,

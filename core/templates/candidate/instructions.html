@@ -20,10 +20,11 @@
             <h6>
                 {% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}
             </h6>
-        
+        <div class="ok-btn">
         <a href={% url 'category' category.category 1 %}>
             <button type="button" class="btn btn-raised btn-primary">OK</button>
         </a>
+        </div>
 
         </div>
     </div>

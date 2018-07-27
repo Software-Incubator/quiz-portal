@@ -83,8 +83,8 @@
                             <div class="col-12 question">
                                 {{ question.question_text|safe|escape }}
                             </div>
-                            <div class="col-12 answers options">
-                                <div class="radio " id={{ question_id }}>
+                            <div class="col-12 answers options" id={{ question_id }}>
+                                <div class="radio " >
                                     <label>
                                         <input type="radio" name="optionsRadios" id="optionsRadios1" value="1">{{ question.choice1|safe|escape }}
                                     </label>
@@ -255,7 +255,9 @@
 
         $(document).ready(function () {
             $(".csq").on('click', function () {
+                console.log("status check");
                 var status = $(this).attr("data-id");
+
                 console.log("st->", status);
 
                 var question_id = $(".options").attr("id");

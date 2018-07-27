@@ -161,6 +161,7 @@ class QuestionByCategory(generic.DetailView):
                     try:
                         obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                         status_dict[i] = obj.status
+                        print(obj,obj.status)
                     except:
                         print("something wrong")
                         obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
@@ -314,7 +315,6 @@ class SaveStatus(generic.ListView):
         if request.is_ajax():
             email = request.session["email"]
             candidate = Candidate.objects.get(email=email)
-
             question_id = request.GET["question_id"]
             status = int(request.GET["status"])
             question = Question.objects.get(id=int(question_id))

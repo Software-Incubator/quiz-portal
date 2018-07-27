@@ -27,7 +27,7 @@
                 <img id="check" src="{% static 'core/assets/images/silogo.png' %}">
             </div>
             <div class="heading">
-                <h3>Test Name</h3>
+                <h3>{{ test_name }}</h3>
             </div>
             <div class="end">
                 <div class="col-12">
@@ -59,7 +59,12 @@
                 <div class="col-9">
                     <nav id="nav" class="navbar">
                         {% for category in all_category %}
-                            <ul class="nav nav-pills active">
+                            {% if category.category == category_name %}
+                                <ul class="nav nav-pills active">
+                            {% else %}
+                                 <ul class="nav nav-pills">
+                            {% endif %}
+
                             <li class="nav-item">
                                 <a href={% url 'category' category.category 1 %}>
                                 {{ category.category }}
@@ -68,7 +73,7 @@
                             </ul>
                         {% endfor %}
                          {% if algo_count != 0 %}
-                            <ul class="nav nav-pills active">
+                            <ul class="nav nav-pills">
                             <li class="nav-item">
                                 <a href={% url 'algorithm' 1 %}>
                                 Algorithm

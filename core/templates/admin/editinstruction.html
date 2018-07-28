@@ -15,13 +15,6 @@
     <form name="InstructionForm" method="post" novalidate>
         <div>
         {% csrf_token %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
         </div>
         <div>
         {{ form.media }}
@@ -29,12 +22,12 @@
         {{ form.instruction.label_tag }}
         </h6>
         {{ form.instruction }}
-        <p><strong>{{ form.instruction.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.instruction.errors }}</strong></p>
         </div>
         <div>
         {{ form.test_name.label_tag }}
         {{ form.test_name }}
-        <strong>{{ form.test_name.errors }}</strong>
+        <strong style="color: red;">{{ form.test_name.errors }}</strong>
         </div>
         <br><button type="submit" class="btn btn-raised btn-primary">Submit</button>
     </form>

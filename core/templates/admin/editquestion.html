@@ -15,13 +15,6 @@
     <form name="QuestionForm" method="post" novalidate>
         <div>
         {% csrf_token %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
         {{ form.media }}
         </div>
         <div class="select-category">
@@ -30,14 +23,14 @@
         <strong>{{ form.test_name.errors }}</strong>
         {{ form.category.label_tag }}
         {{ form.category }}
-        <strong>{{ form.category.errors }}</strong>
+        <strong style="color: red;">{{ form.category.errors }}</strong>
         </div>
         <div>
         <h6>
         {{ form.question_text.label_tag }}
         </h6>
         {{ form.question_text }}
-        <p><strong>{{ form.question_text.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.question_text.errors }}</strong></p>
         </div>
         <h5>Enter choices</h5>
         <div>
@@ -45,33 +38,33 @@
         {{ form.choice1.label_tag }}
         </h6>
         {{ form.choice1 }}
-        <p><strong>{{ form.choice1.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.choice1.errors }}</strong></p>
         </div>
         <div>
         <h6>
         {{ form.choice2.label_tag }}
         </h6>
         {{ form.choice2 }}
-        <p><strong>{{ form.choice2.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.choice2.errors }}</strong></p>
         </div>
         <div>
         <h6>
         {{ form.choice3.label_tag }}
         </h6>
         {{ form.choice3 }}
-        <p><strong>{{ form.choice3.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.choice3.errors }}</strong></p>
         </div>
         <div>
         <h6>
         {{ form.choice4.label_tag }}
         </h6>
         {{ form.choice4 }}<br>
-        <p><strong>{{ form.choice4.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.choice4.errors }}</strong></p>
         </div>
         <div>
         {{ form.correct_choice.label_tag }}
         {{ form.correct_choice }}
-        <span><strong>{{ form.correct_choice.errors }}</strong></span>
+        <span><strong style="color: red;">{{ form.correct_choice.errors }}</strong></span>
         </div>
         <br><button type="submit" class="btn btn-raised btn-primary">Submit</button><br>
     </form>

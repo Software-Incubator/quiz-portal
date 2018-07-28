@@ -26,3 +26,7 @@ main .editquestion form .select-category{
 main .editquestion,.instruction form .select-category h5,h6 {
     margin: 10px;
 }
+
+li {
+    list-style: none; 
+}

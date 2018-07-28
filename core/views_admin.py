@@ -24,6 +24,29 @@ from io import BytesIO
 import xhtml2pdf.pisa as pisa
 
 
+def CalculateMarks(pk):
+
+    cand = Candidate.objects.get(pk=pk)
+    test = Test.objects.get(test_name=cand.test_name)
+    cats = Category.objects.filter(test=test)
+    selects = SelectedAnswer.objects.filter(email=cand)
+    score = 0
+    for select in selects:
+        if select.question_text.negative == 1:
+            if select.selected_choice == select.question_text.correct_choice:
+                score += select.question_text.marks
+            elif select.selected_choice == None:
+                pass
+            else:
+                score -= select.question_text.negative_marks
+        else:
+            if select.selected_choice == select.question_text.correct_choice:
+                score += select.question_text.marks
+    Marks.objects.create(test_name=test, candidate=cand, marks=score)
+    return 1
+
+
+
 class AdminAuth(generic.ListView):
     form_class = forms.AdminLoginForm
     template_name = 'admin/admin_login.html'
@@ -78,7 +101,6 @@ class TestName(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        # Tname = Test.objects.latest('test_name')
         return render(request, self.template_name, {'form': form})
 
     def post(self,request, *args, **kwargs):
@@ -93,8 +115,6 @@ class TestName(View):
                                     on_or_off=request.POST['on_or_off'])
                 return redirect('control_operation')
             else:
-                messages.error(self.request, "Data not valid.")
-                form = self.form_class
                 return render(self.request, self.template_name, {'form': form})
 
 
@@ -199,8 +219,6 @@ class AddQuestionView(View):
                 message = "Choices cannot be same"
                 return render(request, 'admin/error.html', {'message': message})
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
 
@@ -236,13 +254,11 @@ class EditQuestionView(View):
                     question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
                     choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
                     choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
-                return redirect('admin_auth')
+                return redirect('Show_Category')
             else:
                 message = "Choices cannot be same"
                 return render(request, 'admin/error.html', {'message': message})
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
 
@@ -262,14 +278,7 @@ class ShowCategoryView(View):
             l1.append(test)
             cats = Category.objects.filter(test=test)
             l1.append(cats)
-            # for cat in cats:
-            #     l2 = []
-            #     l2.append(cat)
-            #     l2.append(Question.objects.filter(category=cat))
-            #     l3.extend([l2])
-            # l1.extend([l2])
             l.extend([l1])
-            print(l)
         return render(request, self.template_name, {'l': l})
 
 class ShowQuestionsView(View):
@@ -329,11 +338,8 @@ class AddCategoryView(View):
                 Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
                 c = Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname, 
                                         total_question_display = (dict(request.POST)['number_of_questions'])[0])
-                print("C",c)
                 return redirect('control_operation')
             else:
-                messages.error(self.request, "Invalid data.")
-                form = self.form_class()
                 return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
 
@@ -381,6 +387,12 @@ class ShowCandidateListView(View):
         form = self.form_class()
         tests = Test.objects.all()
         cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
+        if tests[0].negative == 1:
+            for cand in cands:
+                try:
+                    Marks.objects.get(test_name=tests[0], candidate=cand)
+                except:
+                    CalculateMarks(cand.pk)
         return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
 
     def post(self, request, *args, **kwargs):
@@ -389,6 +401,12 @@ class ShowCandidateListView(View):
         if form.is_valid():
             test = form.cleaned_data.get('test_name')
             cands = Candidate.objects.filter(test_name=test).order_by("-time")
+            if tests[0].negative == 1:
+                for cand in cands:
+                    try:
+                        Marks.objects.get(test_name=test, candidate=cand)
+                    except:
+                        CalculateMarks(cand.pk)
             return render(request, self.template_name, {'cands': cands, 'form':form, 'test':test})
         else:
             cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
@@ -562,8 +580,6 @@ class AdminInstructionView(View):
                 Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
                 return redirect('admin_auth')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
 
@@ -596,8 +612,6 @@ class EditInstructionView(View):
                 Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
                 return redirect('control_operation')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
 
@@ -647,15 +661,12 @@ class AddAlgorithmView(View):
                 return render(request, 'admin/error.html', {'message': message})
             else:
                 cats = Category.objects.filter(category='algorithm')
-                print('cats',cats)
                 for cat in cats:
-                    print(cat.test)
                     algo = Algorithm.objects.filter(test=cat.test)
                     l1.append(cat.test.test_name)
                     l1.append(algo)
                     l.extend([l1])
                     l1=[]
-                print(l)
                 form = self.form_class()
                 return render(request, self.template_name, {'form': form, 'l':l})
 
@@ -670,8 +681,6 @@ class AddAlgorithmView(View):
             Algorithm.objects.create(test=test, question_text=(dict(request.POST)['question_text'])[0])
             return redirect('control_operation')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
 
@@ -699,8 +708,6 @@ class EditAlgorithmView(View):
                     question_text = (dict(request.POST)['question_text'])[0])
             return redirect('control_operation')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
 
@@ -715,25 +722,6 @@ class DeleteAlgorithmView(View):
         Algorithm.objects.filter(pk=pk).delete()
         return redirect('Add_Algorithm')
 
-
-class MarksCalculation(View):
-
-    def get(self, request, pk, *args, **kwargs):
-        cand = Candidate.objects.get(pk=pk)
-        test = Test.objects.get(test_name=cand.test_name)
-        cats = Category.objects.filter(test=test)
-        selects = SelectedAnswer.objects.filter(email=cand)
-        print(selects)
-        score = 0
-        for select in selects:
-            if select.question_text.negative() == 1:
-                if select.selected_choice == select.question_text.correct_choice:
-                    score += select.question_text.marks
-                else:
-                    score -= select.question_text.negative_marks
-            else:
-                score += 1
-        return redirect('Add_Algorithm')
 
 
 def error404(request):

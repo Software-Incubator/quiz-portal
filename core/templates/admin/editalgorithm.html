@@ -15,13 +15,6 @@
     <form name="InstructionForm" method="post" novalidate>
         <div>
         {% csrf_token %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
         </div>
         <div>
         {{ form.media }}

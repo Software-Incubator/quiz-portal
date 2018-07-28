@@ -15,26 +15,19 @@
     <form name="QuestionForm" method="post" novalidate>
         <div>
         {% csrf_token %}
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
         {{ form.media }}
         </div>
         <div class="select-category">
         {{ form.test_name.label_tag }}
         {{ form.test_name }}
-        <p><strong>{{ form.category.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.category.errors }}</strong></p>
         </div>
         <div>
         <h6>
         {{ form.question_text.label_tag }}
         </h6>
         {{ form.question_text }}
-        <p><strong>{{ form.question_text.errors }}</strong></p>
+        <p><strong style="color: red;">{{ form.question_text.errors }}</strong></p>
         </div>
         <br><button type="submit" class="btn btn-primary btn-raised">Submit</button>
     </form>

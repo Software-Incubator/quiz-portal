@@ -17,8 +17,8 @@ BRANCH_CHOICES = (('cse', 'CSE'),
                   ('ei', 'EI'),
                   ('mca', 'MCA'),
                   )
-YES_OR_NO = ((True ,'Hosteler'),
-             (False, 'Dayscholar'))
+YES_OR_NO = (('yes' ,'Hosteler'),
+             ('no', 'Dayscholar'))
 
 def category_name_list():
     categories = Category.objects.all()
@@ -101,7 +101,7 @@ class CandidateRegistration(forms.ModelForm):
         choices=BRANCH_CHOICES,
     )
 
-    hosteler = forms.ChoiceField(widget = forms.RadioSelect(),
+    hosteler = forms.ChoiceField(widget=forms.RadioSelect(),
     label = 'Are you a Hosteler?',
     choices = YES_OR_NO, required = True
     )

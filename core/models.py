@@ -69,7 +69,7 @@ class Candidate(models.Model):
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=False)
     branch = models.CharField(max_length=5)
     skills = models.CharField(max_length=255,blank=True)
-    hosteler = models.BooleanField(blank=False)
+    hosteler = models.CharField(blank=False,max_length=3)
     designer = models.CharField(
         max_length=255,blank=True)
     test_name = models.CharField(max_length=100, null=Test)

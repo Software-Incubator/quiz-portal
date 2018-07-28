@@ -88,20 +88,24 @@
                     </select>
                     <p><strong>{{ form.test_name.errors}}</strong></p>
                 </div>
-                 <div class="radio">
-                            <label>
-                                <input type="radio" name="hosteler" value="True"> Hosteler
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="hosteler" value="False"> Day Scholar
-                            </label>
-                        </div>
+{#                 <div class="radio">#}
+{#                            <label>#}
+{#                                <input type="radio" name="hosteler" value="True"> Hosteler#}
+{#                            </label>#}
+{#                        </div>#}
+{#                        <div class="radio">#}
+{#                            <label>#}
+{#                                <input type="radio" name="hosteler" value="False"> Day Scholar#}
+{#                            </label>#}
+{#                        </div>#}
+                {% for choice in form.hosteler %}
+
+  <div class="radio">{{ choice.tag }}{{ choice.choice_label }}</div>
+{% endfor %}
 
             </div>
                 <div class="btn-field">
-                  <button type="submit" class="btn btn-raised btn-primary">Sign-Up</button>
+                  <button type="submit" class="btn btn-raised btn-primary">Submit</button>
                 </div>
             </div>
             </form>

@@ -13,6 +13,8 @@ def make_permutation(n, required_question):
     global a
     a = [x for x in range(1, n + 1)]
     a = list(itertools.combinations(a, required_question))
+    if len(a)>10:
+        a = a[0:10]
 
 
 def random_question(n, can_id, ques_id):
@@ -85,7 +87,6 @@ class QuestionByCategory(generic.DetailView):
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        # user credential
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
         name=candidate.name
@@ -95,7 +96,6 @@ class QuestionByCategory(generic.DetailView):
         duration = test.duration
         dif_time = (dt.datetime.utcnow() - candidate.time.replace(tzinfo=None)).total_seconds()
         remain_time = duration*60 - round(dif_time)
-        # category info
         all_category = Category.objects.filter(test=test)
         all_category_count = all_category.count()
         category_name = kwargs["category_name"]
@@ -107,7 +107,6 @@ class QuestionByCategory(generic.DetailView):
             category = Category.objects.get(category=category_name, test=test)
             total_question = Question.objects.filter(category=category).count()
             required_question = category.total_question_display
-
             if required_question > total_question:
                 message = "More than required question select"
                 return render(request, 'candidate/error.html', {'message': message})
@@ -119,8 +118,7 @@ class QuestionByCategory(generic.DetailView):
 
                 if id not in range(1, required_question + 1):
                     return redirect(reverse('category', kwargs={"category_name": category_name,
-                                                                "id": 1,
-                                                                }))
+                                                                "id": 1 }))
                 # if last question of current category
                 if required_question==id:
                     last_question = 1
@@ -135,7 +133,6 @@ class QuestionByCategory(generic.DetailView):
                     context_dict["prev_category"] = prev_category
                     prev_category_obj = Category.objects.get(test=test, category=prev_category)
                     context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()
-
 
                 make_permutation(total_question, required_question)
                 which_question = random_question(required_question, int(candidate_id), id)
@@ -157,19 +154,15 @@ class QuestionByCategory(generic.DetailView):
                 status_dict = {}
                 for i in range(1, required_question+1):
                     now_question = random_question(required_question, int(candidate_id), i)
-
                     per_question = Question.objects.filter(category=category)[now_question - 1]
                     try:
                         obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                         status_dict[i] = obj.status
-                        print(obj,obj.status)
+
                     except:
-                        print("something wrong")
                         obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
                         status_dict[i] = 1
-                print(status_dict)
                 context_dict["status_dict"] = status_dict
-
             else:
                 message = "NO QUESTIONS IN THIS CATEGORY!"
                 return render(request, 'candidate/error.html', {'message':message})
@@ -179,13 +172,15 @@ class QuestionByCategory(generic.DetailView):
             status=2 (preview)
             status=3 (save)
             """
-
         except Category.DoesNotExist:
             pass
         return render(self.request, self.template_name, context_dict)
 
 
 class InstructionView(generic.ListView):
+    """
+    Instruction view
+    """
     template_name = 'candidate/instructions.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -214,6 +209,9 @@ class InstructionView(generic.ListView):
 
 
 class CandidateRegistration(generic.ListView):
+    """
+    Candidate registration view
+    """
     form_class = forms.CandidateRegistration
     template_name ='candidate/signup.html'
 
@@ -233,21 +231,16 @@ class CandidateRegistration(generic.ListView):
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
             test_name = form.cleaned_data.get('test_name')
-
             candidate = Candidate.objects.get(name=name, email=email)
-
             if candidate:
                 self.request.session['email'] = email
                 try:
                     test = Test.objects.get(test_name=test_name)
                     time = test.duration
-                    print("inside try", time)
                     self.request.session.set_expiry(time*60)
                 except:
-                    print("inside except")
-                    self.request.session.set_expiry(100)
+                    self.request.session.set_expiry(1)
                 return redirect('instruction')
-
         return render(self.request, self.template_name, {'form': form})
 
 
@@ -350,12 +343,6 @@ class SaveStatus(generic.ListView):
         else:
             raise Http404
 
-
-# class EndPage(generic.ListView):
-#     template_name = 'candidate/end.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         return render(request, self.template_name)
 
 def logout(request):
     try:

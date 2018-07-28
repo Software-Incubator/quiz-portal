@@ -6,9 +6,9 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Software Incubator</title>
-    <link rel="icon" href="{% static "core/img/../../static/core/assets/images/logo.png" %}">
+    <link rel="icon" href="{% static "core/assets/images/logo.png" %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../static/core/css/end.css" />
+    <link rel="stylesheet" href="{% static "core/css/end.css" %}" />
 </head>
 <body>
     <div class="background">
@@ -21,10 +21,6 @@
 
     setTimeout(redirect, 5000);
     </script>
- <script>
-window.location.hash="no-back-button";
-window.location.hash="Again-No-back-button";
-window.onhashchange=function(){window.location.hash="#";}
-</script>
+    <script src="{% static 'core/js/back_button_disable.js' %}"></script>
 </body>
 </html>

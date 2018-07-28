@@ -16,13 +16,20 @@ class CategoryAdmin(admin.ModelAdmin):
         model = Category
 
 
+class MarksAdmin(admin.ModelAdmin):
+    list_display = ('test_name', 'candidate', 'marks')
+
+    class Meta:
+        model = Marks
+
+
 class QuestionAdmin(admin.ModelAdmin):
     # list_editable = ['question_text']
     search_fields = ['question_text']
     list_display = ('id', 'question_text',)
 
     class Meta:
-        model = Category
+        model = Question
 
 
 class ChoiceAdmin(admin.ModelAdmin):
@@ -31,7 +38,7 @@ class ChoiceAdmin(admin.ModelAdmin):
     list_display = ('id', 'choice', 'question')
 
     class Meta:
-        model = Category
+        model = SelectedAnswer
 
 
 class CandidateAdmin(admin.ModelAdmin):
@@ -47,7 +54,7 @@ class TestAdmin(admin.ModelAdmin):
     list_display = ('id', 'test_name', 'duration')
 
     class Meta:
-        model = Candidate
+        model = Test
 
 
 admin.site.register(Category, CategoryAdmin)
@@ -57,4 +64,6 @@ admin.site.register(Instruction)
 admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(SelectedAnswer)
 admin.site.register(Algorithm)
-admin.site.register(Marks)
+# admin.site.register(Marks)
+
+admin.site.register(Marks, MarksAdmin)

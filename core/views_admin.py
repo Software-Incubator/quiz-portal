@@ -262,14 +262,7 @@ class ShowCategoryView(View):
             l1.append(test)
             cats = Category.objects.filter(test=test)
             l1.append(cats)
-            # for cat in cats:
-            #     l2 = []
-            #     l2.append(cat)
-            #     l2.append(Question.objects.filter(category=cat))
-            #     l3.extend([l2])
-            # l1.extend([l2])
             l.extend([l1])
-            print(l)
         return render(request, self.template_name, {'l': l})
 
 class ShowQuestionsView(View):
@@ -329,7 +322,6 @@ class AddCategoryView(View):
                 Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
                 c = Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname, 
                                         total_question_display = (dict(request.POST)['number_of_questions'])[0])
-                print("C",c)
                 return redirect('control_operation')
             else:
                 messages.error(self.request, "Invalid data.")
@@ -647,15 +639,12 @@ class AddAlgorithmView(View):
                 return render(request, 'admin/error.html', {'message': message})
             else:
                 cats = Category.objects.filter(category='algorithm')
-                print('cats',cats)
                 for cat in cats:
-                    print(cat.test)
                     algo = Algorithm.objects.filter(test=cat.test)
                     l1.append(cat.test.test_name)
                     l1.append(algo)
                     l.extend([l1])
                     l1=[]
-                print(l)
                 form = self.form_class()
                 return render(request, self.template_name, {'form': form, 'l':l})
 

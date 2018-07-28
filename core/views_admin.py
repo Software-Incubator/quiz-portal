@@ -101,7 +101,6 @@ class TestName(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        # Tname = Test.objects.latest('test_name')
         return render(request, self.template_name, {'form': form})
 
     def post(self,request, *args, **kwargs):
@@ -116,8 +115,6 @@ class TestName(View):
                                     on_or_off=request.POST['on_or_off'])
                 return redirect('control_operation')
             else:
-                messages.error(self.request, "Data not valid.")
-                form = self.form_class
                 return render(self.request, self.template_name, {'form': form})
 
 
@@ -222,8 +219,6 @@ class AddQuestionView(View):
                 message = "Choices cannot be same"
                 return render(request, 'admin/error.html', {'message': message})
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
 
@@ -259,13 +254,11 @@ class EditQuestionView(View):
                     question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
                     choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
                     choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
-                return redirect('admin_auth')
+                return redirect('Show_Category')
             else:
                 message = "Choices cannot be same"
                 return render(request, 'admin/error.html', {'message': message})
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
 
@@ -347,8 +340,6 @@ class AddCategoryView(View):
                                         total_question_display = (dict(request.POST)['number_of_questions'])[0])
                 return redirect('control_operation')
             else:
-                messages.error(self.request, "Invalid data.")
-                form = self.form_class()
                 return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
 
@@ -411,11 +402,11 @@ class ShowCandidateListView(View):
             test = form.cleaned_data.get('test_name')
             cands = Candidate.objects.filter(test_name=test).order_by("-time")
             if tests[0].negative == 1:
-            for cand in cands:
-                try:
-                    Marks.objects.get(test_name=test, candidate=cand)
-                except:
-                    CalculateMarks(cand.pk)
+                for cand in cands:
+                    try:
+                        Marks.objects.get(test_name=test, candidate=cand)
+                    except:
+                        CalculateMarks(cand.pk)
             return render(request, self.template_name, {'cands': cands, 'form':form, 'test':test})
         else:
             cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
@@ -589,8 +580,6 @@ class AdminInstructionView(View):
                 Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
                 return redirect('admin_auth')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
 
@@ -623,8 +612,6 @@ class EditInstructionView(View):
                 Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
                 return redirect('control_operation')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
 
@@ -694,8 +681,6 @@ class AddAlgorithmView(View):
             Algorithm.objects.create(test=test, question_text=(dict(request.POST)['question_text'])[0])
             return redirect('control_operation')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form})
 
 
@@ -723,8 +708,6 @@ class EditAlgorithmView(View):
                     question_text = (dict(request.POST)['question_text'])[0])
             return redirect('control_operation')
         else:
-            messages.error(self.request, "Invalid data.")
-            form = self.form_class()
             return render(self.request, self.template_name, {'form': form, 'question': question})
 
 

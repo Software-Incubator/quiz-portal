@@ -95,6 +95,9 @@ class Algorithm(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     question_text = RichTextUploadingField()
 
+    def __str__(self):
+        st = str(self.test)  + ' - ' +  str(self.question_text)
+        return st
 
 class Marks(models.Model):
     test_name = models.ForeignKey(Test, on_delete=models.CASCADE)

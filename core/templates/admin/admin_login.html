@@ -21,29 +21,17 @@
                 <h6>Sign-In</h6>
             </div>
             <form name="AdminLoginForm" method="post" novalidate>
+                {% csrf_token %}
                 <div class="input-fields text-danger">
-                    <div>
-                        {% csrf_token %} {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <p class="text-danger">{{ message }}</p>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
                     <div class="input-group">
                         <input type="text" name="username" id="inputSelect" class="form-control" placeholder="&#xf007; username" value="{{ form.username.value|default_if_none:'' }}">
                     </div>
-                    <p>
-                        <strong class="text-danger">{{ form.username.errors }}</strong>
-                    </p>
+                    <span style="color: red">{{ form.username.errors }}</span>
                     <div class="input-group has-feedback">
                         <input type="password" name="password" id="passwordSelect" class="form-control" placeholder="&#xf084; password">
                         <i class="glyphicon fas fa-eye form-control-feedback"></i>
                     </div>
-                    <p>
-                        <strong class="text-danger">{{ form.password.errors }}</strong>
-                    </p>
+                    <span style="color: red">{{ form.password.errors }}</span>
                 </div>
                 <div class="btn-field">
                     <button type="submit" class="btn btn-raised btn-primary">Log-In</button>

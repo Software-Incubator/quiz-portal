@@ -18,15 +18,7 @@
             <h6>Edit Test Name</h6>
         </div>
         <form name="TestForm" method="post" novalidate>
-            <div>
-                {% csrf_token %} {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <p class="text-danger">{{ message }}</p>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </div>
+            {% csrf_token %}
             <div class="form-group">
                 <label for="name" class="bmd-label-floating">{{ form.test_name.label_tag }}</label>
                 <input type="text" name="test_name" class="form-control" id="name">

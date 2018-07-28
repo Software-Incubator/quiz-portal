@@ -1,66 +1,36 @@
-{% extends 'candidate/base.html' %} 
-
+{% extends 'candidate/base.html' %}
 {% load static %}
-
 {% block head %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
-<link rel="stylesheet" href="{% static 'core/css/instruction.css' %}"> {% endblock %} {% block logout %}
-    {% block login %}
-    <h3>{{ test_name }}</h3>
-    <span>Hello {{ name }}!</span>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+    <link rel="stylesheet" href="{% static 'core/css/instruction.css' %}">
+    <script src="{% static 'core/js/back_button_disable.js' %}"></script>
 {% endblock %}
-
-{#    <button type="button" class="btn btn-raised btn-primary" onclick="JSalert()">Log-Out</button>#}
-{##}
-{#    <script type="text/javascript">#}
-{#function JSalert(){#}
-{#	swal({   title: "Are you sure you want to exit?",#}
-{#    type: "warning",#}
-{#    showCancelButton: true,#}
-{#    confirmButtonColor: "#DD6B55",#}
-{#    confirmButtonText: "Yes",#}
-{#    cancelButtonText: "Cancel",#}
-{#    closeOnConfirm: false,#}
-{#    closeOnCancel: false },#}
-{#    function(isConfirm){#}
-{#        if (isConfirm)#}
-{#    {#}
-{#        window.location.href = "{% url 'session_out' %}";#}
-{#        }#}
-{#        else {#}
-{#            swal.close();#}
-{#            } });#}
-{#}#}
-{#</script>#}
+{% block logout %}
+    {% block login %}
+        <h3>{{ test_name }}</h3>
+        <span>Hello {{ name }}!</span>
+    {% endblock %}
     <script>
-window.location.hash="no-back-button";
-window.location.hash="Again-No-back-button";
-window.onhashchange=function(){window.location.hash="#";}
-</script>
 
-
+    </script>
 {% endblock %} 
 
 {% block content %}
-<div class="instructions-container row">
-     <div class="col-4 bg-img">
+    <div class="instructions-container row">
+        <div class="col-4 bg-img">
             <img src="{% static 'core/assets/images/instruction.png' %}" class="img">
-            <!-- <button type="btn" class="btn btn-primary btn-raised">Sign Up</button> -->
-    </div>
+        </div>
     <div class="col-8">
         <div class="instructions">
-            <h6>
-                {% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}
-            </h6>
-        <div class="ok-btn>">
-
-        <a href={% url 'category' category.category 1 %}>
+            <h6>{% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}</h6>
+            <div class="ok-btn>">
+            <a href={% url 'category' category.category 1 %}>
             <button type="button" class="btn btn-raised btn-primary">OK</button>
-        </a>
+            </a>
+            </div>
         </div>
     </div>
-
-</div>
+    </div>
 {% endblock %}

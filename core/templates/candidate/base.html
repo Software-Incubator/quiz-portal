@@ -24,7 +24,7 @@
                 <img src="{% static 'core/assets/images/silogo.png' %}">
             </div>
             <div class="heading">
-                <h3>Test Name</h3>
+                <h3>{{ request.session.name }}</h3>
             </div>
             {% block logout %}
 

@@ -88,6 +88,7 @@ class QuestionByCategory(generic.DetailView):
         # user credential
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
+        name=candidate.name
         candidate_id = candidate.id
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
@@ -98,7 +99,7 @@ class QuestionByCategory(generic.DetailView):
         all_category = Category.objects.filter(test=test)
         all_category_count = all_category.count()
         category_name = kwargs["category_name"]
-        context_dict = {'category_name': category_name}
+        context_dict = {'category_name': category_name,"name":name}
         category_dict_by_number =category_number_to_name(all_category, all_category_count)
         category_dict_by_name = category_name_to_number(all_category, all_category_count)
 
@@ -195,6 +196,7 @@ class InstructionView(generic.ListView):
     def get(self, request, *args, **kwargs):
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
+        name=candidate.name
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         instruction = Instruction.objects.filter(test=test)
@@ -207,7 +209,8 @@ class InstructionView(generic.ListView):
 
         return render(request, self.template_name, {'instruction': instruction,
                                                     'category': category,
-                                                    'test_name':test_name})
+                                                    'test_name':test_name,
+                                                    "name":name})
 
 
 class CandidateRegistration(generic.ListView):
@@ -353,8 +356,6 @@ class SaveStatus(generic.ListView):
 #
 #     def get(self, request, *args, **kwargs):
 #         return render(request, self.template_name)
-
-
 
 def logout(request):
     try:

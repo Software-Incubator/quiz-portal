@@ -34,7 +34,12 @@
 
                 </div>
             </div>
+              {% block login %}
+    <span>Hello {{ name }}!</span>
+{% endblock %}
+
         </div>
+
     </header>
     <div class="timer">
         <div id="clockdiv" class="clockdiv">

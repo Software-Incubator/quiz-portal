@@ -24,6 +24,42 @@ from io import BytesIO
 import xhtml2pdf.pisa as pisa
 
 
+def CalculateMarks(pk):
+
+    cand = Candidate.objects.get(pk=pk)
+    print(cand)
+    test = Test.objects.get(test_name=cand.test_name)
+    print(test)
+    cats = Category.objects.filter(test=test)
+    print(cats)
+    selects = SelectedAnswer.objects.filter(email=cand)
+    print(selects)
+    score = 0
+    for select in selects:
+        print("n",select.question_text.negative)
+        print("cc",select.question_text.correct_choice)
+        print("sc",select.selected_choice)
+        if select.question_text.negative == 1:
+            print("m",select.question_text.marks)
+            print("nm",select.question_text.negative_marks)
+            if select.selected_choice == select.question_text.correct_choice:
+                score += select.question_text.marks
+            elif select.selected_choice == None:
+                pass
+            else:
+                score -= select.question_text.negative_marks
+        else:
+            print("m",select.question_text.marks)
+            if select.selected_choice == select.question_text.correct_choice:
+                score += select.question_text.marks
+        print("s",score)
+        print()
+    print("score",score)
+    Marks.objects.create(test_name=test, candidate=cand, marks=score)
+    return 1
+
+
+
 class AdminAuth(generic.ListView):
     form_class = forms.AdminLoginForm
     template_name = 'admin/admin_login.html'
@@ -373,6 +409,14 @@ class ShowCandidateListView(View):
         form = self.form_class()
         tests = Test.objects.all()
         cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
+        print("test", tests[0].negative)
+        if tests[0].negative == 1:
+            for cand in cands:
+                print(cand.pk)
+                try:
+                    Marks.objects.get(test_name=tests[0], candidate=cand)
+                except:
+                    CalculateMarks(cand.pk)
         return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
 
     def post(self, request, *args, **kwargs):
@@ -705,24 +749,24 @@ class DeleteAlgorithmView(View):
         return redirect('Add_Algorithm')
 
 
-class MarksCalculation(View):
+# class MarksCalculation(View):
 
-    def get(self, request, pk, *args, **kwargs):
-        cand = Candidate.objects.get(pk=pk)
-        test = Test.objects.get(test_name=cand.test_name)
-        cats = Category.objects.filter(test=test)
-        selects = SelectedAnswer.objects.filter(email=cand)
-        print(selects)
-        score = 0
-        for select in selects:
-            if select.question_text.negative() == 1:
-                if select.selected_choice == select.question_text.correct_choice:
-                    score += select.question_text.marks
-                else:
-                    score -= select.question_text.negative_marks
-            else:
-                score += 1
-        return redirect('Add_Algorithm')
+#     def get(self, request, pk, *args, **kwargs):
+#         cand = Candidate.objects.get(pk=pk)
+#         test = Test.objects.get(test_name=cand.test_name)
+#         cats = Category.objects.filter(test=test)
+#         selects = SelectedAnswer.objects.filter(email=cand)
+#         print(selects)
+#         score = 0
+#         for select in selects:
+#             if select.question_text.negative() == 1:
+#                 if select.selected_choice == select.question_text.correct_choice:
+#                     score += select.question_text.marks
+#                 else:
+#                     score -= select.question_text.negative_marks
+#             else:
+#                 score += 1
+#         return redirect('Add_Algorithm')
 
 
 def error404(request):

@@ -14,6 +14,7 @@ class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False, unique=True)
     duration = models.PositiveIntegerField(blank=False)
     on_or_off = models.BooleanField(blank=False)
+    negative = models.BooleanField(default=False)
 
     def __str__(self):
         return self.test_name
@@ -82,7 +83,7 @@ class Candidate(models.Model):
 class SelectedAnswer(models.Model):
     email = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     question_text = models.ForeignKey(Question, on_delete=models.CASCADE)
-    selected_choice = models.IntegerField(blank=True)
+    selected_choice = models.IntegerField(blank=True, null=True)
     status = models.PositiveIntegerField(default=1)
 
     def __str__(self):
@@ -96,7 +97,12 @@ class Algorithm(models.Model):
 
 
 class Marks(models.Model):
+    test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     marks = models.IntegerField(blank=False)
+
+    def __str__(self):
+        st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)
+        return st
 
 

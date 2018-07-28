@@ -1,25 +1,78 @@
-header .greetings{
-    height: 50px;
-    background-color: #fafafa;
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,.16), 0 0px 0px 0 rgba(0,0,0,.12);
-    color: #fff;
-}
-
-header .greetings .heading{
-  
+body{
+    background-image:  url("../assets/images/recruitment\ poster.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    height: 100vh;
+    overflow: hidden;
 }
 
 main .instructions-container{
-    width: 100%;
-    min-height: 600px;
+    width: 1000px;
+    height: 600px;
     background-color: #fff;
-    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
-    border-radius: 0.225rem;
-    padding: 40px;
+    box-shadow: 0 10px 15px 0 rgba(0,0,0,.16), 0 10px 15px 0 rgba(0,0,0,.8);
+    border-radius: 1rem;
+    padding: 0px;
     margin: 10px auto;
-   
 }
 
-main .instructions-container .instructions h6{
-    padding: 10px;
+main .instructions-container .bg-img{
+    background-image: url('../assets/images/recruitment\ poster.png');
+    background-position: center center;
+    background-size: cover;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    background-repeat: no-repeat;
+}
+
+main .instructions-container .img{
+    width: 300px;
+    height: auto;
+    margin-top: 80px;
+    transition: 3s;
+}
+
+main .instructions-container .img:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+main .instructions-container .col-8{
+    padding: 0px;
+}
+
+main .instructions-container .instructions{
+    height: 94%;
+    overflow-y: scroll;
+    padding-left: 15px;
+    margin-top: 12px;
+}
+
+main .instructions-container .instructions .ok-btn{
+    padding: 15px;
+}
+
+main .instructions-container .instructions li{
+    padding: 10px 0px;
+}
+
+main .instructions-container .instructions li:nth-child(even){
+    background-color: #eee;
+}
+
+main .instructions-container .instructions li:nth-child(1){
+    margin-top: 50px;
+}
+
+main .instructions-container .instructions li:hover{
+    background-color: #eee;
+}
+
+main .instructions-container .instructions a{
+    margin: auto;
+}
+
+main .instructions-container .instructions a button{
+    width: 90%;
 }

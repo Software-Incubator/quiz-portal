@@ -23,7 +23,7 @@ function initializeClock(id, endtime) {
         secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
         if (t.total <= 0) {
             clearInterval(timeinterval);
-            window.location = "{% url 'session_out' %}"
+            window.location = session_out;
         }
     }
     updateClock();

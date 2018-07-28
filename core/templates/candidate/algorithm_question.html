@@ -66,6 +66,7 @@
                         </span>
                         {% endfor %}
                         {# for category #}
+
                         <span class="category" id="algorithm">
                             <a href={% url 'algorithm' 1 %}>
                                 <button type="button" class="btn btn-primary">algorithm</button>
@@ -98,10 +99,15 @@
                                 <button type="button" class="btn btn-raised btn-primary" >Previous</button>
                             </a>
                             {% endif %}
+                            {% if id == total_question %}
+                                <button type="button" class="btn btn-raised btn-warning" disabled>Next</button>
 
-                            <a href={% url 'algorithm' id|add:"1" %}>
+                            {% else %}
+                                <a href={% url 'algorithm' id|add:"1" %}>
                                 <button type="button" class="btn btn-raised btn-warning">Next</button>
                             </a>
+                            {% endif %}
+
 
                         </div>
                     </section>
@@ -133,50 +139,8 @@
 
 
 
-         <script>
-
-        function getTimeRemaining(endtime) {
-            var t = Date.parse(endtime) - Date.parse(new Date());
-            var seconds = Math.floor((t / 1000) % 60);
-            var minutes = Math.floor((t / 1000 / 60) % 60);
-            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-            return {
-                'total': t,
-                'hours': hours,
-                'minutes': minutes,
-                'seconds': seconds
-            };
-        }
-
-        function initializeClock(id, endtime) {
-            var clock = document.getElementById(id);
-            var daysSpan = clock.querySelector('.days');
-            var hoursSpan = clock.querySelector('.hours');
-            var minutesSpan = clock.querySelector('.minutes');
-            var secondsSpan = clock.querySelector('.seconds');
-
-            function updateClock() {
-                var t = getTimeRemaining(endtime);
-
-                hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-                if (t.total <= 0) {
-                    clearInterval(timeinterval);
-                    window.location = "{% url 'ending' %}"
-                }
-            }
-
-            updateClock();
-            var timeinterval = setInterval(updateClock, 1000);
-        }
-        var time = {{ remain_time }};
-        console.log(time);
-        var deadline = new Date(Date.parse(new Date()) + time * 1000 );
-        initializeClock('clockdiv', deadline);
-    </script>
-
+    <script>var remain_time = "{{ remain_time }}";</script>
+    <script type="text/javascript" src="{% static 'core/js/timer.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"

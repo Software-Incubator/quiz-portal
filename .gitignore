@@ -6,4 +6,3 @@ __pycache__/
 /quiz_portal/media/
 db.sqlite
 db.sqlite3
-db.sqlite3

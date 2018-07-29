@@ -30,7 +30,7 @@ body{
 header .navbar{
     height: 50px;
     background-color: #fff;
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,.16), 0 0px px 0 rgba(0,0,0,.12);
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0);
 }
 
 header .navbar .logo img{
@@ -82,12 +82,20 @@ main{
     margin: auto;
 }
 
+body.stop-scrolling {
+    height: 100vh !important;
+}
+
 main .question-area{
     width: 1000px;
     height: 500px;
     margin: auto;
-    border-radius: 1rem;
-    box-shadow: 0 10px 15px 0 rgba(0,0,0,.5), 0 10px 15px 0 rgba(0,0,0,.65);
+    border-radius: 0.45rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 0 2px 5px 0 rgba(0,0,0,.65);
+}
+
+main .question-area{
+    padding-right: 0;
 }
 
 main .question-area .navbar{
@@ -124,7 +132,7 @@ main .question-area .nav-break{
 }
 
 main .question-area .ques-scroll{
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 400px;
 }
 
@@ -145,7 +153,7 @@ main .question-area .inst-response{
 }
 
 main .question-area .response{
-    height: 450px;
+    height: 437.5px;
 }
 
 main .question-area .inst-response .end{
@@ -162,6 +170,10 @@ main .question-area .response .inst-button{
 
 main .question-area .response .inst-button div{
     padding-left: 10px;
+}
+
+main .question-area .response .inst-button hr{
+    margin-top: 0;
 }
 
 main .question-area .response .inst-button div span{
@@ -184,8 +196,8 @@ main .question-area .response span h6{
 
 main .question-area .ques-response{
     padding: 5px;
-    height: 230px;
-    overflow-y: scroll;
+    height: 265px;
+    overflow-y: auto;
 }
 
 main .row{

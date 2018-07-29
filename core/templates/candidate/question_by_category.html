@@ -75,18 +75,21 @@
                             </li>
                             </ul>
                         {% endfor %}
-{#                        {% if algo_count != 0 %}#}
+                        {% if algo_count != 0 %}
                             <ul class="nav nav-pills">
                             <li class="nav-item algo">
                                 <a data-toggle="modal" data-target="#algo">Algorithm</a>
                             </li>
+
                             </ul>
-{#                        {% endif %}#}
+                        {% endif %}
+                        {% if design_ques_count != 0 %}
                             <ul class="nav nav-pills">
                             <li class="nav-item algo">
                                 <a data-toggle="modal" data-target="#design">Design</a>
                             </li>
                             </ul>
+                        {% endif %}
                     </nav>
                     <hr class="nav-break">
                     <div class="modal fade" id="algo" tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">
@@ -100,6 +103,9 @@
                                 </button>
                             </div>
                             <div class="modal-body">
+                                {% for algo in all_algo %}
+                                    <li>{{ forloop.counter }}. {{ algo.question_text|safe|escape }}</li>
+                                {% endfor %}
                             </div>
                             <hr>
                             <div class="modal-footer">
@@ -120,6 +126,11 @@
                                 </button>
                             </div>
                             <div class="modal-body">
+                                <div class="modal-body">
+                                {% for design_ques in all_design_ques %}
+                                    <li>{{ forloop.counter }}. {{ design_ques.question_text|safe|escape }}</li>
+                                {% endfor %}
+                            </div>
                             </div>
                             <hr>
                             <div class="modal-footer">

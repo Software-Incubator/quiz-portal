@@ -650,34 +650,43 @@ class AddAlgorithmView(View):
         return super(AddAlgorithmView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        l=[]
-        l1=[]
-        if (Test.objects.all()).count() == 0:
+        if Test.objects.all().count() == 0:
             message = "No test present"
             return render(request, 'admin/error.html', {'message': message})
-        else:
-            if (Category.objects.all()).count() == 0:
-                message = "No category present"
-                return render(request, 'admin/error.html', {'message': message})
-            else:
-                cats = Category.objects.filter(category='algorithm')
-                for cat in cats:
-                    algo = Algorithm.objects.filter(test=cat.test)
-                    l1.append(cat.test.test_name)
-                    l1.append(algo)
-                    l.extend([l1])
-                    l1=[]
-                form = self.form_class()
-                return render(request, self.template_name, {'form': form, 'l':l})
+        all_algo = Algorithm.objects.all()
+        all_test = Test.objects.all()
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'all_algo': all_algo, 'all_test': all_test})
+
+    # def get(self, request, *args, **kwargs):
+    #     l=[]
+    #     l1=[]
+    #     if (Test.objects.all()).count() == 0:
+    #         message = "No test present"
+    #         return render(request, 'admin/error.html', {'message': message})
+    #     else:
+    #         if (Category.objects.all()).count() == 0:
+    #             message = "No category present"
+    #             return render(request, 'admin/error.html', {'message': message})
+    #         else:
+    #             cats = Category.objects.filter(category='algorithm')
+    #             for cat in cats:
+    #                 algo = Algorithm.objects.filter(test=cat.test)
+    #                 l1.append(cat.test.test_name)
+    #                 l1.append(algo)
+    #                 l.extend([l1])
+    #                 l1=[]
+    #             form = self.form_class()
+    #             return render(request, self.template_name, {'form': form, 'l':l})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             test = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            try:
-                c = Category.objects.get(category='algorithm', test=test)
-            except:
-                c = Category.objects.create(test=test, category='algorithm', total_question_display=2)
+            # try:
+            #     c = Category.objects.get(category='algorithm', test=test)
+            # except:
+            #     c = Category.objects.create(test=test, category='algorithm', total_question_display=2)
             Algorithm.objects.create(test=test, question_text=(dict(request.POST)['question_text'])[0])
             return redirect('control_operation')
         else:

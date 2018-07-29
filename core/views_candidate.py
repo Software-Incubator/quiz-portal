@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from . import forms
-from core.models import Category, Question, Instruction, Test, SelectedAnswer, Candidate, Algorithm
+from core.models import Category, Question, Instruction, Test, SelectedAnswer, Candidate, Algorithm, DesignQuestion
 import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
@@ -137,8 +137,14 @@ class QuestionByCategory(generic.DetailView):
                 make_permutation(total_question, required_question)
                 which_question = random_question(required_question, int(candidate_id), id)
                 question = Question.objects.filter(category=category)[which_question - 1]
-                algo_count = Algorithm.objects.filter(test=test).count()
+                all_algo = Algorithm.objects.filter(test=test)
+                algo_count = all_algo.count()
                 context_dict["algo_count"] = algo_count
+                context_dict["all_algo"] = all_algo
+                all_design_ques = DesignQuestion.objects.filter(test=test)
+                design_ques_count = all_design_ques.count()
+                context_dict["all_design_ques"] = all_design_ques
+                context_dict["design_ques_count"] = design_ques_count
                 instruction = Instruction.objects.filter(test=test)
                 context_dict["last_question"] = last_question
                 context_dict["first_question"] = first_question

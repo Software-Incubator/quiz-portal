@@ -25,20 +25,20 @@ header .navbar .logo img{
 main .sign-up{
     width: 1000px;
     height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 10px 15px 0 rgba(0,0,0,.16), 0 10px 15px 0 rgba(0,0,0,.8);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 0 10px 15px 0 rgba(0,0,0,.8);
     margin: auto;
-    margin-top: 50px;
+    margin-top: 120px;
     background-color: #fff;
 }
 
 main .sign-up .bg-img{
-    background-image: url('../assets/images/recruitment\ poster.png');
+    background-image: url('../assets/images/recruitment poster.png');
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
 }
 
 main .sign-up .img{

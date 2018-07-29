@@ -101,8 +101,12 @@ main .question-area{
 main .question-area .navbar{
     box-shadow: 0 0 0 0;
     justify-content: unset !important;
-    padding-bottom: 0px;
+    padding: 0px;
     transition: 1s;
+}
+
+main .question-area .navbar a:hover{
+    text-decoration: none !important;
 }
 
 main .question-area .navbar ul{
@@ -114,8 +118,7 @@ main .question-area .navbar ul li{
 }
 
 main .question-area .navbar .active {
-    background-color: #eee;
-    border-top: 1.5px solid #3b95ed;
+    border-top: 1px solid #3b95ed;
     border-left: 1px solid #3b95ed;
     border-right: 1px solid #3b95ed;
     cursor: pointer;
@@ -123,12 +126,16 @@ main .question-area .navbar .active {
 
 main .question-area .navbar .nav:hover {
     background-color: #eee;
-    border-top: 1.5px solid #3b95ed;
     cursor: pointer;
 }
 
 main .question-area .nav-break{
     margin-top: 0 !important;
+    margin-right: 1rem;
+}
+
+main .question-area .navbar .algo-design{
+    margin-right: 0;
 }
 
 main .question-area .ques-scroll{
@@ -174,6 +181,8 @@ main .question-area .response .inst-button div{
 
 main .question-area .response .inst-button hr{
     margin-top: 0;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 main .question-area .response .inst-button div span{
@@ -183,6 +192,11 @@ main .question-area .response .inst-button div span{
 main .question-area .response button{
     width: 30px;
     height: 30px;
+    border-radius: 100%;
+}
+
+main .question-area .response .inst-button .btn-primary:hover{
+    background-color: #fff !important;
 }
 
 main .question-area .response .btn-primary{
@@ -192,6 +206,10 @@ main .question-area .response .btn-primary{
 
 main .question-area .response span h6{
     display: inline;
+}
+
+main .question-area .response .btn-primary:hover{
+    color: #000;
 }
 
 main .question-area .ques-response{
@@ -212,9 +230,26 @@ main [class*="col-"]{
 
 main .question-area .question{
     margin-top: 50px;
+    padding-left: 25px;
+}
+
+main .question-area .question div, p{
+    display: inline;
+}
+
+main .question-area .question .question-no{
+    padding: 5px;
 }
 
 main .question-area .answers{
     margin-top: 20px;
     padding: 5px 40px;
+}
+
+.radio label input[type=radio]:checked~.bmd-radio:before, label.radio-inline input[type=radio]:checked~.bmd-radio:before{
+    background-color: #3b95ed;
+}
+
+.checkbox-inline, .checkbox label, .is-focused .checkbox-inline, .is-focused .checkbox label, .is-focused .radio-inline, .is-focused .radio label, .is-focused .switch label, .radio-inline, .radio label, .switch label {
+    color: #000;
 }

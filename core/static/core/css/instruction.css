@@ -11,10 +11,10 @@ main .instructions-container{
     width: 1000px;
     height: 600px;
     background-color: #fff;
-    box-shadow: 0 10px 15px 0 rgba(0,0,0,.16), 0 10px 15px 0 rgba(0,0,0,.8);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 0 2px 5px 0 rgba(0,0,0,.8);
     border-radius: 1rem;
     padding: 0px;
-    margin: 10px auto;
+    margin: 120px auto;
 }
 
 main .instructions-container .bg-img{
@@ -30,7 +30,7 @@ main .instructions-container .img{
     width: 300px;
     height: auto;
     margin-top: 80px;
-    transition: 3s;
+    transition: 2s;
 }
 
 main .instructions-container .img:hover{
@@ -50,11 +50,33 @@ main .instructions-container .instructions{
 }
 
 main .instructions-container .instructions .ok-btn{
-    padding: 15px;
+    padding: 0 25px;
+}
+
+main .instructions-container .instructions ol{
+    padding: 20px !important;
+    margin: 0;
+    list-style: none;
+    counter-reset: item;
 }
 
 main .instructions-container .instructions li{
     padding: 10px 0px;
+    counter-increment: item;
+}
+
+main .instructions-container .instructions li:before{
+    content: counter(item);
+    background: #3b95ed;
+    border-radius: 100%;
+    color: #fff;
+    width: 1.2rem;
+    text-align: center;
+    display: inline-block;
+}
+
+main .instructions-container .instructions li p{
+    display: inline-block;
 }
 
 main .instructions-container .instructions li:nth-child(even){
@@ -69,10 +91,14 @@ main .instructions-container .instructions li:hover{
     background-color: #eee;
 }
 
+main .instructions-container .instructions li p{
+    margin: 0;
+}
+
 main .instructions-container .instructions a{
     margin: auto;
 }
 
 main .instructions-container .instructions a button{
-    width: 90%;
+    width: 100%;
 }

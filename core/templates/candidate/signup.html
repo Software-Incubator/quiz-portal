@@ -21,19 +21,19 @@
             <div class="row">
                 <div class="col-6">
                 <div class="form-group">
-                    <label for="nameInput1" class="bmd-label-floating">&#xf007 Name</label>
+                    <label for="nameInput1" class="bmd-label-floating">Name</label>
                     <input type="text" name="name" class="form-control" id="nameInput1" value="{{ form.name.value|default_if_none:'' }}">
                     <p><strong>{{ form.name.errors }}</strong></p>
                 </div>
 
                 <div class="form-group">
-                    <label for="std_noInput" class="bmd-label-floating">&#xf061 Student no.</label>
+                    <label for="std_noInput" class="bmd-label-floating">Student no.</label>
                     <input type="text" name="std_no" class="form-control" id="std_noInput" value="{{ form.std_no.value|default_if_none:'' }}">
                     <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
                 </div>
 
                 <div class="form-group">
-                        <label for="emailInput" class="bmd-label-floating">&#xf0e0 Email Address</label>
+                        <label for="emailInput" class="bmd-label-floating">Email Address</label>
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{ form.email.value|default_if_none:'' }}">
                         <p>
                             <strong class="text-danger">{{ form.email.errors}}</strong>
@@ -47,7 +47,7 @@
 {#                </div>#}
 
                 <div class="form-group">
-                    <label for="phoneInput" class="bmd-label-floating">&#xf10b Mobile Number</label>
+                    <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
                     <input type="text" name="phone_number" class="form-control" id="phoneInput" value="{{ form.phone_number.value|default_if_none:'' }}">
                     <p><strong class="text-danger">{{ form.phone_number.errors}}</strong></p>
                 </div>

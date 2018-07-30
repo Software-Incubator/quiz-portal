@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from core.models import Category, Question, Test, Instruction, Candidate, SelectedAnswer, Algorithm, Marks
+from core.models import Category, Question, Test, Instruction, Candidate, SelectedAnswer, Algorithm, Marks, DesignQuestion
 
 
 class QuestionInLine(admin.TabularInline):
@@ -15,13 +15,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Category
-
-
-class MarksAdmin(admin.ModelAdmin):
-    list_display = ('test_name', 'candidate', 'marks')
-
-    class Meta:
-        model = Marks
 
 
 class QuestionAdmin(admin.ModelAdmin):
@@ -58,7 +51,10 @@ class TestAdmin(admin.ModelAdmin):
         model = Test
 
 class MarksAdmin(ImportExportModelAdmin):
-    pass
+    list_display = ('test_name', 'candidate', 'marks')
+
+    class Meta:
+        model = Marks
 
 
 admin.site.register(Category, CategoryAdmin)

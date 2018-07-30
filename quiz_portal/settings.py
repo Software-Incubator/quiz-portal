@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'core',
     'ckeditor',
     'ckeditor_uploader',
+     'import_export',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,17 @@ WSGI_APPLICATION = 'quiz_portal.wsgi.application'
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'quiz_portal',
+#         'USER': 'quizuser',
+#         'PASSWORD': 'quizportal@SI',
+#         'HOST': 'localhost',
+#         'PORT': '',
 #     }
 # }
 
@@ -133,6 +145,8 @@ STATIC_ROOT = os.path.join(os.environ.get('HOME', '/home/si/'), 'Assets/QuizPort
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_RESTRICT_BY_USER = True
+# CKEDITOR_ALLOW_NONIMAGE_FILES = False
+# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -141,3 +155,4 @@ CKEDITOR_CONFIGS = {
         'width': 700,
     },
 }
+IMPORT_EXPORT_USE_TRANSACTIONS = True

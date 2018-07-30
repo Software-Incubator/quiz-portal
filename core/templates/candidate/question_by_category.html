@@ -134,6 +134,10 @@
                             <div class="col-12 question">
                                 <h5>
                                 <div class="question-no">
+
+                                    {% if question.negative %}
+                                        <sup style="font-size:larger;"><strong>*</strong></sup>
+                                    {% endif %}
                                 {{ id|safe|escape }}
                                 </div>
                                     {{ question.question_text|safe|escape }}
@@ -161,6 +165,7 @@
                                     </label>
                                 </div>
                             </div>
+                        <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>
                         </div>
                     </div>
                     <div class="col-12 action">
@@ -188,6 +193,7 @@
                                 <button type="button" class="btn btn-raised btn-success status_change" data-id="3">Save and next</button>
                             </a>
                             {% endif %}
+{#                    <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>#}
                     </div>
                 </div>
                 <div class="col-3 inst-response">
@@ -237,7 +243,9 @@
                         <button type="submit" class="btn btn-raised btn-danger" onclick="JSalert()">End Test</button>
                     </div>
                 </div>
+{#            <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>#}
             </div>
+{#        <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>#}
         </div>
     </main>
     <script type="text/javascript" src="{% static 'core/js/timer.js' %}"></script>

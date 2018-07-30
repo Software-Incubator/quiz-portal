@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 from core.models import Category, Question, Test, Instruction, Candidate, SelectedAnswer, Algorithm, Marks
 
 
@@ -55,6 +56,9 @@ class TestAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Test
+
+class MarksAdmin(ImportExportModelAdmin):
+    pass
 
 
 admin.site.register(Category, CategoryAdmin)

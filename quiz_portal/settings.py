@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'core',
     'ckeditor',
     'ckeditor_uploader',
+     'import_export',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,4 @@ CKEDITOR_CONFIGS = {
         'width': 700,
     },
 }
+IMPORT_EXPORT_USE_TRANSACTIONS = True

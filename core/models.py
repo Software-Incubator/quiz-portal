@@ -105,7 +105,7 @@ class Marks(models.Model):
     marks = models.IntegerField(blank=False)
 
     def __str__(self):
-        st = str(self.candidate.name) + ' - ' + str(self.marks) + ' - ' + str(self.test_name.test_name)
+        st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)
         return st
 
 

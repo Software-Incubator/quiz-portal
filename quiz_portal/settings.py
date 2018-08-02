@@ -13,7 +13,7 @@ SECRET_KEY = 'pi6^-ib=xwu(a6hg7@*+#ozhh%q^qg(hafeg^hk=7k)bpp!&5l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['silive.in', 'www.silive.in', 'localhost','*']
 
 
 # Application definition
@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'core',
     'ckeditor',
     'ckeditor_uploader',
-     'import_export',
+    'snowpenguin.django.recaptcha2',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -72,12 +73,15 @@ DATABASES = {
     }
 }
 
+
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'quiz_portal',
-#         'USER': 'quizuser',
-#         'PASSWORD': 'quizportal@SI',
+#         'NAME': os.environ.get('DB_NAME'),
+#         'USER': os.environ.get('DB_USER'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD'),
 #         'HOST': 'localhost',
 #         'PORT': '',
 #     }
@@ -146,3 +150,5 @@ CKEDITOR_CONFIGS = {
     },
 }
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+RECAPTCHA_PRIVATE_KEY ='6Lc7kWcUAAAAALAEF2YKqpuCR_BDwUKEXuVEMIia'
+RECAPTCHA_PUBLIC_KEY ='6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij'

@@ -5,6 +5,9 @@ from core.models import Category, Question, Instruction, Test, SelectedAnswer, C
 import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
+from django.conf import settings
+import requests
+from django.contrib import messages
 
 a = []
 
@@ -224,7 +227,7 @@ class CandidateRegistration(generic.ListView):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
 
-    def post(self, *args, **kwargs):
+    def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
             form.save()

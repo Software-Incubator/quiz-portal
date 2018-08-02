@@ -5,6 +5,9 @@ from core.models import Category, Question, Instruction, Test, SelectedAnswer, C
 import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
+from django.conf import settings
+import requests
+from django.contrib import messages
 
 a = []
 
@@ -224,9 +227,24 @@ class CandidateRegistration(generic.ListView):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
 
-    def post(self, *args, **kwargs):
+    def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
+            ''' Begin reCAPTCHA validation '''
+            recaptcha_response = request.POST.get('g-recaptcha-response')
+            data = {
+                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                'response': recaptcha_response
+            }
+            r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+            result = r.json()
+            ''' End reCAPTCHA validation '''
+
+            if result['success']:
+                form.save()
+                messages.success(request, 'New comment added with success!')
+            else:
+                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
             form.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')

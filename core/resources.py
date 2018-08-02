@@ -13,4 +13,3 @@ class MarksResource(resources.ModelResource):
         response = HttpResponse(dataset.csv, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="marks.csv"'
         return response
-

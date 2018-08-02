@@ -17,11 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
         model = Category
 
 
-class MarksAdmin(admin.ModelAdmin):
-    list_display = ('test_name', 'candidate', 'marks')
 
-    class Meta:
-        model = Marks
 
 
 class QuestionAdmin(admin.ModelAdmin):
@@ -58,7 +54,10 @@ class TestAdmin(admin.ModelAdmin):
         model = Test
 
 class MarksAdmin(ImportExportModelAdmin):
-    pass
+    list_display = ('test_name', 'candidate', 'marks')
+
+    class Meta:
+        model = Marks
 
 
 admin.site.register(Category, CategoryAdmin)

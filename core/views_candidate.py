@@ -230,21 +230,6 @@ class CandidateRegistration(generic.ListView):
     def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
-            ''' Begin reCAPTCHA validation '''
-            recaptcha_response = request.POST.get('g-recaptcha-response')
-            data = {
-                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-                'response': recaptcha_response
-            }
-            r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-            result = r.json()
-            ''' End reCAPTCHA validation '''
-
-            if result['success']:
-                form.save()
-                messages.success(request, 'New comment added with success!')
-            else:
-                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
             form.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')

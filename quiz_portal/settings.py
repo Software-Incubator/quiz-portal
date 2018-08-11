@@ -1,5 +1,4 @@
 import os
-from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,10 +8,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'pi6^-ib=xwu(a6hg7@*+#ozhh%q^qg(hafeg^hk=7k)bpp!&5l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG',cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -29,9 +28,7 @@ INSTALLED_APPS = [
     'core',
     'ckeditor',
     'ckeditor_uploader',
-     'import_export',
-    'requests',
-    'decouple',
+    'snowpenguin.django.recaptcha2',
 ]
 
 MIDDLEWARE = [
@@ -135,11 +132,8 @@ LOGIN_REDIRECT_URL ='signup'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
-# CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor"
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_RESTRICT_BY_USER = True
-# CKEDITOR_ALLOW_NONIMAGE_FILES = False
-# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -148,5 +142,7 @@ CKEDITOR_CONFIGS = {
         'width': 700,
     },
 }
+
 IMPORT_EXPORT_USE_TRANSACTIONS = True
-GOOGLE_RECAPTCHA_SECRET_KEY = config('GOOGLE_RECAPTCHA_SECRET_KEY')
+RECAPTCHA_PRIVATE_KEY ='6Lc7kWcUAAAAALAEF2YKqpuCR_BDwUKEXuVEMIia'
+RECAPTCHA_PUBLIC_KEY ='6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij'

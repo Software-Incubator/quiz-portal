@@ -2,7 +2,6 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from core.models import Category, Question, Test, Instruction, Candidate, SelectedAnswer, Algorithm, Marks
 
-
 class QuestionInLine(admin.TabularInline):
     model = Question
     extra = 5

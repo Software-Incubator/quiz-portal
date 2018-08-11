@@ -13,7 +13,7 @@ SECRET_KEY = 'pi6^-ib=xwu(a6hg7@*+#ozhh%q^qg(hafeg^hk=7k)bpp!&5l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['silive.in', 'www.silive.in', 'localhost','*']
 
 
 # Application definition
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'snowpenguin.django.recaptcha2',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -72,12 +73,15 @@ DATABASES = {
     }
 }
 
+
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'quiz_portal',
-#         'USER': 'quizuser',
-#         'PASSWORD': 'quizportal@SI',
+#         'NAME': os.environ.get('DB_NAME'),
+#         'USER': os.environ.get('DB_USER'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD'),
 #         'HOST': 'localhost',
 #         'PORT': '',
 #     }
@@ -132,8 +136,11 @@ LOGIN_REDIRECT_URL ='signup'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
+# CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor"
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_RESTRICT_BY_USER = True
+# CKEDITOR_ALLOW_NONIMAGE_FILES = False
+# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -142,7 +149,6 @@ CKEDITOR_CONFIGS = {
         'width': 700,
     },
 }
-
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 RECAPTCHA_PRIVATE_KEY ='6Lc7kWcUAAAAALAEF2YKqpuCR_BDwUKEXuVEMIia'
 RECAPTCHA_PUBLIC_KEY ='6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij'

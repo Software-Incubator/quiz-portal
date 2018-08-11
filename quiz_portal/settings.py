@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'core',
     'ckeditor',
     'ckeditor_uploader',
+    'snowpenguin.django.recaptcha2',
     'import_export',
 ]
 
@@ -65,10 +66,21 @@ WSGI_APPLICATION = 'quiz_portal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'quiz_portal',
+#         'USER': 'quizuser',
+#         'PASSWORD': 'quizportal@SI',
+#         'HOST': 'localhost',
+#         'PORT': '',
 #     }
 # }
 
@@ -131,12 +143,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL ='signup'
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
-STATIC_ROOT = os.path.join(os.environ.get('HOME', '/home/si/'), 'Assets/QuizPortal/static')
-
+# CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor"
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_RESTRICT_BY_USER = True
-
+# CKEDITOR_ALLOW_NONIMAGE_FILES = False
+# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -146,3 +160,5 @@ CKEDITOR_CONFIGS = {
     },
 }
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+RECAPTCHA_PRIVATE_KEY ='6Lc7kWcUAAAAALAEF2YKqpuCR_BDwUKEXuVEMIia'
+RECAPTCHA_PUBLIC_KEY ='6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij'

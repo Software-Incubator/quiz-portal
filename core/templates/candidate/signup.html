@@ -6,6 +6,7 @@
 {% block head%}
 <link rel="stylesheet" href="{% static 'core/css/signup_design.css' %}">
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}
 
 
@@ -88,26 +89,19 @@
                     </select>
                     <p><strong>{{ form.test_name.errors}}</strong></p>
                 </div>
-{#                 <div class="radio">#}
-{#                            <label>#}
-{#                                <input type="radio" name="hosteler" value="True"> Hosteler#}
-{#                            </label>#}
-{#                        </div>#}
-{#                        <div class="radio">#}
-{#                            <label>#}
-{#                                <input type="radio" name="hosteler" value="False"> Day Scholar#}
-{#                            </label>#}
-{#                        </div>#}
                 {% for choice in form.hosteler %}
 
   <div class="radio">{{ choice.tag }}{{ choice.choice_label }}</div>
 {% endfor %}
-
+            <br>
+            <div class="g-recaptcha" data-sitekey="6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij"></div>
             </div>
+
                 <div class="btn-field">
                   <button type="submit" class="btn btn-raised btn-primary">Submit</button>
                 </div>
             </div>
+
             </form>
             </div>
         </div>

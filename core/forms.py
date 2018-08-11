@@ -1,12 +1,9 @@
 from django import forms
 from core.models import Test, Question, Category, Instruction
-from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from .models import Candidate
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.models import User
-import re
-
+from snowpenguin.django.recaptcha2.fields import ReCaptchaField
+from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
 
 BRANCH_CHOICES = (('cse', 'CSE'),
                   ('it', 'IT'),
@@ -105,10 +102,10 @@ class CandidateRegistration(forms.ModelForm):
     label = 'Are you a Hosteler?',
     choices = YES_OR_NO, required = True
     )
-
+    captcha = ReCaptchaField(widget=ReCaptchaWidget())
     class Meta:
         model = Candidate
-        fields = ['name','email','std_no','phone_number','branch','hosteler','skills','designer','test_name']
+        fields = ['name','email','std_no','phone_number','branch','hosteler','skills','designer','test_name','captcha']
 
 
 class ChooseTestForm(forms.Form):

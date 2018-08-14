@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'core',
     'ckeditor',
     'ckeditor_uploader',
+    'snowpenguin.django.recaptcha2',
     'import_export',
     'admin_honeypot',
     'snowpenguin.django.recaptcha2',

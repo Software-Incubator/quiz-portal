@@ -16,7 +16,11 @@ class CategoryAdmin(admin.ModelAdmin):
         model = Category
 
 
+class MarksAdmin(admin.ModelAdmin):
+    list_display = ('test_name', 'candidate', 'marks')
 
+    class Meta:
+        model = Marks
 
 
 class QuestionAdmin(admin.ModelAdmin):

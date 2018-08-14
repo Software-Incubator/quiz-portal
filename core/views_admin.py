@@ -32,9 +32,6 @@ def CalculateMarks(pk):
     selects = SelectedAnswer.objects.filter(email=cand)
     score = 0
     for select in selects:
-        print(select.question_text.negative)
-        print(select.question_text.correct_choice)
-        print(select.selected_choice)
         if select.question_text.negative == 1:
             if select.selected_choice == select.question_text.correct_choice:
                 score += select.question_text.marks
@@ -45,9 +42,7 @@ def CalculateMarks(pk):
         else:
             if select.selected_choice == select.question_text.correct_choice:
                 score += select.question_text.marks
-        print("score",score)
     Marks.objects.create(test_name=test, candidate=cand, marks=score)
-    print("total score", score)
     return 1
 
 
@@ -392,10 +387,8 @@ class ShowCandidateListView(View):
         form = self.form_class()
         tests = Test.objects.all()
         cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
-        print("cands",cands)
         if tests[0].negative == 1:
             for cand in cands:
-                print("cand",cand)
                 try:
                     Marks.objects.get(test_name=tests[0], candidate=cand)
                 except:

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from core.models import Category, Question, Test, Instruction, Candidate, SelectedAnswer, Algorithm, Marks, DesignQuestion
+from core.export import export_xls
 
 
 class QuestionInLine(admin.TabularInline):
@@ -50,12 +51,22 @@ class TestAdmin(admin.ModelAdmin):
     class Meta:
         model = Test
 
-class MarksAdmin(ImportExportModelAdmin):
+# class MarksAdmin(ImportExportModelAdmin):
+#     list_display = ('test_name', 'candidate', 'marks')
+
+#     class Meta:
+#         model = Marks
+
+class MarksAdmin(admin.ModelAdmin):
+    # actions = [export_csv, export_xls, export_xlsx]
     list_display = ('test_name', 'candidate', 'marks')
+    # queryset = Marks.objects.all()
+    # print(queryset)
+    # actions = [export_xls(queryset=queryset)]
+    actions = [export_xls]
 
     class Meta:
         model = Marks
-
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Question, QuestionAdmin)
@@ -64,7 +75,6 @@ admin.site.register(Instruction)
 admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(SelectedAnswer)
 admin.site.register(Algorithm)
-# admin.site.register(Marks)
 
 admin.site.register(Marks, MarksAdmin)
 admin.site.register(DesignQuestion)

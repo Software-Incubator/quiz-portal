@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'import_export',
     'admin_honeypot',
     'snowpenguin.django.recaptcha2',
-    'import_export',
 ]
 
 MIDDLEWARE = [

@@ -51,22 +51,17 @@ class TestAdmin(admin.ModelAdmin):
     class Meta:
         model = Test
 
-# class MarksAdmin(ImportExportModelAdmin):
-#     list_display = ('test_name', 'candidate', 'marks')
-
-#     class Meta:
-#         model = Marks
 
 class MarksAdmin(admin.ModelAdmin):
+
     # actions = [export_csv, export_xls, export_xlsx]
     list_display = ('test_name', 'candidate', 'marks')
-    # queryset = Marks.objects.all()
-    # print(queryset)
-    # actions = [export_xls(queryset=queryset)]
     actions = [export_xls]
+
 
     class Meta:
         model = Marks
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Question, QuestionAdmin)

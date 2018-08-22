@@ -35,7 +35,7 @@ def CalculateMarks(pk):
         if select.question_text.negative == 1:
             if select.selected_choice == select.question_text.correct_choice:
                 score += select.question_text.marks
-            elif select.selected_choice == None:
+            elif select.selected_choice == None or select.selected_choice <= 0 or select.selected_choice > 4:
                 pass
             else:
                 score -= select.question_text.negative_marks
@@ -475,83 +475,7 @@ class ViewResultView(View):
             l.append(percent)
             l1.extend([l])
         return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
-
-    def post(self, request, pk, *args, **kwargs):
-        l1 = []
-        data = {}
-        overall_total = 0
-        overall_correct = 0
-        cand = Candidate.objects.get(pk=pk)
-        test = Test.objects.get(test_name=cand.test_name)
-        cats = Category.objects.filter(test=test)
-        selects = SelectedAnswer.objects.filter(email=cand)
-        if len(selects) != 0:
-            for cat in cats:
-                total = 0
-                correct = 0
-                l = []
-                l.append(cat.category)
-                percent = 0.0
-                for select in selects:
-                    if cat.category == select.question_text.category.category:
-                        total = total + 1
-                        overall_total = overall_total + 1
-                        if select.question_text.correct_choice == select.selected_choice:
-                            correct = correct + 1
-                            overall_correct = overall_correct + 1
-                l.append(total)
-                l.append(correct)
-                if total == 0:
-                    percent = 0.0
-                else:
-                    percent = (correct / float(total)) * 100
-                l.append(percent)
-                l1.extend([l])
-            total = 0
-            correct = 0
-            l = []
-            percent = 0.0
-            if overall_total == 0:
-                percent = 0.0
-            else:
-                percent = (overall_correct / float(overall_total)) * 100
-                l.append("Total")
-            l.append(overall_total)
-            l.append(overall_correct)
-            l.append(percent)
-            l1.extend([l])
-            try:
-                os.mkdir(os.path.join('core', 'media'))
-            except:
-                pass
-            data = {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1}
-            con = Context(data)
-            template = get_template('admin/result2.html')
-            html = template.render(data)
-            st1 = str(cand.name) + " - " + str(cand.email)
-            options = {
-                'page-size': 'A4',
-                'margin-top': '0.55in',
-                'margin-right': '0.55in',
-                'margin-bottom': '0.55in',
-                'margin-left': '0.55in',
-                'encoding': "UTF-8",
-                    }
-            content = render_to_string(
-                'admin/result2.html', 
-                {
-                    'selects': selects, 
-                    'cats': cats, 
-                    'l': l1,
-                    'cand': cand, 
-                }
-            )
-        pdf = pdfkit.PDFKit(content, "string", options=options).to_pdf()
-        response = HttpResponse(pdf)
-        response['Content-Type'] = 'application/pdf'
-        response['Content-disposition'] = 'filename={}.pdf'.format(st1)
-        return response
-
+        
 
 class AdminInstructionView(View):
     form_class = forms.InstructionForm

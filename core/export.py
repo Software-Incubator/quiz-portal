@@ -1,7 +1,9 @@
 import xlwt
 from django.http import HttpResponse
+from .models import Marks
 
 def export_xls(modeladmin, request, queryset):
+    queryset = Marks.objects.all()
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=Marksheet.xls'
     wb = xlwt.Workbook(encoding='utf-8')

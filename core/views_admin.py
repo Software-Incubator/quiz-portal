@@ -139,16 +139,16 @@ class EditTest(View):
         return super(EditTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        img_id = 0
-        img_id = request.GET['imgid']
-        if img_id:
+        test_id = 0
+        test_id = request.GET['imgid']
+        if test_id:
             dur = request.GET['dur']
             test = request.GET['test']
             if int(dur) < 1:
                 message = "Duration cannot be 0 or less"
                 return render(request, 'admin/error.html', {'message': message})
             else:
-                Test.objects.filter(pk=img_id).update(duration=dur, test_name=test)
+                Test.objects.filter(pk=test_id).update(duration=dur, test_name=test)
                 return HttpResponse(img_id)
 
 
@@ -205,9 +205,9 @@ class AddQuestionView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            c = Category.objects.get(category=(dict(request.POST)['category'])[0])
+            category = Category.objects.get(category=(dict(request.POST)['category'])[0])
             if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                Question.objects.create(category=c,
+                Question.objects.create(category=category,
                                         question_text=(dict(request.POST)['question_text'])[0],
                                         choice1=(dict(request.POST)['choice1'])[0],
                                         choice2=(dict(request.POST)['choice2'])[0],
@@ -271,15 +271,15 @@ class ShowCategoryView(View):
         return super(ShowCategoryView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        l = []
+        test_list_with_category = []
         tests = Test.objects.all()
         for test in tests:
-            l1 = []
-            l1.append(test)
+            category_list = []
+            category_list.append(test)
             cats = Category.objects.filter(test=test)
-            l1.append(cats)
-            l.extend([l1])
-        return render(request, self.template_name, {'l': l})
+            category_list.append(cats)
+            test_list_with_category.extend([category_list])
+        return render(request, self.template_name, {'test_list': test_list_with_category})
 
 class ShowQuestionsView(View):
     template_name = 'admin/showquestions.html'
@@ -351,14 +351,14 @@ class Editcategory(View):
         return super(Editcategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        img_id = 0
-        img_id = request.GET['imgid']
-        if img_id:
+        category_id = 0
+        category_id = request.GET['imgid']
+        if category_id:
             name = request.GET['name']
             test = request.GET['test']
             num = request.GET['num']
             Tname = Test.objects.get(test_name=test)
-            Category.objects.filter(pk=img_id).update(category=name, test=Tname, total_question_display=int(num))
+            Category.objects.filter(pk=category_id).update(category=name, test=Tname, total_question_display=int(num))
             return HttpResponse(Tname.test_name)
 
 
@@ -432,7 +432,7 @@ class ViewResultView(View):
         return super(ViewResultView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, pk, *args, **kwargs):
-        l1 = []
+        categorywise_marks = []
         overall_total = 0
         overall_correct = 0
         cand = Candidate.objects.get(pk=pk)
@@ -443,8 +443,8 @@ class ViewResultView(View):
             for cat in cats:
                 total = 0
                 correct = 0
-                l = []
-                l.append(cat.category)
+                sub_list_for_marks = []
+                sub_list_for_marks.append(cat.category)
                 percent = 0.0
                 for select in selects:
                     if cat.category == select.question_text.category.category:
@@ -453,28 +453,28 @@ class ViewResultView(View):
                         if select.question_text.correct_choice == select.selected_choice:
                             correct = correct + 1
                             overall_correct = overall_correct + 1
-                l.append(total)
-                l.append(correct)
+                sub_list_for_marks.append(total)
+                sub_list_for_marks.append(correct)
                 if total == 0:
                     percent = 0.0
                 else:
                     percent = (correct / float(total)) * 100
-                l.append(percent)
-                l1.extend([l])
+                sub_list_for_marks.append(percent)
+                categorywise_marks.extend([sub_list_for_marks])
             total = 0
             correct = 0
-            l = []
+            sub_list_for_marks = []
             percent = 0.0
             if overall_total == 0:
                 percent = 0.0
             else:
                 percent = (overall_correct / float(overall_total)) * 100
-                l.append("Total")
-            l.append(overall_total)
-            l.append(overall_correct)
-            l.append(percent)
-            l1.extend([l])
-        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'l': l1})
+                sub_list_for_marks.append("Total")
+            sub_list_for_marks.append(overall_total)
+            sub_list_for_marks.append(overall_correct)
+            sub_list_for_marks.append(percent)
+            categorywise_marks.extend([sub_list_for_marks])
+        return render(request, self.template_name, {'selects': selects, 'cats': cats, 'cand': cand, 'categorywise_marks': categorywise_marks})
         
 
 class AdminInstructionView(View):
@@ -582,27 +582,6 @@ class AddAlgorithmView(View):
         form = self.form_class()
         return render(request, self.template_name, {'form': form, 'all_algo': all_algo, 'all_test': all_test})
 
-    # def get(self, request, *args, **kwargs):
-    #     l=[]
-    #     l1=[]
-    #     if (Test.objects.all()).count() == 0:
-    #         message = "No test present"
-    #         return render(request, 'admin/error.html', {'message': message})
-    #     else:
-    #         if (Category.objects.all()).count() == 0:
-    #             message = "No category present"
-    #             return render(request, 'admin/error.html', {'message': message})
-    #         else:
-    #             cats = Category.objects.filter(category='algorithm')
-    #             for cat in cats:
-    #                 algo = Algorithm.objects.filter(test=cat.test)
-    #                 l1.append(cat.test.test_name)
-    #                 l1.append(algo)
-    #                 l.extend([l1])
-    #                 l1=[]
-    #             form = self.form_class()
-    #             return render(request, self.template_name, {'form': form, 'l':l})
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -675,5 +654,4 @@ def error403(request):
 def error500(request):
     message = 'Error 500 \n Server Error'
     return render(request, 'admin/error.html', {'message': message})
-
 

@@ -118,4 +118,3 @@ class Marks(models.Model):
         st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)
         return st
 
-

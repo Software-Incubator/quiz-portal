@@ -3,35 +3,43 @@
 
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
+<link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
+<script  src=""></script>
+<script type="text/javascript" src="{% static 'core/js/jspdf.min.js' %}"></script>
+<!-- <script type="text/javascript" >
+    function genpdf(){
+        var doc = new jsPDF('landscape');
+        doc.fromHTML($('.result').get(0));
+        doc.save('test.pdf');
+    }
+</script> -->
 {% endblock %} 
 
 {% block content %}
 <div class="result">
     <h3 class="heading">Result</h3>
-
+    
     <div class="row">
         <div class="col-1 candidate-details">
             <h4><i class="fas fa-user-graduate"></i></h4>
-            <h6><i class="fas fa-user-friends"></i></h6>
             <h6><i class="fas fa-envelope"></i></h6>
             <h6><i class="fas fa-mobile-alt"></i></h6>
         </div>
         <div class="col-5 candidate-details">
             <h4>{{ cand.name }}</h4>
-            <h6>{{ cand.father_name }}</h6>
             <h6>{{ cand.email }}</h6>
             <h6>{{ cand.phone_number }}</h6>
         </div>
         <div class="col-6 dwd-button">
-            <form method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-raised btn-primary">See and download Result as PDF</button>
-            </form>
+            <a href="{% url "Delete_result" cand.pk %}">
+                <button type="button" class="btn btn-raised btn-danger">Delete Result</button>
+            </a>
+            <!-- <button onclick="genpdf()" class="btn btn-raised btn-primary">Download as pdf</button> -->
         </div>
+        
     </div>
-
-
+    
+    
     <table class="table table-hover">
         <thead class="table-head">
             <tr>
@@ -42,21 +50,20 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in l %}
+            {% for candidate_details in categorywise_marks %}
             <tr>
-                {% for j in i %}
-                <td>{{ j }}</td>
+                {% for each_detail in candidate_details %}
+                <td>{{ each_detail }}</td>
                 {% empty %}
                 <p>Nothing for this section</p>
                 {% endfor %}
             </tr>
             {% empty %}
             <p>Nothing attempted</p> {% endfor %}
-            </tr>
         </tbody>
     </table>
-
-
+    
+    
     {% for select in selects %} {% if select.question_text.correct_choice == select.selected_choice %}
     <table class="table table-hover">
         <tbody>
@@ -98,7 +105,7 @@
         </tbody>
     </table>
     {% else %}
-    <table class="table">
+    <table class="table table-hover">
         <tbody>
             <tr>
                 <td>
@@ -140,9 +147,7 @@
     {% endif %} {% empty %}
     <p>No questions attempted.</p>
     {% endfor %}
-    <div style="margin: auto;">
-        <a href="{% url "Delete_result" cand.pk %}">
-            <button type="button" class="btn btn-raised btn-danger">Delete Result</button>
-        </a>
-    </div>{% endblock %}
-    
+    <!-- <div style="margin: auto;">
+    </div> -->
+</div>
+{% endblock %}

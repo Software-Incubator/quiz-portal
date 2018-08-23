@@ -4,8 +4,8 @@
 
 {% block head%}
 <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
 <script type="text/javascript" src="{% static " ckeditor/ckeditor-init.js " %}"></script>
 <script type="text/javascript" src="{% static " ckeditor/ckeditor/ckeditor.js " %}"></script> 
 {% endblock %} 
@@ -25,35 +25,48 @@
                             <a href="{% url "Edit_Instruction" inst.pk %}">
                                 <button type="button" class="btn btn-raised btn-primary">Edit</button>
                             </a>
-                                <button type="button" class="btn btn-raised btn-danger" onclick="JSalert()">Delete</button>
-                                        <script type="text/javascript">
-                                            function JSalert(){
-                                                swal({   title: "Are you sure you want to proceed?",
-                                                type: "warning",
-                                             showCancelButton: true,
-                                           confirmButtonColor: "#DD6B55",
-                                          confirmButtonText: "Yes",
+                            <!-- <a href="{% url "Delete_Instruction" inst.pk %}">
+                                <button type="button" class="btn btn-raised btn-danger">Delete</button>
+                            </a> -->
+                            <button type="button" class="btn btn-raised btn-danger" onclick="JSalert({{inst.pk}})">Delete</button>
+                                <script type="text/javascript">
+                                    function JSalert(id){
+                                        var instruction_id = id;
+                                        console.log(instruction_id);
+                                        // var String_instruction_id = String(instruction_id);
+                                        // console.log(String_instruction_id);
+                                        // var url = "{% url 'Delete_Instruction' " + String_instruction_id + " %}";
+                                        var url = "";
+                                        url += "{% url 'Delete_Instruction' ";
+                                        url += String(instruction_id);
+                                        url += " %}";
+                                        console.log(url);
+                                        swal({   title: "Are you sure you want to proceed?",
+                                        type: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "Yes",
                                         cancelButtonText: "Cancel",
-                                         closeOnConfirm: false,
+                                        closeOnConfirm: false,
                                         closeOnCancel: false },
-                                         function(isConfirm){
-                                         if (isConfirm)
-                                          {
-                                              window.location.href = "{% url 'Delete_Instruction'  inst.pk %}";
+                                        function(isConfirm){
+                                            if (isConfirm)
+                                            {
+                                                window.location.href = url;
                                             }
-                                          else {
-                                             swal.close();
+                                            else {
+                                                swal.close();
                                             } });
-                                    }
+                                        }
                                     </script>
-                            {% empty %}
-                            <p>No Instructions for this test.</p>
-                        </li>
-                        {% endfor %}
-                    </ol>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+                                    {% empty %}
+                                    <p style="color: red">No Instructions Available.</p>
+                                </li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endblock %}

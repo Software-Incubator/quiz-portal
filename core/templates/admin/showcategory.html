@@ -11,16 +11,16 @@
     <div class="questions-list">
         <h3 class="heading">Category List</h3>
         <div id="accordian">
-            {% for i in l %}
-                <p>Categories for Test - {{ i.0 }}</p>
-                {% for j in i.1 %}
-                    <a href="{% url "Show_Questions" j.pk %}">
-                    <button class="btn" >See questions for {{ j.category }} category</button></a><br>
+            {% for test in test_list %}
+                <h5>Categories for Test - {{ test.0 }}</h5>
+                {% for category in test.1 %}
+                    <a href="{% url "Show_Questions" category.pk %}">
+                    <p>See questions for {{ category.category }} category</p></a><br>
                 {% empty %}
-                    <p class="danger">No category for this test</p>
+                    <p class="danger" style="color: red">No category for this test</p>
                 {% endfor %}
             {% empty %}
-                <p class="danger" >No test present.</p>
+                <p class="danger" style="color: red">No test present.</p>
             {% endfor %}
         </div>
         </div>

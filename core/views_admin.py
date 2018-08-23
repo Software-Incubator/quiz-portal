@@ -559,8 +559,10 @@ class DeleteInstructionView(View):
             return redirect('admin_auth')
         return super(DeleteInstructionView, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk, *args, **kwargs):
-        Instruction.objects.filter(pk=pk).delete()
+    def get(self, request, key, *args, **kwargs):
+        print(key)
+        print(type(key))
+        Instruction.objects.filter(pk=key).delete()
         return redirect('Show_Instruction')
 
 

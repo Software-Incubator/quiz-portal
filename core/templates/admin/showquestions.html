@@ -7,8 +7,28 @@
 <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+<script type="text/javascript">
+    function JSalert(id){
+        var id = id;
+        swal({   title: "Are you sure you want to proceed?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false },
+        function(isConfirm){
+            var linkURL = $('#delete'+id).attr("href");
+            if (isConfirm)
+            {
+                window.location.href = linkURL;
+            }
+            else {
+                swal.close();
+            } });
+        }
+</script>
 {% endblock %}
 
 {% block content %}
@@ -34,16 +54,14 @@
                         <a href="{% url "Edit_Question" que.pk %}">
                             <button type="button" class="btn btn-raised btn-primary">Edit</button>
                         </a>
-                        <a href="{% url "Delete_Question" que.pk %}">
-                            <button type="button" class="btn btn-raised btn-danger" onclick="JSalert()">Delete</button>
-                        </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            {% empty %}
-            <p style="color: red;" >No Questions for this category present.</p>
-            {% endfor %}
-        </div>
+                        <button type="button" id="delete{{ que.pk }}" href="{% url "Delete_Question" que.pk %}" class="btn btn-raised btn-danger" onclick="JSalert({{ que.pk }})">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% empty %}
+        <p style="color: red;" >No Questions for this category present.</p>
+        {% endfor %}
     </div>
-    {% endblock%}
+</div>
+{% endblock%}

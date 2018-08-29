@@ -6,13 +6,29 @@
 <link rel="stylesheet" href="{% static 'core/css/showquestion_instruction.css' %}">
 <script  src=""></script>
 <script type="text/javascript" src="{% static 'core/js/jspdf.min.js' %}"></script>
-<!-- <script type="text/javascript" >
+<script type="text/javascript" src="{% static 'core/js/html2canvas.js' %}"></script>
+<script type="text/javascript" src="{% static 'core/js/html2canvas.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'core/js/html2pdf.bundle.js' %}"></script>
+<script type="text/javascript" src="{% static 'core/js/html2pdf.bundle.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'core/js/html2pdf.js' %}"></script>
+<script type="text/javascript" src="{% static 'core/js/html2pdf.min.js' %}"></script>
+<script>
     function genpdf(){
-        var doc = new jsPDF('landscape');
-        doc.fromHTML($('.result').get(0));
-        doc.save('test.pdf');
+        var candidate_name = document.getElementById('candidate_name').innerText;
+        var candidate_email = document.getElementById('candidate_email').innerText;
+        var element = document.getElementById('result1');
+        var name = candidate_name +"  -  " + candidate_email + ".pdf";
+
+        var opt = {
+            margin:       0,
+            filename:     name,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 1 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().from(element).set(opt).save();
     }
-</script> -->
+</script>
 <script type="text/javascript">
     function JSalert(id){
         var id = id;
@@ -34,30 +50,28 @@
                 swal.close();
             } });
         }
-</script>
-{% endblock %} 
-
-{% block content %}
-<div class="result">
-    <h3 class="heading">Result</h3>
+    </script>
+    {% endblock %} 
     
-    <div class="row">
-        <div class="col-1 candidate-details">
-            <h4><i class="fas fa-user-graduate"></i></h4>
-            <h6><i class="fas fa-envelope"></i></h6>
-            <h6><i class="fas fa-mobile-alt"></i></h6>
-        </div>
-        <div class="col-5 candidate-details">
-            <h4>{{ cand.name }}</h4>
-            <h6>{{ cand.email }}</h6>
-            <h6>{{ cand.phone_number }}</h6>
-        </div>
-        <div class="col-6 dwd-button">
-            <button type="button" id="delete{{ cand.pk }}" href="{% url "Delete_result" cand.pk %}" class="btn btn-raised btn-danger" onclick="JSalert({{ cand.pk }})">Delete</button>
-                
-                <!-- <button onclick="genpdf()" class="btn btn-raised btn-primary">Download as pdf</button> -->
+    {% block content %}
+    <div class="result" id="result1" style="width: 100%">
+        <h3 class="heading">Result</h3>
+        
+        <div class="row">
+            <div class="col-1 candidate-details">
+                <h4><i class="fas fa-user-graduate"></i></h4>
+                <h6><i class="fas fa-envelope"></i></h6>
+                <h6><i class="fas fa-mobile-alt"></i></h6>
             </div>
-            
+            <div class="col-5 candidate-details">
+                <h4 id="candidate_name">{{ cand.name }}</h4>
+                <h6 id="candidate_email">{{ cand.email }}</h6>
+                <h6>{{ cand.phone_number }}</h6>
+            </div>
+            <div class="col-6 dwd-button">
+                <button type="button" id="delete{{ cand.pk }}" href="{% url "Delete_result" cand.pk %}" class="btn btn-raised btn-danger" onclick="JSalert({{ cand.pk }})">Delete</button>
+                <button onclick="genpdf()" class="btn btn-raised btn-primary">Download as pdf</button>
+            </div>
         </div>
         
         

@@ -40,26 +40,48 @@
             }
         })
     });
-</script> 
+</script>
+<script type="text/javascript">
+    function JSalert(id){
+        var id = id;
+        swal({   title: "Are you sure you want to proceed?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false },
+        function(isConfirm){
+            var linkURL = $('#delete'+id).attr("href");
+            if (isConfirm)
+            {
+                window.location.href = linkURL;
+            }
+            else {
+                swal.close();
+            } });
+        }
+</script>
 {% endblock %}
 
 {% block content %}
 <main class="category-container">
-<div class="category-list">
-    <div class="heading">
-        <h3>Categories(Add/Edit/Delete)</h3>
-    </div>
-    <table class="table table-head">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Test Category Name</th>
-                <th scope="col">Test Name</th>
-                <th scope="col">No. of Question</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-    </table>
+    <div class="category-list">
+        <div class="heading">
+            <h3>Categories(Add/Edit/Delete)</h3>
+        </div>
+        <table class="table table-head">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Test Category Name</th>
+                    <th scope="col">Test Name</th>
+                    <th scope="col">No. of Question</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+        </table>
         <ol>
             {% for cat in cats %}
             <li>
@@ -86,9 +108,7 @@
                                 <a>
                                     <button class="change btn btn-raised btn-primary" cat_data="{{cat.pk}}">Save after editing</button>
                                 </a>
-                                <a href="{% url "Delete_Category" cat.pk %}">
-                                    <button type="button" class="btn btn-raised btn-danger">Delete</button>
-                                </a>
+                                <button type="button" id="delete{{ cat.pk }}" href="{% url "Delete_Category" cat.pk %}" class="btn btn-raised btn-danger" onclick="JSalert({{ cat.pk }})">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -98,40 +118,41 @@
             <p style="color: red">No category available</p>
             {% endfor %}
         </ol>
-    <form name="CategoryForm" class="addcategory" method="post" novalidate>
-    <div class="footer-table">
-        {% csrf_token %} 
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>
-                        {{ form.category.label_tag }} {{ form.category }}
-                        <p>
-                            <strong class="text-danger">{{ form.category.errors }}</strong>
-                        </p>
-                        <td>
-                            {{ form.number_of_questions.label_tag }} {{ form.number_of_questions }}
-                            <p>
-                                <strong class="text-danger">{{ form.number_of_questions.errors }}</strong>
-                            </p>
-                        </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.test_name.label_tag }} {{ form.test_name }}
-                        <p>
-                            <strong class="text-danger">{{ form.test_name.errors }}</strong>
-                        </p>
-                    </td>
-                    <td>
-                        <button type="submit" class="btn btn-raised btn-primary">Add</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        </form>
-    </div>
-</div>
-</main>
-{% endblock %}
-
+        <form name="CategoryForm" class="addcategory" method="post" novalidate>
+            <div class="footer-table">
+                {% csrf_token %} 
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ form.category.label_tag }} {{ form.category }}
+                                <p>
+                                    <strong class="text-danger">{{ form.category.errors }}</strong>
+                                </p>
+                                <td>
+                                    {{ form.number_of_questions.label_tag }} {{ form.number_of_questions }}
+                                    <p>
+                                        <strong class="text-danger">{{ form.number_of_questions.errors }}</strong>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ form.test_name.label_tag }} {{ form.test_name }}
+                                    <p>
+                                        <strong class="text-danger">{{ form.test_name.errors }}</strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-raised btn-primary">Add</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </main>
+    {% endblock %}
+    
+    

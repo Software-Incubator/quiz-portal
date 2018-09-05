@@ -193,13 +193,21 @@ class CandidateRegistration(generic.ListView):
     def make_permutation(self, n, required_question, can_id):
         a = [x for x in range(1, n + 1)]
         a = list(itertools.combinations(a, required_question))
-        if len(a) > 10:
-            a = a[0:10]
         return a[can_id % len(a)]
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
+
+    def default_result(self,question_seq,test,candidate):
+        for category in question_seq:
+            all_ques_no = question_seq[category]
+            cat_obj = Category.objects.get(category=category, test=test)
+            for question_no in all_ques_no:
+                each_question = Question.objects.filter(category=cat_obj)[question_no - 1]
+                obj = SelectedAnswer.objects.get_or_create(email=candidate,
+                                                           question_text=each_question,
+                                                           selected_choice=-1)
 
     def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
@@ -229,6 +237,7 @@ class CandidateRegistration(generic.ListView):
                                                                                 required_question,
                                                                                 candidate.id)
                     self.request.session['question_seq'] = question_seq
+                    self.default_result(question_seq,test,candidate)
                 except:
                     self.request.session.set_expiry(1)
                 return redirect('instruction')

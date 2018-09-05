@@ -21,12 +21,6 @@ def make_permutation(n, required_question, can_id):
     return a[can_id%len(a)]
 
 
-def random_question(n, can_id, ques_id):
-    global a
-    l = len(a)
-    return a[can_id % l][ques_id % n]
-
-
 class AlgorithmQuestionDisplay(generic.DetailView):
     template_name = 'candidate/algorithm_question.html'
 
@@ -93,6 +87,7 @@ class QuestionByCategory(generic.DetailView):
     def get(self, request, *args, **kwargs):
         print("start time", time.time())
         email = request.session["email"]
+        question_seq = request.session["question_seq"]
         candidate = Candidate.objects.get(email=email)
         name=candidate.name
         candidate_id = candidate.id
@@ -104,6 +99,7 @@ class QuestionByCategory(generic.DetailView):
         all_category = Category.objects.filter(test=test)
         all_category_count = all_category.count()
         category_name = kwargs["category_name"]
+        question_seq = request.session["question_seq"][category_name]
         context_dict = {'category_name': category_name,"name":name}
         category_dict_by_number =category_number_to_name(all_category, all_category_count)
         category_dict_by_name = category_name_to_number(all_category, all_category_count)
@@ -112,9 +108,7 @@ class QuestionByCategory(generic.DetailView):
             category = Category.objects.get(category=category_name, test=test)
             total_question = Question.objects.filter(category=category).count()
             required_question = category.total_question_display
-            if required_question > total_question:
-                message = "More than required question select"
-                return render(request, 'candidate/error.html', {'message': message})
+
             last_question = 0
             first_question = 0
             if total_question:
@@ -134,13 +128,12 @@ class QuestionByCategory(generic.DetailView):
                 if id==1:
                     first_question = 1
                     prev_category = category_dict_by_number[(category_dict_by_name[category_name]-2+all_category_count)%all_category_count + 1]
-
                     context_dict["prev_category"] = prev_category
                     prev_category_obj = Category.objects.get(test=test, category=prev_category)
                     context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()
 
-                make_permutation(total_question, required_question)
-                which_question = random_question(required_question, int(candidate_id), id)
+
+                which_question = question_seq[id%required_question]
                 question = Question.objects.filter(category=category)[which_question - 1]
                 all_algo = Algorithm.objects.filter(test=test)
                 algo_count = all_algo.count()
@@ -164,12 +157,11 @@ class QuestionByCategory(generic.DetailView):
                 context_dict["all_category"] = Category.objects.filter(test=test)
                 status_dict = {}
                 for i in range(1, required_question+1):
-                    now_question = random_question(required_question, int(candidate_id), i)
-                    per_question = Question.objects.filter(category=category)[now_question - 1]
+                    question_number = question_seq[i%required_question]
+                    per_question = Question.objects.filter(category=category)[question_number - 1]
                     try:
                         obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                         status_dict[i] = obj.status
-
                     except:
                         obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
                         status_dict[i] = 1
@@ -257,6 +249,9 @@ class CandidateRegistration(generic.ListView):
                     for category in categories:
                         total_question = Question.objects.filter(category=category).count()
                         required_question = category.total_question_display
+                        if required_question > total_question:
+                            message = "More than required question select"
+                            return render(request, 'candidate/error.html', {'message': message})
                         question_seq[category.category] = make_permutation(total_question, required_question, candidate.id)
                     self.request.session['question_seq'] = question_seq
                     print("-->", question_seq)

@@ -5,20 +5,6 @@ from core.models import Category, Question, Instruction, Test, SelectedAnswer, C
 import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
-from django.conf import settings
-import requests
-from django.contrib import messages
-import time
-
-a = []
-
-def make_permutation(n, required_question, can_id):
-    global a
-    a = [x for x in range(1, n + 1)]
-    a = list(itertools.combinations(a, required_question))
-    if len(a)>10:
-        a = a[0:10]
-    return a[can_id%len(a)]
 
 
 class AlgorithmQuestionDisplay(generic.DetailView):
@@ -60,22 +46,6 @@ class AlgorithmQuestionDisplay(generic.DetailView):
         return render(self.request, self.template_name, context_dict)
 
 
-def category_name_to_number(all_category, all_category_count):
-    category_dict = {}
-    counter = 1
-    for category in all_category:
-        category_dict[category.category] = counter
-        counter = counter + 1
-    return category_dict
-
-
-def category_number_to_name(all_category, all_category_count):
-    category_dict = {}
-    for i in range(1, all_category_count+1):
-        category_dict[i] = all_category[i-1].category
-    return category_dict
-
-
 class QuestionByCategory(generic.DetailView):
     template_name = 'candidate/question_by_category.html'
 
@@ -84,100 +54,96 @@ class QuestionByCategory(generic.DetailView):
             return redirect('signup')
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
+    def category_name_to_number(self, all_category):
+        category_dict = {}
+        counter = 1
+        for category in all_category:
+            category_dict[category.category] = counter
+            counter = counter + 1
+        return category_dict
+
+    def category_number_to_name(self, all_category):
+        category_dict = {}
+        all_category_count = all_category.count()
+        for i in range(1, all_category_count + 1):
+            category_dict[i] = all_category[i - 1].category
+        return category_dict
+
     def get(self, request, *args, **kwargs):
-        print("start time", time.time())
+        """
+        status=1 (not attempted)
+        status=2 (preview)
+        status=3 (save)
+        """
         email = request.session["email"]
-        question_seq = request.session["question_seq"]
         candidate = Candidate.objects.get(email=email)
-        name=candidate.name
-        candidate_id = candidate.id
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         duration = test.duration
         dif_time = (dt.datetime.utcnow() - candidate.time.replace(tzinfo=None)).total_seconds()
         remain_time = duration*60 - round(dif_time)
         all_category = Category.objects.filter(test=test)
-        all_category_count = all_category.count()
         category_name = kwargs["category_name"]
         question_seq = request.session["question_seq"][category_name]
-        context_dict = {'category_name': category_name,"name":name}
-        category_dict_by_number =category_number_to_name(all_category, all_category_count)
-        category_dict_by_name = category_name_to_number(all_category, all_category_count)
+        context_dict = {'category_name': category_name,"candidate_name": candidate.name}
+        category_dict_by_number = self.category_number_to_name(all_category)
+        category_dict_by_name = self.category_name_to_number(all_category)
+        category = Category.objects.get(category=category_name, test=test)
+        total_question = Question.objects.filter(category=category).count()
+        required_question = category.total_question_display
+        last_question = 0
+        first_question = 0
+        if not total_question:
+            message = "NO QUESTIONS IN THIS CATEGORY!"
+            return render(request, 'candidate/error.html', {'message': message})
 
-        try:
-            category = Category.objects.get(category=category_name, test=test)
-            total_question = Question.objects.filter(category=category).count()
-            required_question = category.total_question_display
+        id = kwargs["id"]
+        if id not in range(1, required_question + 1):
+            return redirect(reverse('category', kwargs={"category_name": category_name,
+                                                            "id": 1 }))
+        # if last question of current category
+        if required_question==id:
+            last_question = 1
+            next_category = category_dict_by_number[(category_dict_by_name[category_name])%all_category.count() + 1]
+            context_dict["next_category"] = next_category
 
-            last_question = 0
-            first_question = 0
-            if total_question:
-                email = request.session["email"]
-                id = kwargs["id"]
-
-                if id not in range(1, required_question + 1):
-                    return redirect(reverse('category', kwargs={"category_name": category_name,
-                                                                "id": 1 }))
-                # if last question of current category
-                if required_question==id:
-                    last_question = 1
-                    next_category = category_dict_by_number[(category_dict_by_name[category_name])%all_category_count + 1]
-                    context_dict["next_category"] = next_category
-
-                # if first question of current category
-                if id==1:
-                    first_question = 1
-                    prev_category = category_dict_by_number[(category_dict_by_name[category_name]-2+all_category_count)%all_category_count + 1]
-                    context_dict["prev_category"] = prev_category
-                    prev_category_obj = Category.objects.get(test=test, category=prev_category)
-                    context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()
+        # if first question of current category
+        if id==1:
+            first_question = 1
+            prev_category = category_dict_by_number[(category_dict_by_name[category_name]-2+all_category.count())%all_category.count() + 1]
+            context_dict["prev_category"] = prev_category
+            prev_category_obj = Category.objects.get(test=test, category=prev_category)
+            context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()
 
 
-                which_question = question_seq[id%required_question]
-                question = Question.objects.filter(category=category)[which_question - 1]
-                all_algo = Algorithm.objects.filter(test=test)
-                algo_count = all_algo.count()
-                context_dict["algo_count"] = algo_count
-                context_dict["all_algo"] = all_algo
-                all_design_ques = DesignQuestion.objects.filter(test=test)
-                design_ques_count = all_design_ques.count()
-                context_dict["all_design_ques"] = all_design_ques
-                context_dict["design_ques_count"] = design_ques_count
-                instruction = Instruction.objects.filter(test=test)
-                context_dict["last_question"] = last_question
-                context_dict["first_question"] = first_question
-                context_dict["instruction"] = instruction
-                context_dict["which_question"] = which_question
-                context_dict["test_name"] = test_name
-                context_dict["remain_time"] = remain_time
-                context_dict['question'] = question
-                context_dict["question_id"] = question.id
-                context_dict['category'] = category
-                context_dict["id"] = id
-                context_dict["all_category"] = Category.objects.filter(test=test)
-                status_dict = {}
-                for i in range(1, required_question+1):
-                    question_number = question_seq[i%required_question]
-                    per_question = Question.objects.filter(category=category)[question_number - 1]
-                    try:
-                        obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
-                        status_dict[i] = obj.status
-                    except:
-                        obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
-                        status_dict[i] = 1
-                context_dict["status_dict"] = status_dict
-            else:
-                message = "NO QUESTIONS IN THIS CATEGORY!"
-                return render(request, 'candidate/error.html', {'message':message})
-
-            """
-            status=1 (not attempted)
-            status=2 (preview)
-            status=3 (save)
-            """
-        except Category.DoesNotExist:
-            pass
-        print("end time", time.time())
+        which_question = question_seq[id%required_question]
+        question = Question.objects.filter(category=category)[which_question - 1]
+        all_algo = Algorithm.objects.filter(test=test)
+        context_dict["all_algo"] = all_algo
+        all_design_ques = DesignQuestion.objects.filter(test=test)
+        context_dict["all_design_ques"] = all_design_ques
+        instruction = Instruction.objects.filter(test=test)
+        context_dict["last_question"] = last_question
+        context_dict["first_question"] = first_question
+        context_dict["instruction"] = instruction
+        context_dict["which_question"] = which_question
+        context_dict["test_name"] = test_name
+        context_dict["remain_time"] = remain_time
+        context_dict['question'] = question
+        context_dict['category'] = category
+        context_dict["id"] = id
+        context_dict["all_category"] = Category.objects.filter(test=test)
+        status_dict = {}
+        for i in range(1, required_question+1):
+            question_number = question_seq[i%required_question]
+            per_question = Question.objects.filter(category=category)[question_number - 1]
+            try:
+                obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
+                status_dict[i] = obj.status
+            except:
+                obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
+                status_dict[i] = 1
+        context_dict["status_dict"] = status_dict
         return render(self.request, self.template_name, context_dict)
 
 
@@ -224,6 +190,13 @@ class CandidateRegistration(generic.ListView):
             return redirect('instruction')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
+    def make_permutation(self, n, required_question, can_id):
+        a = [x for x in range(1, n + 1)]
+        a = list(itertools.combinations(a, required_question))
+        if len(a) > 10:
+            a = a[0:10]
+        return a[can_id % len(a)]
+
     def get(self, request, *args, **kwargs):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
@@ -252,10 +225,10 @@ class CandidateRegistration(generic.ListView):
                         if required_question > total_question:
                             message = "More than required question select"
                             return render(request, 'candidate/error.html', {'message': message})
-                        question_seq[category.category] = make_permutation(total_question, required_question, candidate.id)
+                        question_seq[category.category] = self.make_permutation(total_question,
+                                                                                required_question,
+                                                                                candidate.id)
                     self.request.session['question_seq'] = question_seq
-                    print("-->", question_seq)
-                    print(request.session["question_seq"])
                 except:
                     self.request.session.set_expiry(1)
                 return redirect('instruction')
@@ -263,6 +236,7 @@ class CandidateRegistration(generic.ListView):
 
 
 class UserAnswerView(generic.ListView):
+
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
             if not request.session.has_key("email"):
@@ -275,15 +249,11 @@ class UserAnswerView(generic.ListView):
             candidate = Candidate.objects.get(email=email)
             option_number = request.GET["option_number"]
             question_id = request.GET["question_id"]
-            email = request.session["email"]
-            candidate = Candidate.objects.get(email=email)
             test_name = candidate.test_name
             test = Test.objects.get(test_name=test_name)
             question = Question.objects.get(id=int(question_id))
             try:
-                object = SelectedAnswer.objects.get(email=candidate,
-                                                    question_text=question
-                                                    )
+                object = SelectedAnswer.objects.get(email=candidate, question_text=question)
                 object.selected_choice = int(option_number)
                 object.save()
                 print(option_number, "on")
@@ -305,14 +275,11 @@ class DefaultOption(generic.ListView):
         if request.is_ajax():
             email = request.session["email"]
             candidate = Candidate.objects.get(email=email)
-
             question_id = request.GET["question_id"]
             question = Question.objects.get(id=int(question_id))
             candidate_answer = -1
             try:
-                object = SelectedAnswer.objects.get(email=candidate,
-                                                    question_text=question
-                                                    )
+                object = SelectedAnswer.objects.get(email=candidate, question_text=question)
                 candidate_answer = object.selected_choice
             except:
                 pass

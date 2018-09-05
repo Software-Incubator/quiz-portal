@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        var question_id = "{{ question_id }}";
+        var question_id = "{{ question.id }}";
         var remain_time = "{{ remain_time }}";
         var session_out =  "{% url 'session_out' %}";
         var prev_user_answer = "{% url 'user_answer' %}";
@@ -75,15 +75,14 @@
                             </li>
                             </ul>
                         {% endfor %}
-                        {% if algo_count != 0 %}
-
+                        {% if all_algo.count != 0 %}
                             <div class="nav-item algo">
                                 <a data-toggle="modal" data-target="#algo">Algorithm</a>
                             </div>
 
 
                         {% endif %}
-                        {% if design_ques_count != 0 %}
+                        {% if all_design_ques.count != 0 %}
                             <ul class="nav nav-pills">
                             <div class="nav-item algo">
                                 <a data-toggle="modal" data-target="#design">Design</a>
@@ -154,7 +153,7 @@
                                     {{ question.question_text|safe|escape }}
                                 </h5>
                             </div>
-                            <div class="col-12 answers options" id={{ question_id }}>
+                            <div class="col-12 answers options" id={{ question.id }}>
                                 <div class="radio " >
                                     <label>
                                         <input type="radio" name="optionsRadios" id="optionsRadios1" value="1">{{ question.choice1|safe|escape }}
@@ -182,11 +181,11 @@
                     <div class="col-12 action">
                         {% if first_question == 0 %}
                             <a href={% url 'category' category.category id|add:"-1" %}>
-                                <button type="button" class="btn btn-raised btn-primary status_change" data-id="2">Previous</button>
+                                <button type="button" class="btn btn-raised btn-primary status_change" data-id="1">Previous</button>
                             </a>
                             {% else %}
                             <a href={% url 'category' prev_category prev_category_last_ques %}>
-                                <button type="button" class="btn btn-raised btn-primary status_change" data-id="2">Previous</button>
+                                <button type="button" class="btn btn-raised btn-primary status_change" data-id="1">Previous</button>
                             </a>
                             {% endif %}
                             {% if last_question == 0 %}

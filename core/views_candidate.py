@@ -8,16 +8,17 @@ import datetime as dt
 from django.conf import settings
 import requests
 from django.contrib import messages
+import time
 
 a = []
 
-
-def make_permutation(n, required_question):
+def make_permutation(n, required_question, can_id):
     global a
     a = [x for x in range(1, n + 1)]
     a = list(itertools.combinations(a, required_question))
     if len(a)>10:
         a = a[0:10]
+    return a[can_id%len(a)]
 
 
 def random_question(n, can_id, ques_id):
@@ -90,6 +91,7 @@ class QuestionByCategory(generic.DetailView):
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        print("start time", time.time())
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
         name=candidate.name
@@ -183,6 +185,7 @@ class QuestionByCategory(generic.DetailView):
             """
         except Category.DoesNotExist:
             pass
+        print("end time", time.time())
         return render(self.request, self.template_name, context_dict)
 
 
@@ -247,6 +250,17 @@ class CandidateRegistration(generic.ListView):
                     test = Test.objects.get(test_name=test_name)
                     time = test.duration
                     self.request.session.set_expiry(time*60)
+                    #  question order for all category in session
+
+                    question_seq = {}
+                    categories = Category.objects.filter(test=test_name)
+                    for category in categories:
+                        total_question = Question.objects.filter(category=category).count()
+                        required_question = category.total_question_display
+                        question_seq[category.category] = make_permutation(total_question, required_question, candidate.id)
+                    self.request.session['question_seq'] = question_seq
+                    print("-->", question_seq)
+                    print(request.session["question_seq"])
                 except:
                     self.request.session.set_expiry(1)
                 return redirect('instruction')

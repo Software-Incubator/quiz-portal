@@ -118,3 +118,13 @@ class Marks(models.Model):
         st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)
         return st
 
+
+class AdditionalQuestion(models.Model):
+    question_text = RichTextUploadingField()
+
+
+class Additional(models.Model):
+    test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100,blank=False)
+    on_or_off = models.BooleanField(blank=False)
+    additional_question = models.ManyToManyField(AdditionalQuestion)

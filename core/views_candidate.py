@@ -1,49 +1,14 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from . import forms
-from core.models import Category, Question, Instruction, Test, SelectedAnswer, Candidate, Algorithm, DesignQuestion
+from core.models import Category, Question, Instruction, Test,\
+    SelectedAnswer, Candidate, Additional, AdditionalQuestion
 import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
 
 
-class AlgorithmQuestionDisplay(generic.DetailView):
-    template_name = 'candidate/algorithm_question.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.has_key("email"):
-            return redirect('signup')
-        return super(AlgorithmQuestionDisplay, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        email = request.session["email"]
-        candidate = Candidate.objects.get(email=email)
-        test_name = candidate.test_name
-        test = Test.objects.get(test_name=test_name)
-        duration = test.duration
-        dif_time = (dt.datetime.utcnow() - candidate.time.replace(tzinfo=None)).total_seconds()
-        remain_time = duration*60 - round(dif_time)
-        context_dict = {"category_name": "algorithm"}
-        context_dict["remain_time"] = remain_time
-        try:
-            total_question = Algorithm.objects.filter(test=test).count()
-            if total_question:
-                id = kwargs["id"]
-                if int(id) not in range(1, total_question + 1):
-                    return redirect(reverse('algorithm', kwargs={"id": 1}))
-                context_dict["question_list_number"] = [int(x) for x in range(1, total_question+1)]
-                context_dict["total_question"] = total_question
-                context_dict["question"] = Algorithm.objects.filter(test=test)[id-1]
-                context_dict["id"] = id
-                context_dict["all_category"] = Category.objects.filter(test=test)
-
-            else:
-                message = "NO QUESTIONS IN THIS CATEGORY!"
-                return render(request, 'candidate/error.html', {'message':message})
-
-        except Category.DoesNotExist:
-            pass
-        return render(self.request, self.template_name, context_dict)
 
 
 class QuestionByCategory(generic.DetailView):
@@ -118,10 +83,8 @@ class QuestionByCategory(generic.DetailView):
 
         which_question = question_seq[id%required_question]
         question = Question.objects.filter(category=category)[which_question - 1]
-        all_algo = Algorithm.objects.filter(test=test)
-        context_dict["all_algo"] = all_algo
-        all_design_ques = DesignQuestion.objects.filter(test=test)
-        context_dict["all_design_ques"] = all_design_ques
+        additional_objs = Additional.objects.filter(test_name=test, on_or_off=True)
+        context_dict["additional_objs"] = additional_objs
         instruction = Instruction.objects.filter(test=test)
         context_dict["last_question"] = last_question
         context_dict["first_question"] = first_question

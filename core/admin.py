@@ -1,6 +1,16 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from core.models import Category, Question, Test, Instruction, Candidate, SelectedAnswer, Algorithm, Marks, DesignQuestion
+from core.models import Category,\
+    Question,\
+    Test,\
+    Instruction,\
+    Candidate,\
+    SelectedAnswer,\
+    Algorithm,\
+    Marks,\
+    DesignQuestion, \
+    Additional,\
+    AdditionalQuestion
 from core.export import export_xls
 
 
@@ -60,14 +70,27 @@ class TestAdmin(admin.ModelAdmin):
 
 
 class MarksAdmin(admin.ModelAdmin):
-
-    # actions = [export_csv, export_xls, export_xlsx]
     list_display = ('test_name', 'candidate', 'marks')
     actions = [export_xls]
 
-
     class Meta:
         model = Marks
+
+
+class AdditionalAdmin(admin.ModelAdmin):
+    list_display = ('test_name', 'name', 'on_or_off')
+    search_fields = ['test_name', 'name', 'on_or_off']
+
+    class Meta:
+        model = Additional
+
+
+class AdditionalQuestionAdmin(admin.ModelAdmin):
+    list_display = ('question_text',)
+    search_fields = ['id','question_text']
+
+    class Meta:
+        model = AdditionalQuestion
 
 
 admin.site.register(Category, CategoryAdmin)
@@ -76,7 +99,6 @@ admin.site.register(Test, TestAdmin)
 admin.site.register(Instruction)
 admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(SelectedAnswer)
-admin.site.register(Algorithm)
-
+admin.site.register(AdditionalQuestion, AdditionalQuestionAdmin)
+admin.site.register(Additional, AdditionalAdmin)
 admin.site.register(Marks, MarksAdmin)
-admin.site.register(DesignQuestion)

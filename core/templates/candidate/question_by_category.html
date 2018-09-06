@@ -75,35 +75,28 @@
                             </li>
                             </ul>
                         {% endfor %}
-                        {% if all_algo.count != 0 %}
+                        {% for add_obj in additional_objs %}
                             <div class="nav-item algo">
-                                <a data-toggle="modal" data-target="#algo">Algorithm</a>
+                                <a data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a>
                             </div>
+                        {% endfor %}
 
-
-                        {% endif %}
-                        {% if all_design_ques.count != 0 %}
-                            <ul class="nav nav-pills">
-                            <div class="nav-item algo">
-                                <a data-toggle="modal" data-target="#design">Design</a>
-                            </div>
-                            </ul>
-                        {% endif %}
                     </nav>
                     <hr class="nav-break">
-                    <div class="modal fade" id="algo" tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
+                      {% for add_obj in additional_objs %}
+                          <div class="modal fade" id={{ add_obj.name }} tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="AlgoModalTitle">Algorithm</h5>
+                                <h5 class="modal-title" id="AlgoModalTitle">{{ add_obj.name }}</h5>
                                 <hr>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                {% for algo in all_algo %}
-                                    <li>{{ forloop.counter }}. {{ algo.question_text|safe|escape }}</li>
+                                {% for quest in add_obj.additional_question.all %}
+                                    <li>{{ forloop.counter }}. {{ quest.question_text|safe|escape }}</li>
                                 {% endfor %}
                             </div>
                             <hr>
@@ -114,31 +107,38 @@
                         </div>
                     </div>
                     </div>
-                    <div class="modal fade" id="design" tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="DesignModalTitle">Design</h5>
-                                <hr>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="modal-body">
-                                {% for design_ques in all_design_ques %}
-                                    <li>{{ forloop.counter }}. {{ design_ques.question_text|safe|escape }}</li>
-                                {% endfor %}
-                            </div>
-                            </div>
-                            <hr>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      {% endfor %}
 
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+
+
+
+
+
+{#                    <div class="modal fade" id="design" tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">#}
+{#                        <div class="modal-dialog" role="document">#}
+{#                        <div class="modal-content">#}
+{#                            <div class="modal-header">#}
+{#                                <h5 class="modal-title" id="DesignModalTitle">Design</h5>#}
+{#                                <hr>#}
+{#                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                    <span aria-hidden="true">&times;</span>#}
+{#                                </button>#}
+{#                            </div>#}
+{#                            <div class="modal-body">#}
+{#                                <div class="modal-body">#}
+{#                                {% for design_ques in all_design_ques %}#}
+{#                                    <li>{{ forloop.counter }}. {{ design_ques.question_text|safe|escape }}</li>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                            </div>#}
+{#                            <hr>#}
+{#                            <div class="modal-footer">#}
+{#                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    </div>#}
                     <div class="ques-scroll">
                         <div class="row">
                             <div class="col-12 question">

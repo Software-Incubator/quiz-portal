@@ -259,13 +259,11 @@ class UserAnswerView(generic.ListView):
             option_number = request.GET["option_number"]
             question_id = request.GET["question_id"]
             test_name = candidate.test_name
-            test = Test.objects.get(test_name=test_name)
             question = Question.objects.get(id=int(question_id))
             try:
                 object = SelectedAnswer.objects.get(email=candidate, question_text=question)
                 object.selected_choice = int(option_number)
                 object.save()
-                print(option_number, "on")
             except:
                 object = SelectedAnswer.objects.create(email=candidate,
                                                     question_text=question,
@@ -325,8 +323,6 @@ class SaveStatus(generic.ListView):
                                                         status=2,
                                                         selected_choice=-1
                                                            )
-                    if object:
-                        print(object)
                 else:
                     pass
 

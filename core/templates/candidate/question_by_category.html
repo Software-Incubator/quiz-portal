@@ -96,7 +96,7 @@
                             </div>
                             <div class="modal-body">
                                 {% for quest in add_obj.additional_question.all %}
-                                    <li>{{ forloop.counter }}. {{ quest.question_text|safe|escape }}</li>
+                                    {{ forloop.counter }}. {{ quest.question_text|safe|escape }}<br>
                                 {% endfor %}
                             </div>
                             <hr>

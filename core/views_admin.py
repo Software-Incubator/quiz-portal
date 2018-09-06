@@ -1,27 +1,12 @@
-from django.shortcuts import render, redirect, reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib import auth
 from django.views import generic, View
 from . import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render_to_response
-from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Algorithm, Marks
-import json
-import itertools
-import os
-from django.conf import settings
-from django.template import Context
-from django.template.loader import get_template
-import datetime
-from django.template.loader import render_to_string
-from django.template import loader
-import pdfkit
-from io import BytesIO
-import xhtml2pdf.pisa as pisa
+from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks
+
 
 
 def CalculateMarks(pk):
@@ -44,7 +29,6 @@ def CalculateMarks(pk):
                 score += select.question_text.marks
     Marks.objects.create(test_name=test, candidate=cand, marks=score)
     return 1
-
 
 
 class AdminAuth(generic.ListView):
@@ -562,78 +546,6 @@ class DeleteInstructionView(View):
     def get(self, request, pk, *args, **kwargs):
         Instruction.objects.filter(pk=pk).delete()
         return redirect('Show_Instruction')
-
-
-class AddAlgorithmView(View):
-    form_class = forms.AlgorithmForm
-    template_name = 'admin/addalgorithm.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
-        return super(AddAlgorithmView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        if Test.objects.all().count() == 0:
-            message = "No test present"
-            return render(request, 'admin/error.html', {'message': message})
-        all_algo = Algorithm.objects.all()
-        all_test = Test.objects.all()
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'all_algo': all_algo, 'all_test': all_test})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            test = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            # try:
-            #     c = Category.objects.get(category='algorithm', test=test)
-            # except:
-            #     c = Category.objects.create(test=test, category='algorithm', total_question_display=2)
-            Algorithm.objects.create(test=test, question_text=(dict(request.POST)['question_text'])[0])
-            return redirect('control_operation')
-        else:
-            return render(self.request, self.template_name, {'form': form})
-
-
-class EditAlgorithmView(View):
-    form_class = forms.AlgorithmForm
-    template_name = 'admin/editalgorithm.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
-        return super(EditAlgorithmView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, pk, *args, **kwargs):
-        algo = Algorithm.objects.get(pk=pk)
-        form = self.form_class()
-        (dict(form.__dict__['fields'])['question_text']).initial = algo.question_text
-        (dict(form.__dict__['fields'])['test_name']).initial = algo.test
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, pk, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            Algorithm.objects.filter(pk=pk).update(test = Tname,
-                    question_text = (dict(request.POST)['question_text'])[0])
-            return redirect('control_operation')
-        else:
-            return render(self.request, self.template_name, {'form': form, 'question': question})
-
-
-class DeleteAlgorithmView(View):
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser:
-            return redirect('admin_auth')
-        return super(DeleteAlgorithmView, self).dispatch(request, *args, **kwargs)
-
-    def get(self, request, pk, *args, **kwargs):
-        Algorithm.objects.filter(pk=pk).delete()
-        return redirect('Add_Algorithm')
-
 
 
 def error404(request):

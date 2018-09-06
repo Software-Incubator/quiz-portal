@@ -1,16 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from core.models import Category,\
-    Question,\
-    Test,\
-    Instruction,\
-    Candidate,\
-    SelectedAnswer,\
-    Algorithm,\
-    Marks,\
-    DesignQuestion, \
-    Additional,\
-    AdditionalQuestion
+from core.models import Category, Question, Test, Instruction, Candidate,\
+    SelectedAnswer, Marks, Additional, AdditionalQuestion
 from core.export import export_xls
 
 

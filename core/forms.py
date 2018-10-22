@@ -93,19 +93,20 @@ class QuestionForm(forms.Form):
 
 class CandidateRegistration(forms.ModelForm):
 
-    test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label='Please Choose')
+    # test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label='Please Choose')
+    # test_obj = Test.objects.get(test_name=request.session["test_name"])
     branch = forms.ChoiceField(
         choices=BRANCH_CHOICES,
     )
 
     hosteler = forms.ChoiceField(widget=forms.RadioSelect(),
     label = 'Are you a Hosteler?',
-    choices = YES_OR_NO, required = True
+    choices = YES_OR_NO,
     )
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
     class Meta:
         model = Candidate
-        fields = ['name','email','std_no','phone_number','branch','hosteler','skills','designer','test_name','captcha']
+        fields = '__all__'
 
 
 class ChooseTestForm(forms.Form):
@@ -120,4 +121,11 @@ class AlgorithmForm(forms.Form):
 
     class Meta:
         fields = ['category', 'test_name']
+
+
+class GetTestNameForm(forms.Form):
+    test_name = forms.ChoiceField(choices=test_name_list,label="Choose Test", widget=forms.Select() )
+
+    class Meta:
+        fields = ['test_name']
 

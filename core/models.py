@@ -15,6 +15,13 @@ class Test(models.Model):
     duration = models.PositiveIntegerField(blank=False)
     on_or_off = models.BooleanField(blank=False)
     negative = models.BooleanField(default=False)
+    std_no = models.BooleanField(default=False)
+    father_name = models.BooleanField(default=False)
+    phone_number = models.BooleanField(default=False)
+    branch = models.BooleanField(default=False)
+    skills = models.BooleanField(default=False)
+    designer = models.BooleanField(default=False)
+    hosteler = models.BooleanField(default=False)
 
     def __str__(self):
         return self.test_name
@@ -59,46 +66,49 @@ class Question(models.Model):
         return self.question_text
 
 
-class CandBranch(models.Model):
-    branch = models.CharField(max_length=5)
-
-
-class CandPhone(models.Model):
-    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
-    phone_number = models.CharField(validators=[phone_regex], max_length=10)
-
-
-class CandSkill(models.Model):
-    skills = models.CharField(max_length=255, blank=True, null=True)
-
-
-class CandHosteler(models.Model):
-    hosteler = models.CharField(blank=True, max_length=3, null=True)
-
-
-class CandDesigner(models.Model):
-    designer = models.CharField(max_length=255,blank=True, null=True)
-
-
-class CandStudentNum(models.Model):
-    std_no_regex = RegexValidator(regex=r"^\d{7}$")
-    std_no = models.CharField(unique=True, validators=[std_no_regex], blank=False, max_length=7)
-
-
-class CandFather(models.Model):
-    designer = models.CharField(max_length=255,blank=True, null=True)
+# class CandBranch(models.Model):
+#     branch = models.CharField(max_length=5)
+#
+#
+# class CandPhone(models.Model):
+#     phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
+#     phone_number = models.CharField(validators=[phone_regex], max_length=10)
+#
+#
+# class CandSkill(models.Model):
+#     skills = models.CharField(max_length=255, blank=True, null=True)
+#
+#
+# class CandHosteler(models.Model):
+#     hosteler = models.CharField(blank=True, max_length=3, null=True)
+#
+#
+# class CandDesigner(models.Model):
+#     designer = models.CharField(max_length=255,blank=True, null=True)
+#
+#
+# class CandStudentNum(models.Model):
+#     std_no_regex = RegexValidator(regex=r"^\d{7}$")
+#     std_no = models.CharField(unique=True, validators=[std_no_regex], blank=False, max_length=7)
+#
+#
+# class CandFather(models.Model):
+#     designer = models.CharField(max_length=255,blank=True, null=True)
 
 
 class Candidate(models.Model):
-    name = models.CharField(max_length=100,blank=False)
-    std_no=models.OneToOneField(CandStudentNum, on_delete=models.CASCADE)
-    email = models.EmailField(unique=True,blank=False)
-    father_name = models.OneToOneField(CandFather, on_delete=models.CASCADE)
-    phone_number = models.OneToOneField(CandPhone, on_delete=models.CASCADE)
-    branch = models.OneToOneField(CandBranch, on_delete=models.CASCADE)
-    skills = models.OneToOneField(CandSkill, on_delete=models.CASCADE)
-    designer = models.OneToOneField(CandDesigner, on_delete=models.CASCADE)
-    test_name = models.CharField(max_length=100, null=Test)
+    name = models.CharField(max_length=100, blank=False)
+    std_no_regex = RegexValidator(regex=r"^\d{7}$")
+    std_no = models.CharField(validators=[std_no_regex], blank=True, max_length=7, null=True)
+    email = models.EmailField(unique=True, blank=False)
+    father = models.CharField(max_length=255, blank=True, null=True)
+    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
+    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
+    branch = models.CharField(max_length=5, blank=True, null=True)
+    skills = models.CharField(max_length=255, blank=True, null=True)
+    designer = models.CharField(max_length=255, blank=True, null=True)
+    hosteler = models.CharField(max_length=3, blank=True, null=True)
+    test_name = models.CharField(max_length=100, blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
 
 

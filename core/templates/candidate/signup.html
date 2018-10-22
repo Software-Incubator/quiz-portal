@@ -26,12 +26,13 @@
                             <input type="text" name="name" class="form-control" id="nameInput1" value="{{ form.name.value|default_if_none:'' }}">
                             <p><strong>{{ form.name.errors }}</strong></p>
                         </div>
-                        
+                        {% if test_obj.stu_no %}
                         <div class="form-group">
                             <label for="std_noInput" class="bmd-label-floating">Student no.</label>
                             <input type="text" name="std_no" class="form-control" id="std_noInput" value="{{ form.std_no.value|default_if_none:'' }}">
                             <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
                         </div>
+                        {% endif %}
                         
                         <div class="form-group">
                             <label for="emailInput" class="bmd-label-floating">Email Address</label>
@@ -46,12 +47,14 @@
                             {#                    <input type="text" name="father_name" class="form-control" id="nameInput2" value="{{ form.father_name.value|default_if_none:'' }}">#}
                             {#                    <p><strong>{{ form.father_name.errors}}</strong></p>#}
                             {#                </div>#}
-                            
+                            {% if test_obj.phone_number %}
                             <div class="form-group">
                                 <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
                                 <input type="text" name="phone_number" class="form-control" id="phoneInput" value="{{ form.phone_number.value|default_if_none:'' }}">
                                 <p><strong class="text-danger">{{ form.phone_number.errors}}</strong></p>
                             </div>
+                            {% endif %}
+                            {% if test_obj.branch %}
                             <div class="form-group sel">
                                 <label for="branchInput" class="bmd-label-floating">Branch</label>
                                 
@@ -62,37 +65,39 @@
                                 </select>
                                 <p><strong class="text-danger">{{ form.branch.errors}}</strong></p>
                             </div>
+                            {% endif %}
                         </div>
                         <div class="col-6">
-                            
-                            
+                            {% if test_obj.skills %}
                             <div class="form-group">
                                 <label for="skillInput" class="bmd-label-floating">Mention your Technical skills</label>
                                 <input type="text" name="skills" class="form-control" id="skillInput" value="{{ form.skills.value|default_if_none:'' }}">
                                 <span class="bmd-help">eg. HTML, CSS ,Python</span>
                                 <p><strong class="text-danger">{{ form.skills.errors}}</strong></p>
                             </div>
-                            
+                            {% endif %}
+                            {% if test_obj.designer %}
                             <div class="form-group">
                                 <label for="designerInput" class="bmd-label-floating">Familiar with any designing tool?</label>
                                 <input type="text" name="designer" class="form-control" id="designerInput" value="{{ form.designer.value|default_if_none:'' }}">
                                 <p><strong>{{ form.designer.errors}}</strong></p>
                             </div>
-                            
-                            <div class="form-group select-category">
-                                <label for="testInput" class="bmd-label-floating">Select a test</label>
-                                
-                                <select class="form-control" id="testInput" name='test_name'>
-                                    {% for t in form.test_name %}
-                                    {{ t}}
-                                    {% endfor %}
-                                </select>
-                                <p><strong>{{ form.test_name.errors}}</strong></p>
-                            </div>
+                            {% endif %}
+{#                            <div class="form-group select-category">#}
+{#                                <label for="testInput" class="bmd-label-floating">Select a test</label>#}
+{#                                #}
+{#                                <select class="form-control" id="testInput" name='test_name'>#}
+{#                                    {% for t in form.test_name %}#}
+{#                                    {{ t}}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                                <p><strong>{{ form.test_name.errors}}</strong></p>#}
+{#                            </div>#}
+                        {% if test_obj.hosteler %}
                             {% for choice in form.hosteler %}
-                            
                             <div class="radio">{{ choice.tag }}{{ choice.choice_label }}</div>
                             {% endfor %}
+                        {% endif %}
                             <br>
                             {{ form.captcha }}
                             <!-- <div class="g-recaptcha" data-sitekey="6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij"></div> -->

@@ -8,9 +8,6 @@ from django.http import JsonResponse, Http404
 import datetime as dt
 
 
-
-
-
 class QuestionByCategory(generic.DetailView):
     template_name = 'candidate/question_by_category.html'
 
@@ -151,6 +148,8 @@ class CandidateRegistration(generic.ListView):
     def dispatch(self, request, *args, **kwargs):
         if request.session.has_key("email"):
             return redirect('instruction')
+        if not request.session.has_key("test_name"):
+            return redirect('get_test')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
     def make_permutation(self, n, required_question, can_id):
@@ -160,7 +159,8 @@ class CandidateRegistration(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        return render(request, self.template_name, {'form': form})
+        test_obj = Test.objects.get(test_name=self.request.session["test_name"])
+        return render(request, self.template_name, {'form': form, 'test_obj':test_obj})
 
     def default_result(self,question_seq,test,candidate):
         for category in question_seq:
@@ -174,11 +174,17 @@ class CandidateRegistration(generic.ListView):
 
     def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
+        print(form)
+        print(1)
         if form.is_valid():
+            test_name = self.request.session["test_name"]
+            # test_obj = Test.objects.get(test_name=test_name)
+            form.test_name = test_name
+            print(2)
             form.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
-            test_name = form.cleaned_data.get('test_name')
+
             candidate = Candidate.objects.get(name=name, email=email)
             if candidate:
                 self.request.session['email'] = email
@@ -204,6 +210,31 @@ class CandidateRegistration(generic.ListView):
                 except:
                     self.request.session.set_expiry(1)
                 return redirect('instruction')
+        return render(self.request, self.template_name, {'form': form})
+
+
+class GetTestView(generic.ListView):
+    template_name = 'candidate/get_test.html'
+    form_class = forms.GetTestNameForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.session.has_key("email"):
+            return redirect('instruction')
+
+        return super(GetTestView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request,*args, **kwargs):
+        form = self.form_class(self.request.POST)
+        if form.is_valid():
+            test_name = form.cleaned_data.get('test_name')
+            if request.session.has_key('test_name'):
+                del request.session['test_name']
+            self.request.session['test_name'] = test_name
+            return redirect('signup')
         return render(self.request, self.template_name, {'form': form})
 
 

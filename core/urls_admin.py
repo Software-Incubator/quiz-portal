@@ -26,5 +26,4 @@ urlpatterns = [
     path('viewresult/(?P<pk>\d+)', views_admin.ViewResultView.as_view(), name='View_result'),
     path('deleteresult/(?P<pk>\d+)', views_admin.DeleteResultView.as_view(), name='Delete_result'),
     path('logout/$', built_views.logout, {'next_page': 'admin_auth'}, name='logout'),
-
 ]

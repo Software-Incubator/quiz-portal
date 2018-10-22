@@ -44,12 +44,12 @@ class ChoiceAdmin(admin.ModelAdmin):
         model = SelectedAnswer
 
 
-class CandidateAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'email', 'phone_number','hosteler','std_no','branch']
-    list_display = ('id', 'name', 'email', 'phone_number','hosteler','std_no','branch')
-
-    class Meta:
-        model = Candidate
+# class CandidateAdmin(admin.ModelAdmin):
+#     search_fields = ['name', 'email', 'phone_number','hosteler','std_no','branch']
+#     list_display = ('id', 'name', 'email', 'phone_number','hosteler','std_no','branch')
+#
+#     class Meta:
+#         model = Candidate
 
 
 class TestAdmin(admin.ModelAdmin):
@@ -88,7 +88,7 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Test, TestAdmin)
 admin.site.register(Instruction)
-admin.site.register(Candidate, CandidateAdmin)
+admin.site.register(Candidate)
 admin.site.register(SelectedAnswer)
 admin.site.register(AdditionalQuestion, AdditionalQuestionAdmin)
 admin.site.register(Additional, AdditionalAdmin)

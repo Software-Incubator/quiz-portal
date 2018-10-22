@@ -59,19 +59,45 @@ class Question(models.Model):
         return self.question_text
 
 
+class CandBranch(models.Model):
+    branch = models.CharField(max_length=5)
+
+
+class CandPhone(models.Model):
+    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
+    phone_number = models.CharField(validators=[phone_regex], max_length=10)
+
+
+class CandSkill(models.Model):
+    skills = models.CharField(max_length=255, blank=True, null=True)
+
+
+class CandHosteler(models.Model):
+    hosteler = models.CharField(blank=True, max_length=3, null=True)
+
+
+class CandDesigner(models.Model):
+    designer = models.CharField(max_length=255,blank=True, null=True)
+
+
+class CandStudentNum(models.Model):
+    std_no_regex = RegexValidator(regex=r"^\d{7}$")
+    std_no = models.CharField(unique=True, validators=[std_no_regex], blank=False, max_length=7)
+
+
+class CandFather(models.Model):
+    designer = models.CharField(max_length=255,blank=True, null=True)
+
+
 class Candidate(models.Model):
     name = models.CharField(max_length=100,blank=False)
-    std_no_regex = RegexValidator(regex=r"^\d{7}$")
-    std_no=models.CharField(unique=True,validators=[std_no_regex],blank=False,max_length=7)
+    std_no=models.OneToOneField(CandStudentNum, on_delete=models.CASCADE)
     email = models.EmailField(unique=True,blank=False)
-    # \father_name = models.CharField(max_length=100)
-    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
-    phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=False)
-    branch = models.CharField(max_length=5)
-    skills = models.CharField(max_length=255,blank=True)
-    hosteler = models.CharField(blank=False,max_length=3)
-    designer = models.CharField(
-        max_length=255,blank=True)
+    father_name = models.OneToOneField(CandFather, on_delete=models.CASCADE)
+    phone_number = models.OneToOneField(CandPhone, on_delete=models.CASCADE)
+    branch = models.OneToOneField(CandBranch, on_delete=models.CASCADE)
+    skills = models.OneToOneField(CandSkill, on_delete=models.CASCADE)
+    designer = models.OneToOneField(CandDesigner, on_delete=models.CASCADE)
     test_name = models.CharField(max_length=100, null=Test)
     time = models.DateTimeField(auto_now_add=True)
 

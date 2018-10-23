@@ -174,14 +174,12 @@ class CandidateRegistration(generic.ListView):
 
     def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
-        print(form)
-        print(1)
+        test_name = self.request.session["test_name"]
         if form.is_valid():
-            test_name = self.request.session["test_name"]
-            # test_obj = Test.objects.get(test_name=test_name)
-            form.test_name = test_name
             print(2)
-            form.save()
+            form_obj = form.save(commit=False)
+            form_obj.test_name = test_name
+            form_obj.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
 

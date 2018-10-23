@@ -4,6 +4,8 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from .models import Candidate
 from snowpenguin.django.recaptcha2.fields import ReCaptchaField
 from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
+from django.core.validators import RegexValidator
+
 
 BRANCH_CHOICES = (('cse', 'CSE'),
                   ('it', 'IT'),
@@ -92,21 +94,27 @@ class QuestionForm(forms.Form):
 
 
 class CandidateRegistration(forms.ModelForm):
+    name = forms.CharField(max_length=100, required=True)
+    std_no_regex = RegexValidator(regex=r"^\d{7}$")
+    std_no = forms.CharField(validators=[std_no_regex], max_length=7, required=False)
+    email = forms.EmailField(required=True)
+    father = forms.CharField(max_length=255, required=False)
+    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
+    phone_number = forms.CharField(validators=[phone_regex], max_length=10, required=False)
+    branch = forms.ChoiceField(choices=BRANCH_CHOICES, required=False)
+    skills = forms.CharField(max_length=255, required=False)
+    designer = forms.CharField(max_length=255, required=False)
+    # test_name = forms.CharField(max_length=100, required=False)
 
     # test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label='Please Choose')
     # test_obj = Test.objects.get(test_name=request.session["test_name"])
-    branch = forms.ChoiceField(
-        choices=BRANCH_CHOICES,
-    )
 
-    hosteler = forms.ChoiceField(widget=forms.RadioSelect(),
-    label = 'Are you a Hosteler?',
-    choices = YES_OR_NO,
-    )
+
+    hosteler = forms.ChoiceField(widget=forms.RadioSelect(),label = 'Are you a Hosteler?',choices = YES_OR_NO, required=False)
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
     class Meta:
         model = Candidate
-        fields = '__all__'
+        fields = ['name','email','std_no','phone_number','branch','hosteler','skills','designer','test_name','father', 'captcha']
 
 
 class ChooseTestForm(forms.Form):
@@ -114,6 +122,7 @@ class ChooseTestForm(forms.Form):
 
     class Meta:
         fields = ['test_name']
+
 
 class AlgorithmForm(forms.Form):
     question_text = forms.CharField(widget=CKEditorUploadingWidget())

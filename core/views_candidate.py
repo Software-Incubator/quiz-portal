@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from . import forms
@@ -12,7 +13,7 @@ class QuestionByCategory(generic.DetailView):
     template_name = 'candidate/question_by_category.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.session.has_key("email"):
+        if "email" not in request.session:
             return redirect('signup')
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
@@ -64,21 +65,20 @@ class QuestionByCategory(generic.DetailView):
             return redirect(reverse('category', kwargs={"category_name": category_name,
                                                             "id": 1 }))
         # if last question of current category
-        if required_question==id:
+        if required_question == id:
             last_question = 1
             next_category = category_dict_by_number[(category_dict_by_name[category_name])%all_category.count() + 1]
             context_dict["next_category"] = next_category
 
         # if first question of current category
-        if id==1:
+        if id == 1:
             first_question = 1
             prev_category = category_dict_by_number[(category_dict_by_name[category_name]-2+all_category.count())%all_category.count() + 1]
             context_dict["prev_category"] = prev_category
             prev_category_obj = Category.objects.get(test=test, category=prev_category)
             context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()
 
-
-        which_question = question_seq[id%required_question]
+        which_question = question_seq[id % required_question]
         question = Question.objects.filter(category=category)[which_question - 1]
         additional_objs = Additional.objects.filter(test_name=test, on_or_off=True)
         context_dict["additional_objs"] = additional_objs
@@ -114,28 +114,28 @@ class InstructionView(generic.ListView):
     template_name = 'candidate/instructions.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.session.has_key("email"):
+        if "email" not in request.session:
             return redirect('signup')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         email = request.session["email"]
         candidate = Candidate.objects.get(email=email)
-        name=candidate.name
+        name = candidate.name
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
         instruction = Instruction.objects.filter(test=test)
 
         try:
             category = Category.objects.filter(test=test)[0]
-        except:
+        except IndexError:
             message = "NO CATEGORY AVAILABLE RIGHT NOW!"
             return render(request, 'candidate/error.html', {'message': message})
 
         return render(request, self.template_name, {'instruction': instruction,
                                                     'category': category,
-                                                    'test_name':test_name,
-                                                    "name":name})
+                                                    'test_name': test_name,
+                                                    "name": name})
 
 
 class CandidateRegistration(generic.ListView):
@@ -143,12 +143,12 @@ class CandidateRegistration(generic.ListView):
     Candidate registration view
     """
     form_class = forms.CandidateRegistration
-    template_name ='candidate/signup.html'
+    template_name = 'candidate/signup.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.session.has_key("email"):
+        if "email" in request.session:
             return redirect('instruction')
-        if not request.session.has_key("test_name"):
+        if "test_name" not in request.session:
             return redirect('get_test')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
@@ -162,7 +162,7 @@ class CandidateRegistration(generic.ListView):
         test_obj = Test.objects.get(test_name=self.request.session["test_name"])
         return render(request, self.template_name, {'form': form, 'test_obj':test_obj})
 
-    def default_result(self,question_seq,test,candidate):
+    def default_result(self, question_seq, test, candidate):
         for category in question_seq:
             all_ques_no = question_seq[category]
             cat_obj = Category.objects.get(category=category, test=test)
@@ -193,7 +193,9 @@ class CandidateRegistration(generic.ListView):
                     #  question order for all category in session
 
                     question_seq = {}
-                    categories = Category.objects.filter(test=test_name)
+                    print("hello")
+                    categories = Category.objects.filter(test=test)
+                    print(categories)
                     for category in categories:
                         total_question = Question.objects.filter(category=category).count()
                         required_question = category.total_question_display
@@ -204,9 +206,9 @@ class CandidateRegistration(generic.ListView):
                                                                                 required_question,
                                                                                 candidate.id)
                     self.request.session['question_seq'] = question_seq
-                    self.default_result(question_seq,test,candidate)
+                    self.default_result(question_seq, test, candidate)
                 except:
-                    self.request.session.set_expiry(1)
+                    self.request.session.set_expiry(34000)
                 return redirect('instruction')
         return render(self.request, self.template_name, {'form': form})
 
@@ -327,8 +329,7 @@ class SaveStatus(generic.ListView):
 
 
 def logout(request):
-    try:
-        del request.session['email']
-    except:
-        pass
-    return render(request,'candidate/end.html')
+    # print(request.session.keys())
+    for key in list(request.session.keys()):
+        del request.session[key]
+    return render(request, 'candidate/end.html')

@@ -157,11 +157,6 @@ class CandidateRegistration(generic.ListView):
         a = list(itertools.combinations(a, required_question))
         return a[can_id % len(a)]
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class
-        test_obj = Test.objects.get(test_name=self.request.session["test_name"])
-        return render(request, self.template_name, {'form': form, 'test_obj':test_obj})
-
     def default_result(self, question_seq, test, candidate):
         for category in question_seq:
             all_ques_no = question_seq[category]
@@ -172,11 +167,15 @@ class CandidateRegistration(generic.ListView):
                                                            question_text=each_question,
                                                            selected_choice=-1)
 
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        test_obj = Test.objects.get(test_name=self.request.session["test_name"])
+        return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
+
     def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
         test_name = self.request.session["test_name"]
         if form.is_valid():
-            print(2)
             form_obj = form.save(commit=False)
             form_obj.test_name = test_name
             form_obj.save()
@@ -193,9 +192,7 @@ class CandidateRegistration(generic.ListView):
                     #  question order for all category in session
 
                     question_seq = {}
-                    print("hello")
                     categories = Category.objects.filter(test=test)
-                    print(categories)
                     for category in categories:
                         total_question = Question.objects.filter(category=category).count()
                         required_question = category.total_question_display
@@ -238,37 +235,37 @@ class GetTestView(generic.ListView):
         return render(self.request, self.template_name, {'form': form})
 
 
-class UserAnswerView(generic.ListView):
-
-    def get(self, request, *args, **kwargs):
-        if request.is_ajax():
-            if not request.session.has_key("email"):
-                data = {
-                    "url": reverse('ending'),
-                    "candidate_answer": -2
-                }
-                return JsonResponse(data)
-            email = request.session["email"]
-            candidate = Candidate.objects.get(email=email)
-            option_number = request.GET["option_number"]
-            question_id = request.GET["question_id"]
-            test_name = candidate.test_name
-            question = Question.objects.get(id=int(question_id))
-            try:
-                object = SelectedAnswer.objects.get(email=candidate, question_text=question)
-                object.selected_choice = int(option_number)
-                object.save()
-            except:
-                object = SelectedAnswer.objects.create(email=candidate,
-                                                    question_text=question,
-                                                    selected_choice=int(option_number)
-                                                       )
-            data = {
-                "candidate_answer": object.selected_choice
-            }
-            return JsonResponse(data)
-        else:
-            raise Http404
+# class UserAnswerView(generic.ListView):
+#
+#     def get(self, request, *args, **kwargs):
+#         if request.is_ajax():
+#             if "email" not in request.session:
+#                 data = {
+#                     "url": reverse('ending'),
+#                     "candidate_answer": -2
+#                 }
+#                 return JsonResponse(data)
+#             email = request.session["email"]
+#             candidate = Candidate.objects.get(email=email)
+#             option_number = request.GET["option_number"]
+#             question_id = request.GET["question_id"]
+#             test_name = candidate.test_name
+#             question = Question.objects.get(id=int(question_id))
+#             try:
+#                 object = SelectedAnswer.objects.get(email=candidate, question_text=question)
+#                 object.selected_choice = int(option_number)
+#                 object.save()
+#             except:
+#                 object = SelectedAnswer.objects.create(email=candidate,
+#                                                     question_text=question,
+#                                                     selected_choice=int(option_number)
+#                                                        )
+#             data = {
+#                 "candidate_answer": object.selected_choice
+#             }
+#             return JsonResponse(data)
+#         else:
+#             raise Http404
 
 
 class DefaultOption(generic.ListView):
@@ -295,33 +292,40 @@ class DefaultOption(generic.ListView):
 class SaveStatus(generic.ListView):
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
+            if "email" not in request.session:
+                data = {
+                    "url": reverse('ending'),
+                    "candidate_answer": -2
+                }
+                return JsonResponse(data)
             email = request.session["email"]
             candidate = Candidate.objects.get(email=email)
             question_id = request.GET["question_id"]
             status = int(request.GET["status"])
+            option_number = request.GET["option_number"]
             question = Question.objects.get(id=int(question_id))
-
-            try:
-                object = SelectedAnswer.objects.get(email=candidate,
+            if status != 1:
+                try:
+                    object = SelectedAnswer.objects.get(email=candidate,
                                                     question_text=question
                                                     )
-                if object.selected_choice==-1 and status == 3:
-                    pass
-                else:
+                # if object.selected_choice == -1 and status == 3:
+                #     pass
+                # else:
                     object.status = status
+                    object.selected_choice = int(option_number)
                     object.save()
-            except:
-                if status == 2:
+
+                except:
                     object = SelectedAnswer.objects.create(email=candidate,
                                                         question_text=question,
-                                                        status=2,
-                                                        selected_choice=-1
+                                                        status=status,
+                                                        selected_choice=int(option_number)
                                                            )
-                else:
-                    pass
 
             data = {
-                "status": status
+                "status": status,
+                "candidate_answer": object.selected_choice
             }
             return JsonResponse(data)
         else:

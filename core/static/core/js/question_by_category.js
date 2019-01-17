@@ -22,13 +22,19 @@ $(window).on("load", function () {
 $(document).ready(function () {
     $(".status_change").on('click', function () {
         var status = $(this).attr("data-id");
+        var option_number = $("input[name='optionsRadios']:checked").val();
         $.ajax({
             url: save_status,
             data: {
                 'question_id': question_id,
+                'option_number': option_number,
                 'status': status
             },
             success: function (data) {
+                var value = data.candidate_answer;
+                if (value == -2) {
+                    window.location.href = data.url;
+                }
             }
         })
     })
@@ -36,26 +42,26 @@ $(document).ready(function () {
 
 // save the answer of the question
 
-$(document).ready(function () {
-    $("input").on('change', function () {
-        var option_number = $("input[name='optionsRadios']:checked").val();
-        $.ajax({
-            url: save_user_answer,
-            data: {
-                'option_number': option_number,
-                'question_id': question_id,
-            },
-            success: function (data) {
-                var value = data.candidate_answer;
-                if (value == -2) {
-                    window.location.href = data.url;
-                }
-                else {
-                    $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
-                    $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
-                }
-            }
-        })
-    })
-});
+// $(document).ready(function () {
+//     $("input").on('change', function () {
+//         var option_number = $("input[name='optionsRadios']:checked").val();
+//         $.ajax({
+//             url: save_user_answer,
+//             data: {
+//                 'option_number': option_number,
+//                 'question_id': question_id,
+//             },
+//             success: function (data) {
+//                 var value = data.candidate_answer;
+//                 if (value == -2) {
+//                     window.location.href = data.url;
+//                 }
+//                 else {
+//                     $('.options').find(':radio[name=optionsRadios]').prop('checked', false);
+//                     $('.options').find(':radio[name=optionsRadios][value="' + value + '"]').prop('checked', true);
+//                 }
+//             }
+//         })
+//     })
+// });
 

@@ -181,11 +181,11 @@
                     <div class="col-12 action">
                         {% if first_question == 0 %}
                             <a href={% url 'category' category.category id|add:"-1" %}>
-                                <button type="button" class="btn btn-raised btn-primary status_change" data-ide="1">Previous</button>
+                                <button type="button" class="btn btn-raised btn-primary no_status_change" data-id="1">Previous</button>
                             </a>
                             {% else %}
                             <a href={% url 'category' prev_category prev_category_last_ques %}>
-                                <button type="button" class="btn btn-raised btn-primary status_change" data-ide="1">Previous</button>
+                                <button type="button" class="btn btn-raised btn-primary no_status_change" data-id="1">Previous</button>
                             </a>
                             {% endif %}
                             {% if last_question == 0 %}

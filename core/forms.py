@@ -55,7 +55,7 @@ class AdminLoginForm(forms.Form):
 
 
 class TestForm(forms.ModelForm):
-    on_or_off = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Some Label", 
+    on_or_off = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Status", 
                               initial='', widget=forms.RadioSelect(), required=True)
 
     class Meta:
@@ -64,7 +64,7 @@ class TestForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
-    test_name = forms.ChoiceField(choices=test_name_list,label="Test Category", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Test Category", widget=forms.Select() )
     
     class Meta:
         model = Instruction
@@ -72,8 +72,8 @@ class InstructionForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
-    test_name = forms.ChoiceField(choices=test_name_list,label="Test Category", widget=forms.Select() )
-    number_of_questions = forms.CharField(label="Number of Questions to be selected for candidate's test")
+    test_name = forms.ChoiceField(choices=test_name_list, label="Test Category", widget=forms.Select() )
+    number_of_questions = forms.CharField(label="Number of selected questions")
 
     class Meta:
         model = Category
@@ -110,7 +110,7 @@ class CandidateRegistration(forms.ModelForm):
     # test_obj = Test.objects.get(test_name=request.session["test_name"])
 
 
-    hosteler = forms.ChoiceField(widget=forms.RadioSelect(),label = 'Are you a Hosteler?',choices = YES_OR_NO, required=False)
+    hosteler = forms.ChoiceField(widget=forms.RadioSelect(), label = 'Are you a Hosteler?', choices = YES_OR_NO, required=False)
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
     class Meta:
         model = Candidate
@@ -118,7 +118,7 @@ class CandidateRegistration(forms.ModelForm):
 
 
 class ChooseTestForm(forms.Form):
-    test_name = forms.ChoiceField(choices=test_name_list,label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
 
     class Meta:
         fields = ['test_name']
@@ -126,14 +126,14 @@ class ChooseTestForm(forms.Form):
 
 class AlgorithmForm(forms.Form):
     question_text = forms.CharField(widget=CKEditorUploadingWidget())
-    test_name = forms.ChoiceField(choices=test_name_list,label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
 
     class Meta:
         fields = ['category', 'test_name']
 
 
 class GetTestNameForm(forms.Form):
-    test_name = forms.ChoiceField(choices=test_name_list,label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
 
     class Meta:
         fields = ['test_name']

@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks
 
+import json
+
 
 
 def CalculateMarks(pk):
@@ -322,7 +324,7 @@ class AddCategoryView(View):
                 Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
                 c = Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname, 
                                         total_question_display = (dict(request.POST)['number_of_questions'])[0])
-                return redirect('control_operation')
+                return redirect('Add_Category')
             else:
                 return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
 
@@ -343,7 +345,8 @@ class Editcategory(View):
             num = request.GET['num']
             Tname = Test.objects.get(test_name=test)
             Category.objects.filter(pk=category_id).update(category=name, test=Tname, total_question_display=int(num))
-            return HttpResponse(Tname.test_name)
+            response = {'name':Tname.test_name}
+            return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 class DeleteCategoryView(View):

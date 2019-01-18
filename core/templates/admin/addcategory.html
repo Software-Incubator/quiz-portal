@@ -7,24 +7,16 @@
 <link rel="stylesheet" href="../../static/core/css/addcategory.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
-    console.log(1);
     $(document).ready(function () {
-        console.log(2);
         $(".change").on('click', function (event) {
-            console.log(3);
             var imgid;
             var name;
             var test;
             imgid = $(this).attr("cat_data");
-            console.log(imgid);
             name = $('#cat' + imgid).val();
             test = $('#test' + imgid).val();
             num = $('#num' + imgid).val();
-            console.log(name);
-            console.log(test);
-            console.log(num);
             if (name != '') {
-                console.log(4);
                 $.ajax({
                     url: '{% url 'Edit_Category' %}',
                     data: {
@@ -34,7 +26,25 @@
                         'num':num,
                     },
                     dataType: 'json',
-                    success: function (data) {
+                    success: function ()
+                    {
+                        document.getElementById('centralModalLg').style.display = "block";
+                        $(document).ready(function () {
+                            setTimeout(function() {
+                                document.getElementById('centralModalLg').style.display = "none";
+                            }, 2000);
+                        });
+                    },
+                    error: function()
+                    {
+                        document.getElementById('modal_p_text').innerHTML = "Updation Failed!";
+                        document.getElementById('modal_p_text').style.color = "red";
+                        document.getElementById('centralModalLg').style.display = "block";
+                        $(document).ready(function () {
+                            setTimeout(function() {
+                                document.getElementById('centralModalLg').style.display = "none";
+                            }, 2000);
+                        });
                     }
                 });
             }
@@ -62,97 +72,127 @@
                 swal.close();
             } });
         }
-</script>
-{% endblock %}
-
-{% block content %}
-<main class="category-container">
-    <div class="category-list">
-        <div class="heading">
-            <h3>Categories(Add/Edit/Delete)</h3>
-        </div>
-        <table class="table table-head">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Test Category Name</th>
-                    <th scope="col">Test Name</th>
-                    <th scope="col">No. of Question</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-        </table>
-        <ol>
-            {% for cat in cats %}
-            <li>
-                <table class="table-hover">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input class="form-control" id="cat{{cat.pk}}" type="text" name="category" value={{ cat.category }}>
-                            </td>
-                            <td>
-                                <select class="t-name form-control" id="test{{cat.pk}}">
-                                    <option>{{ cat.test.test_name }}</option>
-                                    {% for test in tests %}
-                                    <option>{{test.test_name}}</option>
-                                    {% empty %}
-                                    <option></option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td>
-                                <input class="form-control" id="num{{cat.pk}}" type="text" name="number_of_questions" value={{ cat.total_question_display }}>
-                            </td>
-                            <td>
-                                <a>
-                                    <button class="change btn btn-raised btn-primary" cat_data="{{cat.pk}}">Save after editing</button>
-                                </a>
-                                <button type="button" id="delete{{ cat.pk }}" href="{% url "Delete_Category" cat.pk %}" class="btn btn-raised btn-danger" onclick="JSalert({{ cat.pk }})">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </li>
-            {% empty %}
-            <p style="color: red">No category available</p>
-            {% endfor %}
-        </ol>
-        <form name="CategoryForm" class="addcategory" method="post" novalidate>
-            <div class="footer-table">
-                {% csrf_token %} 
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td>
-                                {{ form.category.label_tag }} {{ form.category }}
-                                <p>
-                                    <strong class="text-danger">{{ form.category.errors }}</strong>
-                                </p>
-                                <td>
-                                    {{ form.number_of_questions.label_tag }} {{ form.number_of_questions }}
-                                    <p>
-                                        <strong class="text-danger">{{ form.number_of_questions.errors }}</strong>
-                                    </p>
-                                </td>
-                            </tr>
+    </script>
+    {% endblock %}
+    
+    {% block content %}
+    <main class="category-container">
+        <div class="category-list">
+            <div class="heading">
+                <h3>Categories(Add/Edit/Delete)</h3>
+            </div>
+            <div class="modal fade show" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none;" aria-hidden="true">
+                <div class="success-modal modal-dialog modal-sm" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+                        <!--Header-->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <!--Body-->
+                        <div class="modal-body">
+                            <div class="container">
+                                <!-- Card deck -->
+                                <div class="text-center row">
+                                    <h4 class="text-center  w-100">
+                                        <p id="modal_p_text" style="color:green;">Saved Successfully</p>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Content-->
+                </div>
+            </div>
+            <table class="table table-head">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Test Category Name</th>
+                        <th scope="col">Test Name</th>
+                        <th scope="col">No. of Question</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+            </table>
+            <ol>
+                {% for cat in cats %}
+                <li>
+                    <table class="table-hover">
+                        <tbody>
                             <tr>
                                 <td>
-                                    {{ form.test_name.label_tag }} {{ form.test_name }}
-                                    <p>
-                                        <strong class="text-danger">{{ form.test_name.errors }}</strong>
-                                    </p>
+                                    <input class="form-control" id="cat{{cat.pk}}" type="text" name="category" value={{ cat.category }}>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-raised btn-primary">Add</button>
+                                    <select class="t-name form-control" id="test{{cat.pk}}">
+                                        <option>{{ cat.test.test_name }}</option>
+                                        {% for test in tests %}
+                                        <option>{{test.test_name}}</option>
+                                        {% empty %}
+                                        <option></option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <input class="form-control" id="num{{cat.pk}}" type="text" name="number_of_questions" value={{ cat.total_question_display }}>
+                                </td>
+                                <td>
+                                    <a>
+                                        <button class="change btn btn-raised btn-primary" cat_data="{{cat.pk}}">Save after editing</button>
+                                    </a>
+                                    <button type="button" id="delete{{ cat.pk }}" href="{% url "Delete_Category" cat.pk %}" class="btn btn-raised btn-danger" onclick="JSalert({{ cat.pk }})">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </form>
+                </li>
+                {% empty %}
+                <p style="color: red">No category available</p>
+                {% endfor %}
+            </ol>
+            <div style="text-align:center">
+                <button type="submit" class="btn btn-raised btn-primary" data-toggle="modal" data-target="#category_modal">Add More Category</button>
+            </div>
+            <div class="modal fade" id="category_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">Add Category</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <form name="CategoryForm" class="addcategory" method="post" novalidate>
+                            {% csrf_token %}
+                            <div class="md-form mb-5">
+                                <span>{{ form.category.label_tag }}</span>
+                                <span>{{ form.category }}</span>
+                                <p><strong class="text-danger">{{ form.category.errors }}</strong></p>
+                            </div>
+                            <div class="md-form mb-5">
+                                <span>{{ form.number_of_questions.label_tag }}</span>
+                                <span>{{ form.number_of_questions }}</span>
+                                <p><strong class="text-danger">{{ form.number_of_questions.errors }}</strong></p>
+                            </div>
+                            <div class="md-form mb-5">
+                                <span>{{ form.test_name.label_tag }}</span>
+                                <span>{{ form.test_name }}</span>
+                                <p><strong class="text-danger">{{ form.test_name.errors }}</strong></p>
+                            </div>
+                            <button type="submit" class="btn btn-raised btn-primary justify-content-center">Add</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
-    {% endblock %}
-    
-    
+        
+    </div>
+</div>
+</main>
+{% endblock %}
+

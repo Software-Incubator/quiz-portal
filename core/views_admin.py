@@ -135,7 +135,8 @@ class EditTest(View):
                 return render(request, 'admin/error.html', {'message': message})
             else:
                 Test.objects.filter(pk=test_id).update(duration=dur, test_name=test)
-                return HttpResponse(img_id)
+                response = {'res':test_id}
+                return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 class ToggleTestStatus(View):

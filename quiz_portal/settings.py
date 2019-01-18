@@ -13,7 +13,7 @@ SECRET_KEY = 'pi6^-ib=xwu(a6hg7@*+#ozhh%q^qg(hafeg^hk=7k)bpp!&5l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['silive.in', 'www.silive.in', 'localhost','*']
+ALLOWED_HOSTS = ['silive.in', 'www.silive.in', 'localhost', '*']
 
 
 # Application definition

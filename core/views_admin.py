@@ -377,22 +377,26 @@ class ShowCandidateListView(View):
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         tests = Test.objects.all()
-        cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
-        if tests[0].negative == 1:
-            for cand in cands:
-                try:
-                    Marks.objects.get(test_name=tests[0], candidate=cand)
-                except:
-                    CalculateMarks(cand.pk)
-        return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
+        if len(tests) != 0:
+            cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
+            if tests[0].negative == 1:
+                for cand in cands:
+                    try:
+                        Marks.objects.get(test_name=tests[0], candidate=cand)
+                    except:
+                        CalculateMarks(cand.pk)
+            return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
+        else:
+            message = 'No Test Present'
+            return render(request, 'admin/error.html', {'message': message})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST)
-        tests = Test.objects.all()
         if form.is_valid():
             test = form.cleaned_data.get('test_name')
+            tests = Test.objects.get(test_name=test)
             cands = Candidate.objects.filter(test_name=test).order_by("-time")
-            if tests[0].negative == 1:
+            if tests.negative == 1:
                 for cand in cands:
                     try:
                         Marks.objects.get(test_name=test, candidate=cand)
@@ -400,8 +404,7 @@ class ShowCandidateListView(View):
                         CalculateMarks(cand.pk)
             return render(request, self.template_name, {'cands': cands, 'form':form, 'test':test})
         else:
-            cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
-            return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
+            return redirect('Show_Candidates')
 
 class DeleteResultView(View):
     

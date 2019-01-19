@@ -18,7 +18,9 @@ def CalculateMarks(pk):
     cats = Category.objects.filter(test=test)
     selects = SelectedAnswer.objects.filter(email=cand)
     score = 0
+    total_marks = 0
     for select in selects:
+        total_marks += select.question_text.marks
         if select.question_text.negative == 1:
             if select.selected_choice == select.question_text.correct_choice:
                 score += select.question_text.marks
@@ -29,7 +31,8 @@ def CalculateMarks(pk):
         else:
             if select.selected_choice == select.question_text.correct_choice:
                 score += select.question_text.marks
-    Marks.objects.create(test_name=test, candidate=cand, marks=score)
+    percentage = (score/total_marks)*100
+    Marks.objects.create(test_name=test, candidate=cand, marks=score, percentage=percentage)
     return 1
 
 

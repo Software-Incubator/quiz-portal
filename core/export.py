@@ -12,19 +12,19 @@ def export_xls(modeladmin, request, queryset):
     row_num = 0
     
     columns = [
-        (u"STUDENT NUMBER", 2000),
-        (u"CANDIDATE", 2000),
-        (u"TESTNAME", 2000),
-        (u"MARKS", 2000),
+        (u"STUDENT NUMBER", 1000),
+        (u"CANDIDATE", 1000),
+        (u"TESTNAME", 1000),
+        (u"MARKS", 1000),
+        (u"PERCANTAGE",1000)
     ]
 
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    for col_num in xrange(len(columns)):
+    for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num][0], font_style)
-        # set column width
-        ws.col(col_num).width = columns[col_num][1]
+        ws.col(col_num).width = columns[col_num][1]*7
 
     font_style = xlwt.XFStyle()
     font_style.alignment.wrap = 1
@@ -36,11 +36,12 @@ def export_xls(modeladmin, request, queryset):
             obj.candidate.name,
             obj.test_name.test_name,
             obj.marks,
+            obj.percentage,
         ]
-        for col_num in xrange(len(row)):
+        for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
             
     wb.save(response)
     return response
     
-export_xls.short_description = u"Export XLS"
+export_xls.short_description = u"Export as XLS"

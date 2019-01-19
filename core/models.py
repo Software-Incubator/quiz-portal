@@ -60,40 +60,10 @@ class Question(models.Model):
     correct_choice = models.PositiveIntegerField(blank=False)
     negative = models.BooleanField(default=False)
     negative_marks = models.IntegerField(null=True, blank=True)
-    marks = models.IntegerField(null=True, blank=True)
+    marks = models.IntegerField(null=True, default=1)
 
     def __str__(self):
         return self.question_text
-
-
-# class CandBranch(models.Model):
-#     branch = models.CharField(max_length=5)
-#
-#
-# class CandPhone(models.Model):
-#     phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
-#     phone_number = models.CharField(validators=[phone_regex], max_length=10)
-#
-#
-# class CandSkill(models.Model):
-#     skills = models.CharField(max_length=255, blank=True, null=True)
-#
-#
-# class CandHosteler(models.Model):
-#     hosteler = models.CharField(blank=True, max_length=3, null=True)
-#
-#
-# class CandDesigner(models.Model):
-#     designer = models.CharField(max_length=255,blank=True, null=True)
-#
-#
-# class CandStudentNum(models.Model):
-#     std_no_regex = RegexValidator(regex=r"^\d{7}$")
-#     std_no = models.CharField(unique=True, validators=[std_no_regex], blank=False, max_length=7)
-#
-#
-# class CandFather(models.Model):
-#     designer = models.CharField(max_length=255,blank=True, null=True)
 
 
 class Candidate(models.Model):
@@ -130,6 +100,7 @@ class Marks(models.Model):
     test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     marks = models.IntegerField(blank=False)
+    percentage = models.FloatField(blank=False)
 
     def __str__(self):
         st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)

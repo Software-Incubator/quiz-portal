@@ -7,20 +7,14 @@
 <link rel="stylesheet" href="{% static 'core/css/edittestname.css' %}">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
-    console.log(1);
     $(document).ready(function(){
-        console.log(2);
         $(".change").on('click', function(event) {
-            console.log(3);
             var imgid;
             var test;
             var dur;
             imgid = $(this).attr("cat_data");
-            console.log(imgid);
             test = $('#test' + imgid).val();
             dur = $('#dur' + imgid).val();
-            console.log(test);
-            console.log(dur);
             $.ajax({
                 url: '{% url 'Edit_Test' %}',
                 data: {

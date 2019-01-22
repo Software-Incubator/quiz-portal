@@ -22,7 +22,10 @@ $(window).on("load", function () {
 $(document).ready(function () {
     $(".status_change").on('click', function () {
         var status = $(this).attr("data-id");
+        var load_url = $(this).attr("data-url");
         var option_number = $("input[name='optionsRadios']:checked").val();
+
+        console.log(status + option_number);
         $.ajax({
             url: save_status,
             data: {
@@ -35,6 +38,7 @@ $(document).ready(function () {
                 if (value == -2) {
                     window.location.href = data.url;
                 }
+                window.location.href = load_url;
             }
         })
     })

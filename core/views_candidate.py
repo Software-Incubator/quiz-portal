@@ -104,6 +104,7 @@ class QuestionByCategory(generic.DetailView):
                 obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
                 status_dict[i] = 1
         context_dict["status_dict"] = status_dict
+        print(status_dict)
         return render(self.request, self.template_name, context_dict)
 
 

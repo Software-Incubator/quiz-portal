@@ -11,6 +11,6 @@ DATABASES = {
     }
 }
 
-STATIC_ROOT = os.path.join('/home/si', 'Assets/IceCream/static')
+STATIC_ROOT = os.path.join('/home/si', 'Assets/QuizPortal/static')
 
-MEDIA_ROOT = os.path.join('/home/si', "Assets/IceCream/media")
+MEDIA_ROOT = os.path.join('/home/si', "Assets/QuizPortal/media")

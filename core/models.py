@@ -10,6 +10,7 @@ from django.db import models
 from django.contrib.sessions.models import Session
 
 
+
 class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False, unique=True)
     duration = models.PositiveIntegerField(blank=False)
@@ -22,6 +23,8 @@ class Test(models.Model):
     skills = models.BooleanField(default=False)
     designer = models.BooleanField(default=False)
     hosteler = models.BooleanField(default=False)
+    year = models.BooleanField(default=False)
+    university_roll_no = models.BooleanField(default=False)
 
     def __str__(self):
         return self.test_name
@@ -62,14 +65,16 @@ class Question(models.Model):
     negative_marks = models.IntegerField(null=True, blank=True)
     marks = models.IntegerField(null=True, default=1)
 
+
     def __str__(self):
         return self.question_text
 
 
 class Candidate(models.Model):
     name = models.CharField(max_length=100, blank=False)
-    std_no_regex = RegexValidator(regex=r"^\d{7}$")
-    std_no = models.CharField(validators=[std_no_regex], blank=True, max_length=7, null=True)
+    # std_no_regex = RegexValidator(regex=r"^\d{7}$")
+    std_no = models.CharField(blank=True, max_length=7, null=True)
+    university_roll_no = models.CharField(max_length=10)
     email = models.EmailField(unique=True, blank=False)
     father = models.CharField(max_length=255, blank=True, null=True)
     phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
@@ -80,6 +85,7 @@ class Candidate(models.Model):
     hosteler = models.CharField(max_length=3, blank=True, null=True)
     test_name = models.CharField(max_length=100, blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
+    year = models.CharField(max_length=4)
 
     def __str__(self):
         return self.name + ' - ' + self.email

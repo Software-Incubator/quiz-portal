@@ -5,6 +5,9 @@ from .models import Candidate
 from snowpenguin.django.recaptcha2.fields import ReCaptchaField
 from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
 from django.core.validators import RegexValidator
+from django.forms import ValidationError
+import datetime
+import re
 
 
 BRANCH_CHOICES = (('cse', 'CSE'),
@@ -16,8 +19,15 @@ BRANCH_CHOICES = (('cse', 'CSE'),
                   ('ei', 'EI'),
                   ('mca', 'MCA'),
                   )
+year_choices = (('I', 'I'),
+
+    ('II', 'II'),
+    ('III', 'III'),
+    ('IV', 'IV'))
+
 YES_OR_NO = (('yes' ,'Hosteler'),
              ('no', 'Dayscholar'))
+
 
 def category_name_list():
     categories = Category.objects.all()
@@ -104,17 +114,52 @@ class CandidateRegistration(forms.ModelForm):
     branch = forms.ChoiceField(choices=BRANCH_CHOICES, required=False)
     skills = forms.CharField(max_length=255, required=False)
     designer = forms.CharField(max_length=255, required=False)
-    # test_name = forms.CharField(max_length=100, required=False)
-
-    # test_name = forms.ModelChoiceField(queryset=Test.objects.filter(on_or_off= True), empty_label='Please Choose')
-    # test_obj = Test.objects.get(test_name=request.session["test_name"])
-
-
+    year = forms.ChoiceField(choices=year_choices)
     hosteler = forms.ChoiceField(widget=forms.RadioSelect(), label = 'Are you a Hosteler?', choices = YES_OR_NO, required=False)
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
+
     class Meta:
         model = Candidate
-        fields = ['name','email','std_no','phone_number','branch','hosteler','skills','designer','test_name','father', 'captcha']
+        fields = ['name','email','std_no','phone_number','branch','year', 'hosteler','skills','designer','test_name','father', 'captcha', 'university_roll_no']
+
+    def clean(self):
+        cleaned_data = super(CandidateRegistration, self).clean()
+
+        university_roll_no = None
+
+        try:
+            student_number = cleaned_data['std_no']
+        except KeyError:
+            raise ValidationError("Student Number not valid!")
+
+        try:
+            university_roll_no = cleaned_data['university_roll_no']
+        except KeyError:
+            raise ValidationError("University Roll Number not valid!")
+
+        year = datetime.date.today().year
+        end = ''
+        start = ''
+
+        for i in range(year, year - 5, -1):
+            end += str(i % 10)
+            i = int(i / 10)
+            start += str(i % 10)
+
+        regex_student = "^[" + start + "][" + end + "](12|14|10|13|00|31|21|32|40)[0-2][0-9][0-9][-]?[mdlMDL]?$"
+        regex_university = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$"
+        pattern_student = re.compile(regex_student)
+        pattern_university = re.compile(regex_university)
+
+        if student_number:
+            if not pattern_student.match(str(student_number)):
+                raise ValidationError("Invalid Student Number")
+
+        if university_roll_no:
+            if not pattern_university.match(str(university_roll_no)):
+                raise ValidationError("Invalid University Roll Number")
+
+        return cleaned_data
 
 
 class ChooseTestForm(forms.Form):

@@ -33,6 +33,14 @@
                             <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
                         </div>
                         {% endif %}
+
+                        {% if test_obj.university_roll_no %}
+                        <div class="form-group">
+                            <label for="university_roll_noInput" class="bmd-label-floating">University Roll No.</label>
+                            <input type="text" name="university_roll_no" class="form-control" id="university_roll_noInput" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+                            <p><strong class="text-danger">{{ form.university_roll_no.errors }}</strong></p>
+                        </div>
+                        {% endif %}
                         
                         <div class="form-group">
                             <label for="emailInput" class="bmd-label-floating">Email Address</label>
@@ -64,6 +72,18 @@
                                     {% endfor %}
                                 </select>
                                 <p><strong class="text-danger">{{ form.branch.errors}}</strong></p>
+                            </div>
+                            {% endif %}
+                             {% if test_obj.year %}
+                            <div class="form-group sel">
+                                <label for="yearInput" class="bmd-label-floating">Year</label>
+
+                                <select class="form-control" id="yearInput" name='year'>
+                                    {% for y in form.year %}
+                                    {{y}}
+                                    {% endfor %}
+                                </select>
+                                <p><strong class="text-danger">{{ form.year.errors}}</strong></p>
                             </div>
                             {% endif %}
                         </div>

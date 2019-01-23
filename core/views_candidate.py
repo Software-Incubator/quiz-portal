@@ -176,6 +176,7 @@ class CandidateRegistration(generic.ListView):
     def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
         test_name = self.request.session["test_name"]
+        test_obj = Test.objects.get(test_name=test_name)
         if form.is_valid():
             form_obj = form.save(commit=False)
             form_obj.test_name = test_name
@@ -203,12 +204,13 @@ class CandidateRegistration(generic.ListView):
                         question_seq[category.category] = self.make_permutation(total_question,
                                                                                 required_question,
                                                                                 candidate.id)
+                    print(question_seq)
                     self.request.session['question_seq'] = question_seq
                     self.default_result(question_seq, test, candidate)
                 except:
                     self.request.session.set_expiry(34000)
                 return redirect('instruction')
-        return render(self.request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
 
 
 class GetTestView(generic.ListView):

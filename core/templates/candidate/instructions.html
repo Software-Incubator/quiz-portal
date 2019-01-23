@@ -24,7 +24,12 @@
         </div>
     <div class="col-8">
         <div class="instructions">
-            <h6>{% for instr in instruction %} {% autoescape off %} {{ instr.instruction }} {% endautoescape %} {% endfor %}</h6>
+            <h6><ul>{% for instr in instruction %}
+                {% autoescape off %}
+                    <li>{{ instr.instruction }}</li>
+                {% endautoescape %}
+            {% endfor %}</ul>
+            </h6>
             <div class="ok-btn">
             <a href={% url 'category' category.category 1 %}>
             <button type="button" class="btn btn-raised btn-primary">Proceed</button>

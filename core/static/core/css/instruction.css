@@ -9,12 +9,12 @@ body{
 
 main .instructions-container{
     width: 1000px;
-    height: 600px;
+    height: auto;
     background-color: #fff;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 0 2px 5px 0 rgba(0,0,0,.8);
     border-radius: 1rem;
     padding: 0px;
-    margin: 120px auto;
+    margin: 100px auto;
 }
 
 main .instructions-container .bg-img{
@@ -27,10 +27,11 @@ main .instructions-container .bg-img{
 }
 
 main .instructions-container .img{
-    width: 300px;
+    width: 250px;
     height: auto;
     margin-top: 80px;
     transition: 2s;
+    margin-left: 25px;
 }
 
 main .instructions-container .img:hover{
@@ -66,7 +67,7 @@ main .instructions-container .instructions li{
 }
 
 main .instructions-container .instructions li:before{
-    content: counter(item);
+    content: '';
     background: #3b95ed;
     border-radius: 100%;
     color: #fff;

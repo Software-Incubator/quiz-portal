@@ -41,7 +41,7 @@ def category_name_list():
 
 
 def test_name_list():
-    tests = Test.objects.all()
+    tests = Test.objects.filter(on_or_off=True)
     TEST_CHOICE = ()
 
     for test in tests:
@@ -51,7 +51,7 @@ def test_name_list():
     return TEST_CHOICE
 
 
-answer_choice = ((1,1),(2,2),(3,3),(4,4))
+answer_choice = ((1, 1), (2, 2), (3, 3), (4, 4))
 
 TRUE_FALSE_CHOICES = (
     (True, 'START'),
@@ -156,7 +156,7 @@ class CandidateRegistration(forms.ModelForm):
                 raise ValidationError("Invalid Student Number")
 
         if university_roll_no:
-            if not pattern_university.match(str(university_roll_no)):
+            if not pattern_university.match(str(university_roll_no)) or (len(university_roll_no) != 10):
                 raise ValidationError("Invalid University Roll Number")
 
         return cleaned_data

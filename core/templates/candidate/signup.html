@@ -17,7 +17,7 @@
             <img src="{% static 'core/assets/images/student.png' %}" class="img">
         </div>
         <div class="col-8">
-            <form name="CandidateRegistration" method="post">
+            <form name="CandidateRegistration" id="candidate_form_id" method="post">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-6">
@@ -33,12 +33,12 @@
                             <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
                         </div>
                         {% endif %}
-
+                        
                         {% if test_obj.university_roll_no %}
                         <div class="form-group">
                             <label for="university_roll_noInput" class="bmd-label-floating">University Roll No.</label>
                             <input type="text" name="university_roll_no" class="form-control" id="university_roll_noInput" value="{{ form.university_roll_no.value|default_if_none:'' }}">
-                            <p><strong class="text-danger">{{ form.university_roll_no.errors }}</strong></p>
+                            <p><strong id="university_err" class="text-danger">{{ form.university_roll_no.errors }}</strong></p>
                         </div>
                         {% endif %}
                         
@@ -74,10 +74,10 @@
                                 <p><strong class="text-danger">{{ form.branch.errors}}</strong></p>
                             </div>
                             {% endif %}
-                             {% if test_obj.year %}
+                            {% if test_obj.year %}
                             <div class="form-group sel">
                                 <label for="yearInput" class="bmd-label-floating">Year</label>
-
+                                
                                 <select class="form-control" id="yearInput" name='year'>
                                     {% for y in form.year %}
                                     {{y}}
@@ -103,36 +103,70 @@
                                 <p><strong>{{ form.designer.errors}}</strong></p>
                             </div>
                             {% endif %}
-{#                            <div class="form-group select-category">#}
-{#                                <label for="testInput" class="bmd-label-floating">Select a test</label>#}
-{##}
-{#                                <select class="form-control" id="testInput" name='test_name'>#}
-{#                                    {% for t in form.test_name %}#}
-{#                                    {{ t}}#}
-{#                                    {% endfor %}#}
-{#                                </select>#}
-{#                                <p><strong>{{ form.test_name.errors}}</strong></p>#}
-{#                            </div>#}
-                        {% if test_obj.hosteler %}
-                            {% for choice in form.hosteler %}
-                            <div class="radio">{{ choice.tag }}{{ choice.choice_label }}</div>
-                            {% endfor %}
-                        {% endif %}
-                            <br>
-                            {{ form.captcha }}
-                            <!-- <div class="g-recaptcha" data-sitekey="6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij"></div> -->
-                        </div>
-                        
-                        <div class="btn-field">
-                            <button type="submit" class="btn btn-raised btn-primary">Submit</button>
-                        </div>
+                            {#                            <div class="form-group select-category">#}
+                                {#                                <label for="testInput" class="bmd-label-floating">Select a test</label>#}
+                                {##}
+                                {#                                <select class="form-control" id="testInput" name='test_name'>#}
+                                    {#                                    {% for t in form.test_name %}#}
+                                    {#                                    {{ t}}#}
+                                    {#                                    {% endfor %}#}
+                                    {#                                </select>#}
+                                    {#                                <p><strong>{{ form.test_name.errors}}</strong></p>#}
+                                    {#                            </div>#}
+                                    {% if test_obj.hosteler %}
+                                    {% for choice in form.hosteler %}
+                                    <div class="radio">{{ choice.tag }}{{ choice.choice_label }}</div>
+                                    {% endfor %}
+                                    {% endif %}
+                                    <br>
+                                    {{ form.captcha }}
+                                    <p><strong class="text-danger">{{ form.captcha.errors }}</strong></p>
+                                    <!-- <div class="g-recaptcha" data-sitekey="6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij"></div> -->
+                                </div>
+                                
+                                <div class="btn-field">
+                                    <button type="submit" onclick="validateForm()" class="btn btn-raised btn-primary">Submit</button>
+                                </div>
+                            </div>
+                            
+                        </form>
                     </div>
-                    
-                </form>
-            </div>
-        </div>
-    </main>
-    {% endblock %}
-    
-    
-    
+                </div>
+            </main>
+            <script>
+                function validateForm() {
+                    var University =  document.getElementById('university_roll_noInput').value;
+                    if (University == "") {
+                        document.getElementById('university_err').innerHTML = "University roll number cannot be empty";
+                        return false;
+                    }
+                    else {
+                        var obj = new Date();
+                        var year = obj.getFullYear();
+                        var i;
+                        var false_i;
+                        var end = "";
+                        var start = "";
+                        for (i = year; i > (year-5); --i)
+                        {
+                            false_i = i;
+                            end = end + String(false_i % 10)
+                            false_i = false_i - 5;
+                            false_i = false_i/10;
+                            false_i = false_i.toFixed(0);
+                            start += String(false_i % 10);
+                        }
+                        regex_string = "^["+start+"]["+end+"][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
+                        var re = new RegExp(regex_string);
+                        if(!re.test(University)){
+                            document.getElementById('university_err').innerHTML = "University roll number format invalid";
+                            return false;
+                        }
+                    }
+                    document.getElementById('candidate_form_id').submit();
+                }
+            </script>
+            {% endblock %}
+            
+            
+            

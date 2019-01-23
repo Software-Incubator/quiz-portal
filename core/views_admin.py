@@ -379,12 +379,11 @@ class ShowCandidateListView(View):
         tests = Test.objects.all()
         if len(tests) != 0:
             cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
-            if tests[0].negative == 1:
-                for cand in cands:
-                    try:
-                        Marks.objects.get(test_name=tests[0], candidate=cand)
-                    except:
-                        CalculateMarks(cand.pk)
+            for cand in cands:
+                try:
+                    Marks.objects.get(test_name=tests[0], candidate=cand)
+                except:
+                    CalculateMarks(cand.pk)
             return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
         else:
             message = 'No Test Present'
@@ -396,12 +395,11 @@ class ShowCandidateListView(View):
             test = form.cleaned_data.get('test_name')
             tests = Test.objects.get(test_name=test)
             cands = Candidate.objects.filter(test_name=test).order_by("-time")
-            if tests.negative == 1:
-                for cand in cands:
-                    try:
-                        Marks.objects.get(test_name=test, candidate=cand)
-                    except:
-                        CalculateMarks(cand.pk)
+            for cand in cands:
+                try:
+                    Marks.objects.get(test_name=test, candidate=cand)
+                except:
+                    CalculateMarks(cand.pk)
             return render(request, self.template_name, {'cands': cands, 'form':form, 'test':test})
         else:
             return redirect('Show_Candidates')

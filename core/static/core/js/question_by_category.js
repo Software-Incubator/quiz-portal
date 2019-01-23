@@ -39,6 +39,9 @@ $(document).ready(function () {
                     window.location.href = data.url;
                 }
                 window.location.href = load_url;
+             //   setTimeout(function() {
+             //       window.location.href = load_url;
+             //   }, 1000);
             }
         })
     })

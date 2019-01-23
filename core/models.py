@@ -106,7 +106,6 @@ class Marks(models.Model):
     test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     marks = models.IntegerField(blank=False)
-    percentage = models.FloatField(blank=False)
 
     def __str__(self):
         st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)

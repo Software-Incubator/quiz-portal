@@ -16,7 +16,6 @@ def export_xls(modeladmin, request, queryset):
         (u"CANDIDATE", 1000),
         (u"TESTNAME", 1000),
         (u"MARKS", 1000),
-        (u"PERCANTAGE",1000)
     ]
 
     font_style = xlwt.XFStyle()
@@ -36,7 +35,6 @@ def export_xls(modeladmin, request, queryset):
             obj.candidate.name,
             obj.test_name.test_name,
             obj.marks,
-            obj.percentage,
         ]
         for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)

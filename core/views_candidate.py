@@ -154,8 +154,8 @@ class CandidateRegistration(generic.ListView):
 
     def make_permutation(self, n, required_question, can_id):
         a = [x for x in range(1, n + 1)]
-        a = list(itertools.combinations(a, required_question))
-        return a[can_id % len(a)]
+        a = list(itertools.permutations(a, required_question))[can_id % len(a)]
+        return a
 
     def default_result(self, question_seq, test, candidate):
         for category in question_seq:

@@ -96,15 +96,13 @@ class QuestionByCategory(generic.DetailView):
         status_dict = {}
         for i in range(1, required_question+1):
             question_number = question_seq[i%required_question]
-            per_question = Question.objects.get(pk=question_number)
             try:
-                obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
+                obj = SelectedAnswer.objects.get(email=candidate, question_text=question_number,)
                 status_dict[i] = obj.status
             except:
-                obj = SelectedAnswer.objects.create(email=candidate, question_text=per_question, selected_choice=-1)
+                obj = SelectedAnswer.objects.create(email=candidate, question_text=question_number, selected_choice=-1)
                 status_dict[i] = 1
         context_dict["status_dict"] = status_dict
-        print(status_dict)
         return render(self.request, self.template_name, context_dict)
 
 

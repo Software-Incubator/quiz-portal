@@ -6,6 +6,7 @@ from core.models import Category, Question, Instruction, Test,\
 import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
+import random
 
 
 class QuestionByCategory(generic.DetailView):
@@ -78,7 +79,7 @@ class QuestionByCategory(generic.DetailView):
             context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()
 
         which_question = question_seq[id % required_question]
-        question = Question.objects.filter(category=category)[which_question - 1]
+        question = Question.objects.get(pk=which_question)
         additional_objs = Additional.objects.filter(test_name=test, on_or_off=True)
         context_dict["additional_objs"] = additional_objs
         instruction = Instruction.objects.filter(test=test)
@@ -95,7 +96,7 @@ class QuestionByCategory(generic.DetailView):
         status_dict = {}
         for i in range(1, required_question+1):
             question_number = question_seq[i%required_question]
-            per_question = Question.objects.filter(category=category)[question_number - 1]
+            per_question = Question.objects.get(pk=question_number)
             try:
                 obj = SelectedAnswer.objects.get(email=candidate, question_text=per_question,)
                 status_dict[i] = obj.status
@@ -152,20 +153,12 @@ class CandidateRegistration(generic.ListView):
             return redirect('get_test')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
-    def make_permutation(self, n, required_question, can_id):
-        a = [x for x in range(1, n + 1)]
-        a = list(itertools.permutations(a, required_question))[can_id % len(a)]
-        return a
 
-    def default_result(self, question_seq, test, candidate):
-        for category in question_seq:
-            all_ques_no = question_seq[category]
-            cat_obj = Category.objects.get(category=category, test=test)
-            for question_no in all_ques_no:
-                each_question = Question.objects.filter(category=cat_obj)[question_no - 1]
-                obj = SelectedAnswer.objects.get_or_create(email=candidate,
-                                                           question_text=each_question,
-                                                           selected_choice=-1)
+    def default_result(self, question_seq, candidate):
+        selected_answer = []
+        for question in question_seq:
+            selected_answer.append(SelectedAnswer(email=candidate, question_text=question, selected_choice=-1))
+        SelectedAnswer.objects.bulk_create(selected_answer)
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
@@ -186,28 +179,28 @@ class CandidateRegistration(generic.ListView):
             candidate = Candidate.objects.get(name=name, email=email)
             if candidate:
                 self.request.session['email'] = email
-                try:
-                    test = Test.objects.get(test_name=test_name)
-                    time = test.duration
-                    self.request.session.set_expiry(time*60)
-                    #  question order for all category in session
+                test = Test.objects.get(test_name=test_name)
+                time = test.duration
+                self.request.session.set_expiry(time*60)
+                #  question order for all category in session
 
-                    question_seq = {}
-                    categories = Category.objects.filter(test=test)
-                    for category in categories:
-                        total_question = Question.objects.filter(category=category).count()
-                        required_question = category.total_question_display
-                        if required_question > total_question:
-                            message = "More than required question select"
-                            return render(request, 'candidate/error.html', {'message': message})
-                        question_seq[category.category] = self.make_permutation(total_question,
-                                                                                required_question,
-                                                                                candidate.id)
-                    print(question_seq)
-                    self.request.session['question_seq'] = question_seq
-                    self.default_result(question_seq, test, candidate)
-                except:
-                    self.request.session.set_expiry(34000)
+                question_seq = []
+                session_seq = {}
+                categories = Category.objects.filter(test=test)
+                for category in categories:
+                    total_question = list(Question.objects.filter(category=category))
+                    required_question = category.total_question_display
+                    if required_question > len(total_question):
+                        message = "More than required question select"
+                        return render(request, 'candidate/error.html', {'message': message})
+                    random.shuffle(total_question)
+                    student_questions = total_question[:required_question]
+                    student_questions_pk = [ques.pk for ques in student_questions]
+                    question_seq += student_questions
+                    session_seq[category.category] = student_questions_pk
+                self.request.session['question_seq'] = session_seq
+                print(self.request.session['question_seq'])
+                self.default_result(question_seq, candidate)
                 return redirect('instruction')
         return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
 

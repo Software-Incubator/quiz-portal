@@ -69,7 +69,7 @@
                                  <ul class="nav nav-pills">
                             {% endif %}
 
-                            <li class="nav-item">
+                            <li id="nav-item">
                                 <a href={% url 'category' category.category 1 %}>
                                 {{ category.category }}
                                 </a>
@@ -141,7 +141,7 @@
 {#                    </div>#}
 {#                    </div>#}
                     <div class="ques-scroll">
-                        <div class="row">
+                        <div class="row qna">
                             <div class="col-12 question">
                                 <h5>
                                 <div class="question-no">
@@ -179,7 +179,7 @@
                         <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>
                         </div>
                     </div>
-                    <div class="col-12 action">
+                    <div class="col-12 action" id="opt-btn">
                         {% if first_question == 0 %}
                             <a href={% url 'category' category.category id|add:"-1" %}>
                                 <button type="button" class="btn btn-raised btn-primary no_status_change" data-id="1">Previous</button>
@@ -238,11 +238,11 @@
                                     <div class="col-3">
                                     <a href={% url 'category' category.category i %}>
                                     {% if value == 1 %}
-                                         <button type="button" class="btn btn-raised btn-primary status1" style="background-color: white">{{ i }}</button>
+                                         <button type="button" class="btn btn-raised btn-primary status1" style="background-color: white">{{i }}</button>
                                     {% elif value == 2 %}
-                                         <button type="button" class="btn btn-raised btn-primary status2" style="background-color: #ff5722">{{ i }}</button>
+                                         <button type="button" class="btn btn-raised btn-primary status2" style="background-color: #ff5722">{{i }}</button>
                                     {% elif value == 3 %}
-                                         <button type="button" class="btn btn-raised btn-primary status3" style="background-color: #4caf50">{{ i }}</button>
+                                         <button type="button" class="btn btn-raised btn-primary status3" style="background-color: #4caf50">{{i }}</button>
                                     {% endif %}
                                     </a>
                                     </div>

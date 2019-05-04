@@ -215,7 +215,8 @@ class GetTestView(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        return render(request, self.template_name, {'form': form})
+        
+        return render(request, self.template_name, {'form':form})
 
     def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
@@ -225,6 +226,8 @@ class GetTestView(generic.ListView):
                 del request.session['test_name']
             self.request.session['test_name'] = test_name
             return redirect('signup')
+        else:
+            print("Hello")
         return render(self.request, self.template_name, {'form': form})
 
 

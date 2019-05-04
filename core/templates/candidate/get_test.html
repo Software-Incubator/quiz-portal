@@ -1,54 +1,108 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Software Incubator</title>
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+    <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
         integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+        integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'core/css/signup_design.css' %}">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
-        .form{
+        .form {
             position: absolute;
             top: 50%;
             left: 50%;
+            margin-top: 28%;
             transform: translate(-50%, -50%);
         }
-        .heading{
+
+        .heading {
             font-size: 2em;
             padding: 10px;
         }
-        #id_test_name{
+
+        #id_test_name {
             padding: 2px 10px;
             margin: 2px;
-            border-radius: 10px;
         }
-        .choice{
+
+        .choice {
             text-align: center;
+            border: none;
+            
 
         }
-        .btn{
+
+        .btn {
             background-color: #3b95ed;
             color: white;
             margin: 5px;
         }
+
+        #logo {
+            height: 47%;
+            width: 50%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 6%;
+        }
+
+        .card {
+            width: 30%;
+            height: 70%;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .5), 5px 5px 13px 0 rgba(0, 0, 0, .31);
+            margin: auto;
+            margin-top: 100px;
+            background-color: #fff;
+
+        }
+        .opt{
+            border-radius: 200px;
+            font-family: sans-serif;
+            line-height: 3em;
+            font-size: 20px;
+            padding: 2px 10px;
+        }
     </style>
 </head>
+
 <body style="background-color: #F5F5F5">
-<div class="form">
-<form method="post">
-    {% csrf_token %}
-    <span class="heading">{{ form.test_name.label }}</span><br>
-    <div class="choice">{{ form.test_name }}</div>
-    <div class="choice"><button class="btn" type="submit">Submit</button></div>
-</form>
-</div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    <div class="card">
+        <img src="{% static 'core/assets/images/student.png' %}" class="img" id="logo">
+        <div class="form">
+            <form method="post">
+                {% csrf_token %}
+                <span class="heading">{{ form.test_name.label }}</span><br>
+                <div class="opt">{{form.test_name}}</div>
+            <div class="choice"><button class="btn" type="submit">Submit</button></div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+        integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
         crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+        integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
         crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <script>
+            $(window).on('load', function() {
+                console.log("hello");
+                $("#id_test_name").addClass("custom-select");
+                $("#id_test_name").children().addClass("opt");
+          })
+         </script>
 </body>
+
 </html>

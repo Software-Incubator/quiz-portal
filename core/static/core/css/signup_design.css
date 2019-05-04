@@ -7,7 +7,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
-    height: 100vh;
+    height: 93vh;
 }
 
 header .navbar{
@@ -177,14 +177,7 @@ main .sign-up form{
     padding: 15px;
 } */
 
-main .btn-field{
-    padding: 20px;
-    width: 100%;
-}
-
-main .btn-field .btn{
-    width: 100%;
-    font-family: 'Montserrat', sans-serif;
-    /* box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
-    border-radius: 0.125rem; */
+/*  */
+.btn-field{
+  margin-top: 3%;
 }

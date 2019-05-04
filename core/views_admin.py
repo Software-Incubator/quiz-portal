@@ -193,7 +193,7 @@ class AddQuestionView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            category = Category.objects.get(category=(dict(request.POST)['category'])[0])
+            category = Category.objects.get(pk=(dict(request.POST)['category'])[0])
             if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
                 Question.objects.create(category=category,
                                         question_text=(dict(request.POST)['question_text'])[0],
@@ -237,7 +237,7 @@ class EditQuestionView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                c = Category.objects.get(category = (dict(request.POST)['category'])[0])
+                c = Category.objects.get(pk = (dict(request.POST)['category'])[0])
                 Question.objects.filter(pk=pk).update(category = c,
                     question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
                     choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],

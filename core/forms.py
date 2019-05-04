@@ -25,8 +25,8 @@ year_choices = (('I', 'I'),
     ('III', 'III'),
     ('IV', 'IV'))
 
-YES_OR_NO = (('yes' ,'Hosteler'),
-             ('no', 'Dayscholar'))
+YES_OR_NO = (
+             ('no', 'DayScholar'),('yes' ,'Hosteler'))
 
 
 def category_name_list():
@@ -34,7 +34,7 @@ def category_name_list():
     CATEGORY_CHOICE = ()
 
     for category in categories:
-        data = ((category.category, category),)
+        data = ((category.id, category),)
         CATEGORY_CHOICE = CATEGORY_CHOICE + data
 
     return CATEGORY_CHOICE
@@ -178,7 +178,7 @@ class AlgorithmForm(forms.Form):
 
 
 class GetTestNameForm(forms.Form):
-    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list(), label="Choose Test", widget=forms.Select() )
 
     class Meta:
         fields = ['test_name']

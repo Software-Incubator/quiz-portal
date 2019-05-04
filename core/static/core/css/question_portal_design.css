@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:700');
 body{
     background-image: url("../assets/images/recruitment_poster.png");
     background-repeat: no-repeat;
@@ -51,6 +52,7 @@ header .navbar .heading{
 
 .timer .btn{
     margin: 5px;
+   
 }
 
 .clockdiv{
@@ -85,9 +87,8 @@ main{
 body.stop-scrolling {
     height: 100vh !important;
 }
-
 main .question-area{
-    width: 1000px;
+    minwidth: 1000px;
     height: 500px;
     margin: auto;
     border-radius: 0.45rem;
@@ -103,6 +104,7 @@ main .question-area .navbar{
     justify-content: unset !important;
     padding: 0px;
     transition: 1s;
+    height: 10%;
 }
 
 main .question-area .navbar a:hover{
@@ -110,23 +112,40 @@ main .question-area .navbar a:hover{
 }
 
 main .question-area .navbar ul{
-    padding: 0;
+    padding: 10;
+    margin-left:10px;
 }
 
 main .question-area .navbar ul li{
-    padding: 5px 10px 0 10px;
+    padding: 5px 20px 0 10px;
+    font-size: 18px;
+    font-family:Raleway;
+    font-display: bold;
+    
 }
-
-main .question-area .navbar .active {
-    border-top: 1px solid #3b95ed;
-    border-left: 1px solid #3b95ed;
-    border-right: 1px solid #3b95ed;
+#nav-item::after{
+    content:' ';
+    display:block;
+    width:0;
+    height:2px;
+    background:#000;
+    transition:width .3s;
+   
+}
+#nav-item:hover::after
+{
+    width:100%;
+}
+ main .question-area .navbar .active {
+    background-color:#d3d3d3;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 main .question-area .navbar .nav:hover {
     background-color: #eee;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 main .question-area .nav-break{
@@ -140,9 +159,13 @@ main .question-area .navbar .algo-design{
 
 main .question-area .ques-scroll{
     overflow-y: auto;
-    height: 400px;
+    height: 370px;
 }
 
+#opt-btn{
+  margin: 20px;
+  padding-left: 10px;
+}
 main .question-area .action .btn-primary{
     width: 25%;
 }
@@ -201,6 +224,7 @@ main .question-area .response .inst-button .btn-primary:hover{
 
 main .question-area .response .btn-primary{
     background-color: #fff;
+    padding: 7px 10px 10px 10px;
     color: #000;
 }
 
@@ -213,7 +237,7 @@ main .question-area .response .btn-primary:hover{
 }
 
 main .question-area .ques-response{
-    padding: 5px;
+    padding:18px;
     height: 265px;
     overflow-y: auto;
 }
@@ -229,7 +253,7 @@ main [class*="col-"]{
 }
 
 main .question-area .question{
-    margin-top: 50px;
+    margin-top: 2%;
     padding-left: 25px;
 }
 

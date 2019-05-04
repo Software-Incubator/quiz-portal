@@ -12,7 +12,7 @@
 
 {% block content %}
 <main>
-    <div class="sign-up row" >
+    <div class="sign-up row">
         <div class="col-4 bg-img">
             <img src="{% static 'core/assets/images/student.png' %}" class="img">
         </div>
@@ -20,192 +20,216 @@
             <form name="CandidateRegistration" id="candidate_form_id" method="post">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="nameInput1" class="bmd-label-floating">Name</label>
-                            <input type="text" name="name" class="form-control" id="nameInput1" value="{{ form.name.value|default_if_none:'' }}">
-                            <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
-                        </div>
-                        {% if test_obj.stu_no %}
-                        <div class="form-group">
-                            <label for="std_noInput" class="bmd-label-floating">Student no.</label>
-                            <input type="text" name="std_no" class="form-control" id="std_noInput" value="{{ form.std_no.value|default_if_none:'' }}">
-                            <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
-                        </div>
-                        {% endif %}
-                        
-                        {% if test_obj.university_roll_no %}
-                        <div class="form-group">
-                            <label for="university_roll_noInput" class="bmd-label-floating">University Roll No.</label>
-                            <input type="text" name="university_roll_no" class="form-control" id="university_roll_noInput" value="{{ form.university_roll_no.value|default_if_none:'' }}">
-                            <p id="university_err" class="text-danger"><strong>{{ form.university_roll_no.errors }}</strong></p>
-                        </div>
-                        {% endif %}
-                        
-                        <div class="form-group">
-                            <label for="emailInput" class="bmd-label-floating">Email Address</label>
-                            <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{ form.email.value|default_if_none:'' }}">
-                            <p id="email_err" class="text-danger">
-                                <strong>{{ form.email.errors}}</strong>
-                            </p>
-                        </div>
-                        
-                        {#                <div class="form-group">#}
-                            {#                    <label for="nameInput2" class="bmd-label-floating">Father's Name</label>#}
-                            {#                    <input type="text" name="father_name" class="form-control" id="nameInput2" value="{{ form.father_name.value|default_if_none:'' }}">#}
-                            {#                    <p><strong>{{ form.father_name.errors}}</strong></p>#}
-                            {#                </div>#}
-                            {% if test_obj.phone_number %}
-                            <div class="form-group">
-                                <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
-                                <input type="text" name="phone_number" class="form-control" id="phoneInput" value="{{ form.phone_number.value|default_if_none:'' }}">
-                                <p id="contactno_err" class="text-danger"><strong>{{ form.phone_number.errors}}</strong></p>
-                            </div>
-                            {% endif %}
-                            {% if test_obj.branch %}
-                            <div class="form-group sel">
-                                <label for="branchInput" class="bmd-label-floating">Branch</label>
-                                
-                                <select class="form-control" id="branchInput" name='branch'>
-                                    {% for b in form.branch %}
-                                    {{b}}
-                                    {% endfor %}
-                                </select>
-                                <p class="text-danger"><strong>{{ form.branch.errors}}</strong></p>
-                            </div>
-                            {% endif %}
-                            {% if test_obj.year %}
-                            <div class="form-group sel">
-                                <label for="yearInput" class="bmd-label-floating">Year</label>
-                                
-                                <select class="form-control" id="yearInput" name='year'>
-                                    {% for y in form.year %}
-                                    {{y}}
-                                    {% endfor %}
-                                </select>
-                                <p class="text-danger"><strong>{{ form.year.errors}}</strong></p>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-6">
-                            {% if test_obj.skills %}
-                            <div class="form-group">
-                                <label for="skillInput" class="bmd-label-floating">Mention your Technical skills</label>
-                                <input type="text" name="skills" class="form-control" id="skillInput" value="{{ form.skills.value|default_if_none:'' }}">
-                                <span class="bmd-help">eg. HTML, CSS ,Python</span>
-                                <p><strong class="text-danger">{{ form.skills.errors}}</strong></p>
-                            </div>
-                            {% endif %}
-                            {% if test_obj.designer %}
-                            <div class="form-group">
-                                <label for="designerInput" class="bmd-label-floating">Familiar with any designing tool?</label>
-                                <input type="text" name="designer" class="form-control" id="designerInput" value="{{ form.designer.value|default_if_none:'' }}">
-                                <p><strong>{{ form.designer.errors}}</strong></p>
-                            </div>
-                            {% endif %}
-                            {#                            <div class="form-group select-category">#}
-                                {#                                <label for="testInput" class="bmd-label-floating">Select a test</label>#}
-                                {##}
-                                {#                                <select class="form-control" id="testInput" name='test_name'>#}
-                                    {#                                    {% for t in form.test_name %}#}
-                                    {#                                    {{ t}}#}
-                                    {#                                    {% endfor %}#}
-                                    {#                                </select>#}
-                                    {#                                <p><strong>{{ form.test_name.errors}}</strong></p>#}
-                                    {#                            </div>#}
-                                    {% if test_obj.hosteler %}
-                                    {% for choice in form.hosteler.field.choices %}
-                                        <input type="radio" name="hosteler" id="optionsRadios1" value="{{ choice.0 }}" checked>{{ choice.1 }}
-                                    {% endfor %}
-                                    {{ form.hosteler.errors }}
-                                    {% endif %}
-                                    <br>
-                                    {{ form.captcha }}
-                                    <p id="captcha_err" class="text-danger"><strong>{{ form.captcha.errors }}</strong></p>
-                                    <!-- <div class="g-recaptcha" data-sitekey="6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij"></div> -->
-                                </div>
-                                
-                                <div class="btn-field">
-                                    <a class="btn btn-primary" onclick="validateForm()">Submit<i class="fa fa-paper-plane-o ml-2"></i></a>
-                                </div>
-                            </div>
-                            
-                        </form>
+                    <div class="col-md-6">
+                        <label for="nameInput1" class="bmd-label-floating">Name</label>
+                        <input type="text" name="name" class="form-control" id="nameInput1"
+                            value="{{ form.name.value|default_if_none:'' }}">
+                        <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
                     </div>
-                </div>
-            </main>
-            <script>
-                function validateForm() {
-                    var name =  document.getElementById('nameInput1').value;
-                    if (name == "") {
-                        document.getElementById('name_err').innerHTML = "Name cannot be empty";
-                        return false;
-                    }
-                    
-                    var University =  document.getElementById('university_roll_noInput').value;
-                    if (University == "") {
-                        document.getElementById('university_err').innerHTML = "University roll number cannot be empty";
-                        return false;
-                    }
-                    else {
-                        var obj = new Date();
-                        var year = obj.getFullYear();
-                        var i;
-                        var false_i;
-                        var end = "";
-                        var start = "";
-                        for (i = year; i > (year-5); --i)
-                        {
-                            false_i = i;
-                            end = end + String(false_i % 10)
-                            false_i = false_i - 5;
-                            false_i = false_i/10;
-                            false_i = false_i.toFixed(0);
-                            start += String(false_i % 10);
-                        }
-                        regex_string = "^["+start+"]["+end+"][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
-                        var re = new RegExp(regex_string);
-                        if(!re.test(University)){
-                            document.getElementById('university_err').innerHTML = "University roll number format invalid";
-                            return false;
-                        }
-                    }
-                    
-                    var email =  document.getElementById('exampleInputEmail1').value;
-                    if (email == "") {
-                        document.getElementById('email_err').innerHTML = "Email cannot be empty";
-                        return false;
-                    } else {
-                        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                        if(!re.test(email)){
-                            document.getElementById('email_err').innerHTML = "Email format invalid";
-                            return false;
-                        }
-                    }
-                    
-                    var Contact =  document.getElementById('phoneInput').value;
-                    if (Contact == "") {
-                        document.getElementById('contactno_err').innerHTML = "Contact cannot be empty";
-                        return false;
-                    }
-                    else {
-                        var re = /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/;
-                        if(!re.test(Contact)){
-                            document.getElementById('contactno_err').innerHTML = "Contact number format invalid";
-                            return false;
-                        }
-                    }
-                    
-                    var v = grecaptcha.getResponse();
-                    if(v.length == 0)
-                    {
-                        document.getElementById('captcha_err').innerHTML="You can't leave Captcha Code empty";
-                        return false;
-                    }
-                    document.getElementById('candidate_form_id').submit();
-                }
-            </script>
-            {% endblock %}
-            
-            
-            
+                    {% if test_obj.stu_no %}
+                    <div class="col-md-6">
+                        <label for="std_noInput" class="bmd-label-floating">Student no.</label>
+                        <input type="text" name="std_no" class="form-control" id="std_noInput"
+                            value="{{ form.std_no.value|default_if_none:'' }}">
+                        <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
+                    </div>
+                    {% endif %}
+
+
+                    <div class="col-md-6">
+                        <label for="emailInput" class="bmd-label-floating">Email Address</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                            value="{{ form.email.value|default_if_none:'' }}">
+                        <p id="email_err" class="text-danger">
+                            <strong>{{ form.email.errors}}</strong>
+                        </p>
+                    </div>
+                    {% if test_obj.university_roll_no %}
+                    <div class="col-md-6">
+                        <label for="university_roll_noInput" class="bmd-label-floating">University Roll No.</label>
+                        <input type="text" name="university_roll_no" class="form-control" id="university_roll_noInput"
+                            value="{{ form.university_roll_no.value|default_if_none:'' }}">
+                        <p id="university_err" class="text-danger"><strong>{{ form.university_roll_no.errors }}</strong>
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    {#                <div class="form-group">#}
+                    {#                    <label for="nameInput2" class="bmd-label-floating">Father's Name</label>#}
+                    {#                    <input type="text" name="father_name" class="form-control" id="nameInput2" value="{{ form.father_name.value|default_if_none:'' }}">#}
+                    {#                    <p><strong>{{ form.father_name.errors}}</strong></p>#}
+                    {#                </div>#}
+                    {% if test_obj.phone_number %}
+                    <div class="col-md-6">
+
+                        <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
+                        <input type="text" name="phone_number" class="form-control" id="phoneInput"
+                            value="{{ form.phone_number.value|default_if_none:'' }}">
+                        <p id="contactno_err" class="text-danger"><strong>{{ form.phone_number.errors}}</strong></p>
+                    </div>
+                    {% endif %}
+
+                    <div class="col-md-6">
+                        {% if test_obj.branch %}
+                        <div class="sel">
+                            <label for="branchInput" class="bmd-label-floating">Branch</label>
+
+                            <select class="form-control" id="branchInput" name='branch'>
+                                {% for b in form.branch %}
+                                {{b}}
+                                {% endfor %}
+                            </select>
+                            <p class="text-danger"><strong>{{ form.branch.errors}}</strong></p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if test_obj.year %}
+                        <div class="sel">
+                            <label for="yearInput" class="bmd-label-floating">Year</label>
+
+                            <select class="form-control" id="yearInput" name='year'>
+                                {% for y in form.year %}
+                                {{y}}
+                                {% endfor %}
+                            </select>
+                            <p class="text-danger"><strong>{{ form.year.errors}}</strong></p>
+                        </div>
+                        {% endif %}
+                    </div>
+                        <!-- </div> -->
+                        <!-- <div class="col-6"> -->
+                    <div class="col-md-6">
+                        {% if test_obj.skills %}
+                        <div>
+                            <label for="skillInput" class="bmd-label-floating">Mention your Technical skills</label>
+                            <input type="text" name="skills" class="form-control" id="skillInput"
+                                value="{{ form.skills.value|default_if_none:'' }}">
+                            <span class="bmd-help">eg. HTML, CSS ,Python</span>
+                            <p><strong class="text-danger">{{ form.skills.errors}}</strong></p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if test_obj.designer %}
+                        <div>
+                            <label for="designerInput" class="bmd-label-floating">Familiar with any designing
+                                tool?</label>
+                            <input type="text" name="designer" class="form-control" id="designerInput"
+                                value="{{ form.designer.value|default_if_none:'' }}">
+                            <p><strong>{{ form.designer.errors}}</strong></p>
+                        </div>
+                        {% endif %}
+                      </div>
+                        {#                            <div class="form-group select-category">#}
+                        {#                                <label for="testInput" class="bmd-label-floating">Select a test</label>#}
+                        {##}
+                        {#                                <select class="form-control" id="testInput" name='test_name'>#}
+                        {#                                    {% for t in form.test_name %}#}
+                        {#                                    {{ t}}#}
+                        {#                                    {% endfor %}#}
+                        {#                                </select>#}
+                        {#                                <p><strong>{{ form.test_name.errors}}</strong></p>#}
+                        
+                        <div class="col-md-6">
+                        {% if test_obj.hosteler %}
+                        {% for choice in form.hosteler.field.choices %}
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" name="hosteler" id="option_{{ choice.0 }}" value="{{ choice.0 }}" checked>
+                            <label  for="option_{{ choice.0 }}" class="custom-control-label"></label>{{ choice.1}}</label>
+                        </div>
+                        {% endfor %}
+                        {{ form.hosteler.errors }}
+                        {% endif %}
+                        </div>
+                        <br>
+                      
+                        {{ form.captcha }}
+                        <p id="captcha_err" class="text-danger"><strong>{{ form.captcha.errors }}</strong></p>
+                        <!-- <div class="g-recaptcha" data-sitekey="6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij"></div> -->
+                    </div>
+
+                    <div class="btn-field col-12">
+                        <a class="btn btn-primary btn-block text-white" onclick="validateForm()">Submit<i
+                                class="fa fa-paper-plane-o ml-2"></i></a>
+                    </div>
+                    <!-- </div> -->
+
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block script %}
+
+<!-- <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script> -->
+<script>
+    function validateForm() {
+        var name = document.getElementById('nameInput1').value;
+        if (name == "") {
+            document.getElementById('name_err').innerHTML = "Name cannot be empty";
+            return false;
+        }
+
+        var University = document.getElementById('university_roll_noInput').value;
+        if (University == "") {
+            document.getElementById('university_err').innerHTML = "University roll number cannot be empty";
+            return false;
+        }
+        else {
+            var obj = new Date();
+            var year = obj.getFullYear();
+            var i;
+            var false_i;
+            var end = "";
+            var start = "";
+            for (i = year; i > (year - 5); --i) {
+                false_i = i;
+                end = end + String(false_i % 10)
+                false_i = false_i - 5;
+                false_i = false_i / 10;
+                false_i = false_i.toFixed(0);
+                start += String(false_i % 10);
+            }
+            regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
+            var re = new RegExp(regex_string);
+            if (!re.test(University)) {
+                document.getElementById('university_err').innerHTML = "University roll number format invalid";
+                return false;
+            }
+        }
+
+        var email = document.getElementById('exampleInputEmail1').value;
+        if (email == "") {
+            document.getElementById('email_err').innerHTML = "Email cannot be empty";
+            return false;
+        } else {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (!re.test(email)) {
+                document.getElementById('email_err').innerHTML = "Email format invalid";
+                return false;
+            }
+        }
+
+        var Contact = document.getElementById('phoneInput').value;
+        if (Contact == "") {
+            document.getElementById('contactno_err').innerHTML = "Contact cannot be empty";
+            return false;
+        }
+        else {
+            var re = /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/;
+            if (!re.test(Contact)) {
+                document.getElementById('contactno_err').innerHTML = "Contact number format invalid";
+                return false;
+            }
+        }
+
+        var v = grecaptcha.getResponse();
+        if (v.length == 0) {
+            document.getElementById('captcha_err').innerHTML = "You can't leave Captcha Code empty";
+            return false;
+        }
+        document.getElementById('candidate_form_id').submit();
+    }
+</script>
+{% endblock %}

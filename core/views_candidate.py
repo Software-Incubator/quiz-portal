@@ -197,7 +197,6 @@ class CandidateRegistration(generic.ListView):
                     question_seq += student_questions
                     session_seq[category.category] = student_questions_pk
                 self.request.session['question_seq'] = session_seq
-                print(self.request.session['question_seq'])
                 self.default_result(question_seq, candidate)
                 return redirect('instruction')
         return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
@@ -226,8 +225,6 @@ class GetTestView(generic.ListView):
                 del request.session['test_name']
             self.request.session['test_name'] = test_name
             return redirect('signup')
-        else:
-            print("Hello")
         return render(self.request, self.template_name, {'form': form})
 
 
@@ -329,7 +326,6 @@ class SaveStatus(generic.ListView):
 
 
 def logout(request):
-    # print(request.session.keys())
     for key in list(request.session.keys()):
         del request.session[key]
     return render(request, 'candidate/end.html')

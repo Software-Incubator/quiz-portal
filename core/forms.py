@@ -178,7 +178,7 @@ class AlgorithmForm(forms.Form):
 
 
 class GetTestNameForm(forms.Form):
-    test_name = forms.ChoiceField(choices=test_name_list(), label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
 
     class Meta:
         fields = ['test_name']

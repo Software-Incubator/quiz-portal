@@ -10,13 +10,6 @@ from django.db import models
 from django.contrib.sessions.models import Session
 
 
-from django.contrib.auth.models import AbstractUser
-
-
-
-
-
-
 class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False, unique=True)
     duration = models.PositiveIntegerField(blank=False)
@@ -80,7 +73,7 @@ class Candidate(models.Model):
     std_no_regex = RegexValidator(regex=r"^\d{7}$", message="Invalid Student Number", code="400")
     std_no = models.CharField(validators=[std_no_regex], blank=True, max_length=7, null=True)
     university_roll__no_regex = RegexValidator(regex=r'^[1]\d{9}$',message="invalid university roll no.")
-    university_roll_no = models.CharField(max_length=10, unique=True,validators=[university_roll__no_regex])
+    university_roll_no = models.CharField(max_length=10,blank=True, unique=True,validators=[university_roll__no_regex],null=True)
     email = models.EmailField(unique=True, blank=False)
     father = models.CharField(max_length=255, blank=True, null=True)
     phone_regex = RegexValidator(regex=r"^[6789]\d{9}$")

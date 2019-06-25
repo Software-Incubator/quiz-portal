@@ -61,7 +61,7 @@ class AdminAuth(generic.ListView):
                 messages.error(self.request, "Invalid username or password.Please enter valid credentials.")
                 return redirect("admin_auth")
 
-        return render(request,self.template_name, {'form':form})
+        return render(request, self.template_name, {'form':form})
 
 
 class ControlOperation(View):

@@ -60,8 +60,8 @@ TRUE_FALSE_CHOICES = (
 
 
 class AdminLoginForm(forms.Form):
-    username = forms.CharField(max_length=30,required=True)
-    password = forms.CharField(widget=forms.PasswordInput(), required= True)
+    username = forms.CharField(max_length=30, required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), required=True)
 
 
 class TestForm(forms.ModelForm):
@@ -114,13 +114,13 @@ class CandidateRegistration(forms.ModelForm):
     branch = forms.ChoiceField(choices=BRANCH_CHOICES, required=False)
     skills = forms.CharField(max_length=255, required=False)
     designer = forms.CharField(max_length=255, required=False)
-    year = forms.ChoiceField(choices=year_choices)
-    hosteler = forms.ChoiceField(widget=forms.RadioSelect(), label = 'Are you a Hosteler?', choices = YES_OR_NO, required=False)
+    year = forms.ChoiceField(choices=year_choices, required=False)
+    hosteler = forms.ChoiceField(widget=forms.RadioSelect(), label='Are you a Hosteler?', choices = YES_OR_NO, required=False)
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
 
     class Meta:
         model = Candidate
-        fields = ['name','email','std_no','phone_number','branch','year', 'hosteler','skills','designer','test_name','father', 'captcha', 'university_roll_no']
+        fields = ['name', 'email', 'std_no', 'phone_number', 'branch', 'year', 'hosteler', 'skills', 'designer', 'test_name', 'father', 'captcha', 'university_roll_no']
 
     def clean(self):
         cleaned_data = super(CandidateRegistration, self).clean()

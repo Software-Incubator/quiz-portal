@@ -151,7 +151,6 @@ class CandidateRegistration(generic.ListView):
             return redirect('get_test')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
-
     def default_result(self, question_seq, candidate):
         selected_answer = []
         for question in question_seq:

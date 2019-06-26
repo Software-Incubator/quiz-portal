@@ -269,6 +269,7 @@ class ShowCategoryView(View):
             test_list_with_category.extend([category_list])
         return render(request, self.template_name, {'test_list': test_list_with_category})
 
+
 class ShowQuestionsView(View):
     template_name = 'admin/showquestions.html'
 
@@ -294,6 +295,7 @@ class DeleteQuestionView(View):
         Question.objects.filter(pk=pk).delete()
         return redirect('Show_Category')
 
+
 class AddCategoryView(View):
     form_class = forms.CategoryForm
     template_name = 'admin/addcategory.html'
@@ -311,21 +313,19 @@ class AddCategoryView(View):
             tests = Test.objects.all()
             cats = Category.objects.all()
             form = self.form_class()
-            return render(request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})
+            return render(request, self.template_name, {'form': form, 'cats': cats, 'tests': tests})
 
     def post(self, request, *args, **kwargs):
         (dict(request.POST))['category'][0] = ((dict(request.POST))['category'][0]).lower()
         form = self.form_class(request.POST)
         cats = Category.objects.all()
         tests = Test.objects.all()
-        if (Category.objects.filter(category=((dict(request.POST))['category'][0]).lower())).count() > 0:
+        if (Category.objects.filter(test=request.POST['test'], category=((dict(request.POST))['category'][0]).lower())).count() > 0:
             message = 'ALL READY EXIST'
             return render(request, 'admin/error.html', {'message': message})
         else:
             if form.is_valid():
-                Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-                c = Category.objects.create(category=(dict(request.POST)['category'])[0], test=Tname, 
-                                        total_question_display = (dict(request.POST)['number_of_questions'])[0])
+                form.save()
                 return redirect('Add_Category')
             else:
                 return render(self.request, self.template_name, {'form': form, 'cats': cats, 'tests':tests})

@@ -45,7 +45,7 @@ def test_name_list():
     TEST_CHOICE = ()
 
     for test in tests:
-        data = ((test.test_name, test.test_name),)
+        data = ((Test.objects.get(id=test.id), test.test_name),)
         TEST_CHOICE = TEST_CHOICE + data
 
     return TEST_CHOICE
@@ -78,16 +78,16 @@ class InstructionForm(forms.ModelForm):
     
     class Meta:
         model = Instruction
-        fields = ['instruction','test_name']
+        fields = ['instruction', 'test_name']
 
 
 class CategoryForm(forms.ModelForm):
-    test_name = forms.ChoiceField(choices=test_name_list, label="Test Category", widget=forms.Select() )
-    number_of_questions = forms.CharField(label="Number of selected questions")
+    # test = forms.ChoiceField(choices=test_name_list, label="For Test :", widget=forms.Select())
+    # total_question_display = forms.IntegerField(label="Number of selected questions")
 
     class Meta:
         model = Category
-        fields = ['category', 'test_name','number_of_questions']
+        fields = ['category', 'test', 'total_question_display']
 
 
 class QuestionForm(forms.Form):

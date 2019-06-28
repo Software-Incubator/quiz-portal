@@ -9,15 +9,6 @@ from django.conf import settings
 from django.db import models
 from django.contrib.sessions.models import Session
 
-def test_name_list():
-    tests = Test.objects.filter(on_or_off=True)
-    TEST_CHOICE = ()
-
-    for test in tests:
-        data = ((Test.objects.get(id=test.id), test.test_name),)
-        TEST_CHOICE = TEST_CHOICE + data
-
-    return TEST_CHOICE
 
 class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False, unique=True)
@@ -39,8 +30,8 @@ class Test(models.Model):
 
 
 class Instruction(models.Model):
+    test = models.OneToOneField(Test, on_delete=models.CASCADE)
     instruction = RichTextUploadingField()
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = "Instructions"
@@ -66,7 +57,7 @@ class Question(models.Model):
     question_text = RichTextUploadingField()
     choice1 = RichTextUploadingField()
     choice2 = RichTextUploadingField()
-    choice3= RichTextUploadingField()
+    choice3 = RichTextUploadingField()
     choice4 = RichTextUploadingField()
     correct_choice = models.PositiveIntegerField(blank=False)
     negative = models.BooleanField(default=False)

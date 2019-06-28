@@ -195,7 +195,7 @@ class AddQuestionView(View):
         if form.is_valid():
             category = Category.objects.get(pk=(dict(request.POST)['category'])[0])
             if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                Question.objects.create(category=category,
+                Question.objects.create(category_id=category.id,
                                         question_text=(dict(request.POST)['question_text'])[0],
                                         choice1=(dict(request.POST)['choice1'])[0],
                                         choice2=(dict(request.POST)['choice2'])[0],
@@ -221,27 +221,15 @@ class EditQuestionView(View):
 
     def get(self, request, pk, *args, **kwargs):
         question = Question.objects.get(pk=pk)
-        form = self.form_class()
-        (dict(form.__dict__['fields'])['question_text']).initial = question.question_text
-        (dict(form.__dict__['fields'])['category']).initial = question.category.category
-        (dict(form.__dict__['fields'])['category']).show_hidden_initial = True
-        (dict(form.__dict__['fields'])['choice1']).initial = question.choice1
-        (dict(form.__dict__['fields'])['choice2']).initial = question.choice2
-        (dict(form.__dict__['fields'])['choice3']).initial = question.choice3
-        (dict(form.__dict__['fields'])['choice4']).initial = question.choice4
-        (dict(form.__dict__['fields'])['correct_choice']).initial = question.correct_choice
-        return render(request, self.template_name, {'form': form, 'que':question})
+        form = self.form_class(instance=question)
+        return render(request, self.template_name, {'form': form, 'que': question})
 
     def post(self, request, pk, *args, **kwargs):
         question = Question.objects.get(pk=pk)
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, instance=question)
         if form.is_valid():
             if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                c = Category.objects.get(pk = (dict(request.POST)['category'])[0])
-                Question.objects.filter(pk=pk).update(category = c,
-                    question_text = (dict(request.POST)['question_text'])[0], choice1 = (dict(request.POST)['choice1'])[0],
-                    choice2 = (dict(request.POST)['choice2'])[0], choice3 = (dict(request.POST)['choice3'])[0],
-                    choice4 = (dict(request.POST)['choice4'])[0], correct_choice = (dict(request.POST)['correct_choice'])[0] )
+                form.save()
                 return redirect('Show_Category')
             else:
                 message = "Choices cannot be same"
@@ -262,7 +250,7 @@ class ShowCategoryView(View):
         test_list_with_category = []
         tests = Test.objects.all()
         for test in tests:
-            category_list = []
+            category_list=[]
             category_list.append(test)
             cats = Category.objects.filter(test=test)
             category_list.append(cats)
@@ -280,8 +268,8 @@ class ShowQuestionsView(View):
 
     def get(self, request, pk, *args, **kwargs):
         cat = Category.objects.get(pk=pk)
-        ques = Question.objects.filter(category=cat)
-        return render(request, self.template_name, {'ques':ques, 'cat':cat})
+        ques = Question.objects.filter(category_id=cat.id)
+        return render(request, self.template_name, {'ques': ques, 'cat':cat})
 
 
 class DeleteQuestionView(View):
@@ -402,6 +390,7 @@ class ShowCandidateListView(View):
         else:
             return redirect('Show_Candidates')
 
+
 class DeleteResultView(View):
     
     def dispatch(self, request, *args, **kwargs):
@@ -412,6 +401,7 @@ class DeleteResultView(View):
     def get(self, request, pk, *args, **kwargs):
         Candidate.objects.filter(pk=pk).delete()
         return redirect('Show_Candidates')
+
 
 class ViewResultView(View):
     template_name = 'admin/result.html'
@@ -486,13 +476,8 @@ class AdminInstructionView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            if (Instruction.objects.filter(test=Tname)).count() > 0:
-                message = "Instruction for this test already exits"
-                return render(request, 'admin/error.html', {'message': message})
-            else:
-                Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
-                return redirect('admin_auth')
+            form.save()
+            return redirect('admin_auth')
         else:
             return render(self.request, self.template_name, {'form': form})
 
@@ -508,25 +493,17 @@ class EditInstructionView(View):
 
     def get(self, request, pk, *args, **kwargs):
         inst = Instruction.objects.get(pk=pk)
-        form = self.form_class()
-        (dict(form.__dict__['fields'])['instruction']).initial = inst.instruction
-        (dict(form.__dict__['fields'])['test_name']).initial = inst.test
+        form = self.form_class(instance=inst)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, pk, *args, **kwargs):
-        question = Instruction.objects.get(pk=pk)
-        form = self.form_class(request.POST)
+        inst = Instruction.objects.get(pk=pk)
+        form = self.form_class(request.POST, instance=inst)
         if form.is_valid():
-            Tname = Test.objects.get(test_name=(dict(request.POST)['test_name'])[0])
-            if (Instruction.objects.filter(test=Tname)).count() > 0 and question.test.test_name != (dict(request.POST)['test_name'])[0]:
-                message = "Instruction for this test already exits"
-                return render(request, 'admin/error.html', {'message': message})
-            else:
-                Instruction.objects.filter(pk=pk).delete()
-                Instruction.objects.create(instruction=(dict(request.POST)['instruction'])[0], test=Tname)
-                return redirect('control_operation')
+            form.save()
+            return redirect('control_operation')
         else:
-            return render(self.request, self.template_name, {'form': form, 'question': question})
+            return render(self.request, self.template_name, {'form': form})
 
 
 class ShowInstructionView(View):

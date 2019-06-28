@@ -74,25 +74,21 @@ class TestForm(forms.ModelForm):
 
 
 class InstructionForm(forms.ModelForm):
-    test_name = forms.ChoiceField(choices=test_name_list, label="Test Category", widget=forms.Select() )
-    
+
     class Meta:
         model = Instruction
-        fields = ['instruction', 'test_name']
+        fields = ['instruction', 'test']
 
 
 class CategoryForm(forms.ModelForm):
-    # test = forms.ChoiceField(choices=test_name_list, label="For Test :", widget=forms.Select())
-    # total_question_display = forms.IntegerField(label="Number of selected questions")
 
     class Meta:
         model = Category
         fields = ['category', 'test', 'total_question_display']
 
 
-class QuestionForm(forms.Form):
+class QuestionForm(forms.ModelForm):
     question_text = forms.CharField(widget=CKEditorUploadingWidget())
-    category = forms.ChoiceField(choices=category_name_list,label="Question Category")
     choice1 = forms.CharField(widget=CKEditorUploadingWidget())
     choice2 = forms.CharField(widget=CKEditorUploadingWidget())
     choice3 = forms.CharField(widget=CKEditorUploadingWidget())
@@ -100,7 +96,8 @@ class QuestionForm(forms.Form):
     correct_choice = forms.ChoiceField(choices=answer_choice, label="Select correct choice")
 
     class Meta:
-        fields = ['category', 'question_text','choice1','choice2','choice3','choice4', 'correct_choice']
+        model = Question
+        fields = ['category', 'question_text', 'choice1', 'choice2', 'choice3', 'choice4', 'correct_choice']
 
 
 class CandidateRegistration(forms.ModelForm):

@@ -173,7 +173,7 @@ class CandidateRegistration(generic.ListView):
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
 
-            candidate = Candidate.objects.get(name=name, email=email)
+            candidate = Candidate.objects.get(name=name, email=email,)
             if candidate:
                 self.request.session['email'] = email
                 test = Test.objects.get(test_name=test_name)

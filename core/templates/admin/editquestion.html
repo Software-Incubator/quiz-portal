@@ -63,6 +63,9 @@
         {{ form.correct_choice }}
         <span><strong style="color: red;">{{ form.correct_choice.errors }}</strong></span>
         </div>
+        {% if messages %}
+        <h6 style="color: red;">{{ messages }}</h6>
+        {% endif %}
         <br><button type="submit" class="btn btn-raised btn-primary">Submit</button><br>
     </form>
 </div>

@@ -97,9 +97,7 @@ class TestName(View):
         else:
             form = self.form_class(request.POST)
             if form.is_valid():
-                Test.objects.create(test_name=request.POST['test_name'],
-                                    duration=request.POST['duration'],
-                                    on_or_off=request.POST['on_or_off'])
+                form.save()
                 return redirect('control_operation')
             else:
                 return render(self.request, self.template_name, {'form': form})
@@ -193,19 +191,12 @@ class AddQuestionView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            category = Category.objects.get(pk=(dict(request.POST)['category'])[0])
-            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
-                Question.objects.create(category_id=category.id,
-                                        question_text=(dict(request.POST)['question_text'])[0],
-                                        choice1=(dict(request.POST)['choice1'])[0],
-                                        choice2=(dict(request.POST)['choice2'])[0],
-                                        choice3=(dict(request.POST)['choice3'])[0],
-                                        choice4=(dict(request.POST)['choice4'])[0],
-                                        correct_choice=(dict(request.POST)['correct_choice'])[0])
+            if request.POST['choice1'].lower() != request.POST['choice2'].lower() != request.POST['choice3'].lower() != request.POST['choice4'].lower():
+                form.save()
                 return redirect('control_operation')
             else:
                 message = "Choices cannot be same"
-                return render(request, 'admin/error.html', {'message': message})
+                return render(self.request, self.template_name, {'form': form, 'messages': message})
         else:
             return render(self.request, self.template_name, {'form': form})
 
@@ -228,12 +219,12 @@ class EditQuestionView(View):
         question = Question.objects.get(pk=pk)
         form = self.form_class(request.POST, instance=question)
         if form.is_valid():
-            if (dict(request.POST)['choice1'])[0] != (dict(request.POST)['choice2'])[0] != (dict(request.POST)['choice3'])[0] != (dict(request.POST)['choice4'])[0]:
+            if request.POST['choice1'].lower() != request.POST['choice2'].lower() != request.POST['choice3'].lower() != request.POST['choice4'].lower():
                 form.save()
                 return redirect('Show_Category')
             else:
                 message = "Choices cannot be same"
-                return render(request, 'admin/error.html', {'message': message})
+                return render(self.request, self.template_name, {'form': form, 'question': question, 'messages': message})
         else:
             return render(self.request, self.template_name, {'form': form, 'question': question})
 

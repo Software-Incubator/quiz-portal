@@ -522,17 +522,17 @@ class DeleteInstructionView(View):
         return redirect('Show_Instruction')
 
 
-def error404(request):
+def error404(request, exception):
     message = 'Error 404 \n Page not found'
     return render(request, 'admin/error.html', {'message': message})
 
 
-def error400(request):
+def error400(request, exception):
     message = 'Error 400 \n Bad Request'
     return render(request, 'admin/error.html', {'message': message})
 
 
-def error403(request):
+def error403(request, exception):
     message = 'Error 403 \n Permission Denied'
     return render(request, 'admin/error.html', {'message': message})
 

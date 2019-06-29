@@ -11,8 +11,8 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('secret/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#
-# handler404 = views_admin.error404
-# handler400 = views_admin.error400
-# handler500 = views_admin.error500
-# handler403 = views_admin.error403
+
+handler404 = views_admin.error404
+handler400 = views_admin.error400
+handler500 = views_admin.error500
+handler403 = views_admin.error403

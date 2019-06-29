@@ -45,7 +45,7 @@ def test_name_list():
     TEST_CHOICE = ()
 
     for test in tests:
-        data = ((Test.objects.get(id=test.id), test.test_name),)
+        data = ((test, test.test_name),)
         TEST_CHOICE = TEST_CHOICE + data
 
     return TEST_CHOICE
@@ -65,12 +65,12 @@ class AdminLoginForm(forms.Form):
 
 
 class TestForm(forms.ModelForm):
-    on_or_off = forms.ChoiceField(choices = TRUE_FALSE_CHOICES, label="Status", 
+    on_or_off = forms.ChoiceField(choices=TRUE_FALSE_CHOICES, label="Status",
                               initial='', widget=forms.RadioSelect(), required=True)
 
     class Meta:
         model = Test
-        fields = ['test_name','duration','on_or_off']
+        fields = ['test_name', 'duration', 'on_or_off']
 
 
 class InstructionForm(forms.ModelForm):

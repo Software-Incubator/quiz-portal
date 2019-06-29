@@ -9,12 +9,7 @@
 {% endblock %} 
 
 {% block content %}
-<!-- <p>Previously Stored</p>
-    {% if Iname == '' %}
-        <p>No instructions Feeded</p>
-    {% else %}
-        {{ Iname|safe|escape }}<br><br>
-    {% endif %} -->
+
 <div class="instruction">
     <form name="InstructionForm" method="post" novalidate>
         <div>
@@ -31,9 +26,9 @@
             </p>
         </div>
         <div>
-            {{ form.test_name.label_tag }} {{ form.test_name }}
+            {{ form.test.label_tag }} {{ form.test }}
             <span>
-                <strong style="color: red;">{{ form.test_name.errors }}</strong>
+                <strong style="color: red;">{{ form.test.errors }}</strong>
             </span>
         </div>
         <br><button type="submit" class="btn btn-raised btn-primary">Submit</button>

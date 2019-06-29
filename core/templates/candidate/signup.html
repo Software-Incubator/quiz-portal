@@ -35,7 +35,6 @@
                     </div>
                     {% endif %}
 
-
                     <div class="col-md-6">
                         <label for="emailInput" class="bmd-label-floating">Email Address</label>
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1"
@@ -153,7 +152,7 @@
                         <a class="btn btn-primary btn-block text-white" onclick="validateForm()">Submit<i
                                 class="fa fa-paper-plane-o ml-2"></i></a>
                     </div>
-                    <!-- </div> -->
+                     </div>
 
             </form>
         </div>
@@ -170,7 +169,7 @@
             document.getElementById('name_err').innerHTML = "Name cannot be empty";
             return false;
         }
-
+       try{
         var University = document.getElementById('university_roll_noInput').value;
         if (University == "") {
             document.getElementById('university_err').innerHTML = "University roll number cannot be empty";
@@ -198,6 +197,10 @@
                 return false;
             }
         }
+        }
+        catch{
+        //do nothing.
+        }
 
         var email = document.getElementById('exampleInputEmail1').value;
         if (email == "") {
@@ -210,6 +213,7 @@
                 return false;
             }
         }
+        try{
 
         var Contact = document.getElementById('phoneInput').value;
         if (Contact == "") {
@@ -222,6 +226,11 @@
                 document.getElementById('contactno_err').innerHTML = "Contact number format invalid";
                 return false;
             }
+        }
+        }
+        catch{
+        // do nothing
+
         }
 
         var v = grecaptcha.getResponse();

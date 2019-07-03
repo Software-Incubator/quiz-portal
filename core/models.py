@@ -76,7 +76,7 @@ class Candidate(models.Model):
     university_roll_no = models.CharField(max_length=10, blank=True, unique=True, validators=[university_roll__no_regex], null=True)
     email = models.EmailField(unique=True, blank=False)
     father = models.CharField(max_length=255, blank=True, null=True)
-    phone_regex = RegexValidator(regex=r"^[6789]\d{9}$")
+    phone_regex = RegexValidator(regex=r"^[56789]\d{9}$")
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)
     branch = models.CharField(max_length=5, blank=True, null=True)
     skills = models.CharField(max_length=255, blank=True, null=True)

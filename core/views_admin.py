@@ -10,7 +10,6 @@ from core.models import Candidate, Instruction, Category, Test, Question, Select
 import json
 
 
-
 def CalculateMarks(pk):
 
     cand = Candidate.objects.get(pk=pk)
@@ -163,6 +162,10 @@ class DeleteTest(View):
         return super(DeleteTest, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, pk, *args, **kwargs):
+        test = Test.objects.get(pk=pk)
+        candidate_list = Candidate.objects.filter(test_name=test)
+        for candidate in candidate_list:
+            Candidate.objects.get(name=candidate.name).delete()
         Test.objects.filter(pk=pk).delete()
         return redirect('See_Test')
 

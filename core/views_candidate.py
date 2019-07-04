@@ -115,6 +115,11 @@ class InstructionView(generic.ListView):
     def dispatch(self, request, *args, **kwargs):
         if "email" not in request.session:
             return redirect('signup')
+        candidate = Candidate.objects.filter(email=request.session["email"])
+        if not candidate:
+            for key in list(request.session.keys()):
+                del request.session[key]
+            return redirect('get_test')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -172,7 +177,6 @@ class CandidateRegistration(generic.ListView):
             form_obj.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
-
             candidate = Candidate.objects.get(name=name, email=email,)
             if candidate:
                 self.request.session['email'] = email
@@ -206,21 +210,20 @@ class GetTestView(generic.ListView):
     form_class = forms.GetTestNameForm
 
     def dispatch(self, request, *args, **kwargs):
-        if request.session.has_key("email"):
+        if "email" in request.session:
             return redirect('instruction')
 
         return super(GetTestView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        
-        return render(request, self.template_name, {'form':form})
+        return render(request, self.template_name, {'form': form})
 
-    def post(self, request,*args, **kwargs):
+    def post(self, request):
         form = self.form_class(self.request.POST)
         if form.is_valid():
             test_name = form.cleaned_data.get('test_name')
-            if request.session.has_key('test_name'):
+            if 'test_name' in request.session:
                 del request.session['test_name']
             self.request.session['test_name'] = test_name
             return redirect('signup')
@@ -282,6 +285,7 @@ class DefaultOption(generic.ListView):
 
 
 class SaveStatus(generic.ListView):
+
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
             if "email" not in request.session:

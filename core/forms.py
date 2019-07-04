@@ -138,7 +138,7 @@ class CandidateRegistration(forms.ModelForm):
         end = ''
         start = ''
 
-        for i in range(year, year - 5, -1):
+        for i in range(year-1, year - 5, -1):
             end += str(i % 10)
             i = int(i / 10)
             start += str(i % 10)
@@ -160,7 +160,7 @@ class CandidateRegistration(forms.ModelForm):
 
 
 class ChooseTestForm(forms.Form):
-    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select())
 
     class Meta:
         fields = ['test_name']
@@ -168,14 +168,14 @@ class ChooseTestForm(forms.Form):
 
 class AlgorithmForm(forms.Form):
     question_text = forms.CharField(widget=CKEditorUploadingWidget())
-    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select())
 
     class Meta:
         fields = ['category', 'test_name']
 
 
 class GetTestNameForm(forms.Form):
-    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select() )
+    test_name = forms.ChoiceField(choices=test_name_list, label="Choose Test", widget=forms.Select())
 
     class Meta:
         fields = ['test_name']

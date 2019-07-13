@@ -48,7 +48,7 @@ class QuestionByCategory(generic.DetailView):
         all_category = Category.objects.filter(test=test)
         category_name = kwargs["category_name"]
         question_seq = request.session["question_seq"][category_name]
-        context_dict = {'category_name': category_name,"candidate_name": candidate.name}
+        context_dict = {'category_name': category_name, "candidate_name": candidate.name}
         category_dict_by_number = self.category_number_to_name(all_category)
         category_dict_by_name = self.category_name_to_number(all_category)
         category = Category.objects.get(category=category_name, test=test)
@@ -63,7 +63,7 @@ class QuestionByCategory(generic.DetailView):
         id = kwargs["id"]
         if id not in range(1, required_question + 1):
             return redirect(reverse('category', kwargs={"category_name": category_name,
-                                                            "id": 1 }))
+                                                            "id": 1}))
         # if last question of current category
         if required_question == id:
             last_question = 1

@@ -144,7 +144,7 @@ class InstructionView(generic.ListView):
 
 class CandidateRegistration(generic.ListView):
     """
-    Candidate registration view
+    Candidate registration.js view
     """
     form_class = forms.CandidateRegistration
     template_name = 'candidate/signup.html'

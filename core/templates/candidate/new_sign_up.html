@@ -34,7 +34,6 @@
                         <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
                     </div>
                     {% endif %}
-
                     <div class="col-md-6">
                         <label for="emailInput" class="bmd-label-floating">Email Address</label>
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1"
@@ -104,7 +103,7 @@
                             <label for="skillInput" class="bmd-label-floating">Mention your Technical skills</label>
                             <input type="text" name="skills" class="form-control" id="skillInput"
                                 value="{{ form.skills.value|default_if_none:'' }}">
-                            <span class="bmd-help">eg. HTML, CSS ,Python</span>
+                            <span class="bmd-help">eg. HTML, CSS ,C,C++,Python</span>
                             <p><strong class="text-danger">{{ form.skills.errors}}</strong></p>
                         </div>
                         {% endif %}

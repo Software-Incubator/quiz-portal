@@ -7,6 +7,8 @@ body{
 background: url(new1.png);
 background-repeat: no-repeat;
   background-attachment: fixed;
+  background: url('../assets/images/new1.png');
+height: 100%;
 }
 
 /*#vertical_line{

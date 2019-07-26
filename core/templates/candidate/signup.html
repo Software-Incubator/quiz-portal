@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
       <link rel="stylesheet" href="{% static '/core/css/registration.css'%}">
     {% recaptcha_init %}
 </head>
@@ -27,19 +29,19 @@
             <h2 class="title">Registration Form</h2>
 
                <div class="row">
-                  <form class="col s12" method="post">
+                  <form class="col s12" method="post" name="form1">
                    {% csrf_token %}
                   	<div class="vl" style="position: absolute;height: 300px;margin: 1px 1px 1px -35px;"></div>
                      <div class="row">
                        <div class="input-field col s6">
                           <i class="material-icons prefix icon_col">account_circle</i>
-                             <input id="icon_prefix" type="text" class="validate" value="{{ form.name.value|default_if_none:'' }}">
+                             <input id="icon_prefix" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
                               <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
                                <label for="icon_prefix">Name</label>
                         </div>
                         <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
-                             <input id="icon_telephone" type="tel" class="validate" value="{{ form.email.value|default_if_none:'' }}">
+                             <input id="icon_telephone" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
                                <label for="icon_telephone">E-mail</label>
                             <p id="email_err" class="text-danger">
                             <strong>{{ form.email.errors}}</strong>
@@ -50,7 +52,7 @@
           {% if test_obj.university_roll_no %}
         <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input id="icon_prefix1" type="text" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          <input id="icon_prefix1" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
           <label for="icon_prefix1">University Roll No.</label>
             <p id="university_err" class="text-danger"><strong>{{ form.university_roll_no.errors }}</strong>
                         </p>
@@ -59,13 +61,13 @@
           {% if test_obj.phone_number %}
         <div class="input-field col s6">
           <i class="material-icons prefix">phone</i>
-          <input id="icon_telephone1" type="tel" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
+          <input id="icon_telephone1" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
           <label for="icon_telephone1">Mobile No.</label>
             <p id="contactno_err" class="text-danger"><strong>{{ form.phone_number.errors}}</strong></p>
         </div>
           {% endif %}
       </div>
-                    <div class="row">
+                      <div class="row">
                           {% if test_obj.stu_no %}
         <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
@@ -84,37 +86,48 @@
           {% if test_obj.branch %}
         <div class="input-field col s6">
           <i class="material-icons prefix">device_hub</i>
-<!--          <input id="icon_prefix2" type="text" class="validate">-->
-            <select class="validate" id="icon_prefix2" name='branch'>
-                                {% for b in form.branch %}
-                                {{b}}
-                                {% endfor %}
-                            </select>
+           {{ form.branch }}
           <label for="icon_prefix2">Branch</label>
              <p class="text-danger"><strong>{{ form.branch.errors}}</strong></p>
         </div>
           {% endif %}
+          {% if test_obj.year %}
         <div class="input-field col s6">
           <i class="material-icons prefix">import_contacts</i>
-          <input id="icon_telephone2" type="tel" class="validate">
+            {{ form.year }}
           <label for="icon_telephone2">Year</label>
         </div>
+          {% endif %}
       </div>
+                       <div class="row">
+                           {% if test_obj.skills %}
+                           <div class="input-field col s12">
+                               <i class="material-icons prefix">device_hub</i>
+                                <input type="text" name="skills" maxlength="255" id="id_skills">
+                               <label for="id_skills" class="bmd-label-floating">Mention your Technical skills(eg. HTML, CSS ,C,C++,Python)</label>
+                           </div>
+                           {% endif %}
+                       </div>
+
                        <div>
+                           {% if test_obj.hosteler %}
+                           {% for choice in form.hosteler.field.choices %}
                           <label class=" check1">
-                             <input type="checkbox" />
-                              <span>Day Scholar</span>
-                          </label>
-                          <label  class=" check2">
-                             <input type="checkbox" />
-                              <span>Hosteler</span>
-                          </label>
+                             <input type="radio" />
+                              <span>{{ choice.1}}</span>
+<!--                          </label>-->
+<!--                          <label  class=" check2">-->
+<!--                             <input type="checkbox" />-->
+<!--                              <span>Hosteler</span>-->
+<!--                          </label>-->
+                           {% endfor %}
+                           {% endif %}
                         </div>
         <div class="svg-wrapper">
           <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
             <rect id="shape" height="40" width="150"  />
               <div id="text">
-                <a href="#"><span class="spot"></span>Submit</a>
+                <a href="javascript: submitform()"><span class="spot"></span>Submit</a>
               </div>
           </svg>
         </div>
@@ -122,6 +135,9 @@
   </div>
 </div>
 </div>
+    <script type="text/javascript">
+        function submitform() {   document.form1.submit(); }
+   </script>
     <script type="text/javascript">
 var ParticleEffect = {
     ctx: null,
@@ -376,6 +392,14 @@ var Utils = {
 ParticleEffect.run({
     count: 50
 });
+</script>
+<script>
+(function($){
+  $(function(){
+    // Plugin initialization
+    $('select').not('.disabled').formSelect();
+  });
+})(jQuery); // end of jQuery name space
 </script>
 </body>
 </html>

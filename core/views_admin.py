@@ -263,7 +263,7 @@ class ShowQuestionsView(View):
     def get(self, request, pk, *args, **kwargs):
         cat = Category.objects.get(pk=pk)
         ques = Question.objects.filter(category_id=cat.id)
-        return render(request, self.template_name, {'ques': ques, 'cat':cat})
+        return render(request, self.template_name, {'ques': ques, 'cat': cat})
 
 
 class DeleteQuestionView(View):

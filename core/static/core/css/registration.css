@@ -26,10 +26,10 @@ height: 100%;
 .card{
   position: absolute;
   width:80%;
-  height:75%;
-  margin-left:10%;
+  height:100%;
+  margin-left:8%;
   background:#132f38de;
-  margin-top:5%;
+  margin-top:1%;
   border-radius: 7px;
 }
 

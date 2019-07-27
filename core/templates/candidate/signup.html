@@ -29,20 +29,20 @@
             <h2 class="title">Registration Form</h2>
 
                <div class="row">
-                  <form class="col s12" method="post" name="form1">
+                  <form class="col s12" method="post" name="form1" id="candidate_form_id">
                    {% csrf_token %}
                   	<div class="vl" style="position: absolute;height: 300px;margin: 1px 1px 1px -35px;"></div>
                      <div class="row">
                        <div class="input-field col s6">
                           <i class="material-icons prefix icon_col">account_circle</i>
-                             <input id="icon_prefix" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
+                             <input id="nameInput1" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
                               <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
-                               <label for="icon_prefix">Name</label>
+                               <label for="nameInput1">Name</label>
                         </div>
                         <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
-                             <input id="icon_telephone" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
-                               <label for="icon_telephone">E-mail</label>
+                             <input id="exampleInputEmail1" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
+                               <label for="exampleInputEmail1">E-mail</label>
                             <p id="email_err" class="text-danger">
                             <strong>{{ form.email.errors}}</strong>
                             </p>
@@ -52,17 +52,26 @@
           {% if test_obj.university_roll_no %}
         <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input id="icon_prefix1" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
-          <label for="icon_prefix1">University Roll No.</label>
+          <input id="university_roll_noInput" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          <label for="university_roll_noInput">University Roll No.</label>
             <p id="university_err" class="text-danger"><strong>{{ form.university_roll_no.errors }}</strong>
+                        </p>
+        </div>
+          {% endif %}
+          {% if test_obj.father_name %}
+          <div class="input-field col s6">
+          <i class="material-icons prefix">wc</i>
+          <input id="nameInput2" type="text" name="father_name" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          <label for="nameInput2">Father's Name</label>
+            <p class="text-danger"><strong>{{ form.father_name.errors }}</strong>
                         </p>
         </div>
           {% endif %}
           {% if test_obj.phone_number %}
         <div class="input-field col s6">
           <i class="material-icons prefix">phone</i>
-          <input id="icon_telephone1" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
-          <label for="icon_telephone1">Mobile No.</label>
+          <input id="phoneInput" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
+          <label for="phoneInput">Mobile No.</label>
             <p id="contactno_err" class="text-danger"><strong>{{ form.phone_number.errors}}</strong></p>
         </div>
           {% endif %}
@@ -71,16 +80,12 @@
                           {% if test_obj.stu_no %}
         <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input id="icon_prefix3" type="text" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
-          <label for="icon_prefix3">Student No.</label>
+          <input id="std_noInput" type="text" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
+          <label for="std_noInput">Student No.</label>
             <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
         </div>
                            {% endif %}
-<!--        <div class="input-field col s6">-->
-<!--          <i class="material-icons prefix">phone</i>-->
-<!--          <input id="icon_telephone3" type="tel" class="validate">-->
-<!--          <label for="icon_telephone3">Mobile No.</label>-->
-<!--        </div>-->
+
       </div>
       <div class="row">
           {% if test_obj.branch %}
@@ -103,31 +108,44 @@
                            {% if test_obj.skills %}
                            <div class="input-field col s12">
                                <i class="material-icons prefix">device_hub</i>
-                                <input type="text" name="skills" maxlength="255" id="id_skills">
+                                <input type="text" name="skills" maxlength="255" id="id_skills" value="{{ form.skills.value|default_if_none:'' }}">
                                <label for="id_skills" class="bmd-label-floating">Mention your Technical skills(eg. HTML, CSS ,C,C++,Python)</label>
                            </div>
                            {% endif %}
                        </div>
-
+<br>
                        <div>
                            {% if test_obj.hosteler %}
                            {% for choice in form.hosteler.field.choices %}
-                          <label class=" check1">
-                             <input type="radio" />
+                          <label class=" check1" for="option_{{choice.0}}">
+                              {% if choice.1 == "DayScholar" %}
+                             <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"checked/>
+                              {% else %}
+                              <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"/>
+                              {% endif %}
                               <span>{{ choice.1}}</span>
-<!--                          </label>-->
-<!--                          <label  class=" check2">-->
-<!--                             <input type="checkbox" />-->
-<!--                              <span>Hosteler</span>-->
-<!--                          </label>-->
+                          </label>
                            {% endfor %}
                            {% endif %}
                         </div>
+                      <br>
+                      <div class="row">
+                           {% if test_obj.designer  %}
+                           <div class="input-field col s12">
+                               <i class="material-icons prefix">device_hub</i>
+                                <input type="text" name="designer" maxlength="255" id="id_designer" value="{{ form.designer.value|default_if_none:'' }}">
+                               <label for="id_designer" class="bmd-label-floating">Familiar with any designing
+                                tool?</label>
+                           </div>
+                           {% endif %}
+                       </div>
+                        {{ form.captcha }}
+                        <p id="captcha_err" class="text-danger"><strong>{{ form.captcha.errors }}</strong></p>
         <div class="svg-wrapper">
           <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
             <rect id="shape" height="40" width="150"  />
               <div id="text">
-                <a href="javascript: submitform()"><span class="spot"></span>Submit</a>
+                <a onclick="validateForm()"><span class="spot"></span>Submit</a>
               </div>
           </svg>
         </div>
@@ -136,8 +154,88 @@
 </div>
 </div>
     <script type="text/javascript">
-        function submitform() {   document.form1.submit(); }
+        function submitform() {
+        document.form1.submit(); }
    </script>
+    <script>
+    function validateForm() {
+        var name = document.getElementById('nameInput1').value;
+        if (name == "") {
+            document.getElementById('name_err').innerHTML = "Name cannot be empty";
+            return false;
+        }
+       try{
+        var University = document.getElementById('university_roll_noInput').value;
+        if (University == "") {
+            document.getElementById('university_err').innerHTML = "University roll number cannot be empty";
+            return false;
+        }
+        else {
+            var obj = new Date();
+            var year = obj.getFullYear();
+            var i;
+            var false_i;
+            var end = "";
+            var start = "";
+            for (i = year; i > (year - 5); --i) {
+                false_i = i;
+                end = end + String(false_i % 10)
+                false_i = false_i - 5;
+                false_i = false_i / 10;
+                false_i = false_i.toFixed(0);
+                start += String(false_i % 10);
+            }
+            regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
+            var re = new RegExp(regex_string);
+            if (!re.test(University)) {
+                document.getElementById('university_err').innerHTML = "University Roll number format invalid";
+                return false;
+            }
+        }
+        }
+        catch{
+        //do nothing.
+        }
+
+        var email = document.getElementById('exampleInputEmail1').value;
+        if (email == "") {
+            document.getElementById('email_err').innerHTML = "Email cannot be empty";
+            return false;
+        } else {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (!re.test(email)) {
+                document.getElementById('email_err').innerHTML = "Email format invalid";
+                return false;
+            }
+        }
+        try{
+
+        var Contact = document.getElementById('phoneInput').value;
+        if (Contact == "") {
+            document.getElementById('contactno_err').innerHTML = "Contact cannot be empty";
+            return false;
+        }
+        else {
+            var re = /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/;
+            if (!re.test(Contact)) {
+                document.getElementById('contactno_err').innerHTML = "Contact number format invalid";
+                return false;
+            }
+        }
+        }
+        catch{
+        // do nothing
+
+        }
+
+        var v = grecaptcha.getResponse();
+        if (v.length == 0) {
+            document.getElementById('captcha_err').innerHTML = "You can't leave Captcha Code empty";
+            return false;
+        }
+        document.getElementById('candidate_form_id').submit();
+    }
+</script>
     <script type="text/javascript">
 var ParticleEffect = {
     ctx: null,

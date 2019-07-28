@@ -1,194 +1,105 @@
-
-html{
-  font-size: 10px;
-}
-
 body{
-background: url(new1.png);
-background-repeat: no-repeat;
-background-attachment: fixed;
-background: url('../assets/images/new1.png');
-height: 100%;
+    background-image:  url("../assets/images/recruitment_poster.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    height: 100vh;
+    overflow: hidden;
 }
 
-
-/*#vertical_line{
-  position: relative;
-  width: 5px;
-  height: 50px;
-  color: white;
-}*/
-
-.title{
-  font-size: 38px;
-  font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
-  color: #08d342;
-  margin:23px 5px 1px 40%;
-}
-.card{
-  position: absolute;
-  width:80%;
-  height:75%;
-  margin-left:10%;
-  background:#132f38de;
-  margin-top:5%;
-  border-radius: 7px;
+main .instructions-container{
+    width: 1000px;
+    height: auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 0 2px 5px 0 rgba(0,0,0,.8);
+    border-radius: 1rem;
+    padding: 0px;
+    margin: 100px auto;
 }
 
-.vector_img{
-  height: 100px;
-  width: 100px;
-  background-repeat: no-repeat;
-  margin: -28px 0px 0px -58px;
-
-}
-.vl {
-  border-left: 2px solid #e36161;
+main .instructions-container .bg-img{
+    background-image: url('../assets/images/recruitment_poster.png');
+    background-position: center center;
+    background-size: cover;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    background-repeat: no-repeat;
 }
 
-img{
-  margin:20px 1px 8px 16px;
+main .instructions-container .img{
+    width: 250px;
+    height: auto;
+    margin-top: 80px;
+    transition: 2s;
+    margin-left: 25px;
 }
 
-
-.form_body{
-  width: 50%;
-  margin-left: 45%;
-  background: transparent;
-  margin-top:-5.5%;
-  border-radius: 5px;
+main .instructions-container .img:hover{
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
-.row {
-
-  flex-wrap: wrap;
-  margin-bottom:0px;
-
+main .instructions-container .col-8{
+    padding: 0px;
 }
 
-
-.input-field>label {
-  color:#d7d7d7;
+main .instructions-container .instructions{
+    height: 94%;
+    overflow-y: scroll;
+    padding-left: 15px;
+    margin-top: 12px;
 }
 
-/* label focus color */
- .input-field input:focus + label {
-   color: #08d342 !important;
- }
- /* label underline focus color */
- .row .input-field input:focus {
-   border-bottom: 1px solid #08d342 !important;
-
- }
- .validate{
-  color: white;
- }
-
-i.prefix{
-  color:#a5adab !important;
+main .instructions-container .instructions .ok-btn{
+    padding: 0 25px;
 }
 
-
-.content{
-  margin-left: 10%;
-}
-
-.form_detail{
-  margin-right: 40%;
-}
-
-.check1{
-  padding:6px;
-  margin-right:8px;
-  color: #d7d7d7;
-}
-.check2{
- color: #d7d7d7;
-}
-/** {
+main .instructions-container .instructions ol{
+    padding: 20px !important;
     margin: 0;
-    padding: 0;
+    list-style: none;
+    counter-reset: item;
 }
-html,
-body {
+
+main .instructions-container .instructions li{
+    padding: 10px 0px;
+    counter-increment: item;
+}
+
+main .instructions-container .instructions li:before{
+    content: '';
+    background: #3b95ed;
+    border-radius: 100%;
+    color: #fff;
+    width: 1.2rem;
+    text-align: center;
+    display: inline-block;
+}
+
+main .instructions-container .instructions li p{
+    display: inline-block;
+}
+
+main .instructions-container .instructions li:nth-child(even){
+    background-color: #eee;
+}
+
+main .instructions-container .instructions li:nth-child(1){
+    margin-top: 50px;
+}
+
+main .instructions-container .instructions li:hover{
+    background-color: #eee;
+}
+
+main .instructions-container .instructions li p{
+    margin: 0;
+}
+
+main .instructions-container .instructions a{
+    margin: auto;
+}
+
+main .instructions-container .instructions a button{
     width: 100%;
-    height: 100%;
-    background-color: #292d35;
-}
-*/
-[type="checkbox"]:checked+span:not(.lever):before {
-    top: -4px;
-    left: -5px;
-    width: 12px;
-    height: 22px;
-    border-top: 2px solid transparent;
-    border-left: 2px solid transparent;
-    border-right: 2px solid #08d342;
-    border-bottom: 2px solid #08d342;
-    -webkit-transform: rotate(40deg);
-    transform: rotate(40deg);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform-origin: 100% 100%;
-    transform-origin: 100% 100%;
-}
-
-.svg-wrapper {
-  position: relative;
-  width: 198px;
-  height: 50px;
-  margin-left: 40%;
-  margin-top:4%;
-  margin-bottom: 2%;
-
-}
-
-
-#shape {
-  stroke-width: 8px;
-  fill: #34d160;
-  stroke: #34d160;
-  stroke-dasharray: 85 400;
-  stroke-dashoffset: -220;
-  transition: 1s all ease;
-
-}
-
-
-
-#text {
-  margin-top: -40px;
-  text-align: center;
-  border-radius: 4px;
-}
-
-.svg-wrapper:hover #shape {
-  stroke-dasharray: 50 0;
-  stroke-width: 3px;
-  stroke-dashoffset: 0;
-  stroke: #06D6A0;
-  fill: transparent;
-  color:#34d160;
-
-}
-
-a{
-  color: #FCFFFC;
-  font-size: 20px;
-
-}
-
-.svg-wrapper:hover a{
-  color:#34d160;
-}
-
-.points_container{
-  margin: 0px 0px 0px 5px;
-  padding-left: 2px;
-  padding-right: 6px;
-}
-#points{
-  border-color: #009688;
-  color: white;
-  font-size: 20px;
 }

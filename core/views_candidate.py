@@ -48,7 +48,7 @@ class QuestionByCategory(generic.DetailView):
         all_category = Category.objects.filter(test=test)
         category_name = kwargs["category_name"]
         question_seq = request.session["question_seq"][category_name]
-        context_dict = {'category_name': category_name, "candidate_name": candidate.name}
+        context_dict = {'category_name': category_name,"candidate_name": candidate.name}
         category_dict_by_number = self.category_number_to_name(all_category)
         category_dict_by_name = self.category_name_to_number(all_category)
         category = Category.objects.get(category=category_name, test=test)
@@ -63,7 +63,7 @@ class QuestionByCategory(generic.DetailView):
         id = kwargs["id"]
         if id not in range(1, required_question + 1):
             return redirect(reverse('category', kwargs={"category_name": category_name,
-                                                            "id": 1}))
+                                                            "id": 1 }))
         # if last question of current category
         if required_question == id:
             last_question = 1
@@ -115,11 +115,6 @@ class InstructionView(generic.ListView):
     def dispatch(self, request, *args, **kwargs):
         if "email" not in request.session:
             return redirect('signup')
-        candidate = Candidate.objects.filter(email=request.session["email"])
-        if not candidate:
-            for key in list(request.session.keys()):
-                del request.session[key]
-            return redirect('get_test')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -144,7 +139,7 @@ class InstructionView(generic.ListView):
 
 class CandidateRegistration(generic.ListView):
     """
-    Candidate registration.js view
+    Candidate registration view
     """
     form_class = forms.CandidateRegistration
     template_name = 'candidate/signup.html'
@@ -177,6 +172,7 @@ class CandidateRegistration(generic.ListView):
             form_obj.save()
             name = form.cleaned_data.get('name')
             email = form.cleaned_data.get('email')
+
             candidate = Candidate.objects.get(name=name, email=email,)
             if candidate:
                 self.request.session['email'] = email
@@ -210,20 +206,21 @@ class GetTestView(generic.ListView):
     form_class = forms.GetTestNameForm
 
     def dispatch(self, request, *args, **kwargs):
-        if "email" in request.session:
+        if request.session.has_key("email"):
             return redirect('instruction')
 
         return super(GetTestView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        return render(request, self.template_name, {'form': form})
+        
+        return render(request, self.template_name, {'form':form})
 
-    def post(self, request):
+    def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
             test_name = form.cleaned_data.get('test_name')
-            if 'test_name' in request.session:
+            if request.session.has_key('test_name'):
                 del request.session['test_name']
             self.request.session['test_name'] = test_name
             return redirect('signup')
@@ -285,7 +282,6 @@ class DefaultOption(generic.ListView):
 
 
 class SaveStatus(generic.ListView):
-
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
             if "email" not in request.session:

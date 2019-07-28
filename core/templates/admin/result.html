@@ -61,54 +61,12 @@
             <div class="col-1 candidate-details">
                 <h4><i class="fas fa-user-graduate"></i></h4>
                 <h6><i class="fas fa-envelope"></i></h6>
-                 {% if cand.phone_number  %}
                 <h6><i class="fas fa-mobile-alt"></i></h6>
-                {% endif %}
             </div>
             <div class="col-5 candidate-details">
                 <h4 id="candidate_name">{{ cand.name }}</h4>
                 <h6 id="candidate_email">{{ cand.email }}</h6>
-                 <div>
-                {% if cand.phone_number  %}
-                <strong>{{cand.phone_number}}</strong>
-                {% endif %}
-                    </div>
-                <div>
-                {% if cand.university_roll_no  %}
-                <span>University Roll no. -</span>
-                <strong>{{cand.university_roll_no }}</strong>
-                {% endif %}
-                    </div>
-                <div>
-                {% if cand.year  %}
-                <span>Year - </span>
-                <strong>{{cand.year}} </strong>
-                {% endif %}
-                    </div>
-                <div>
-                {% if cand.branch  %}
-                <span>Branch - </span>
-                <strong>{{cand.branch}} </strong>
-                {% endif %}
-                    </div>
-                <div>
-                {% if cand.hosteler %}
-                <span>Hostler - </span>
-                <strong>{{cand.hosteler}}</strong>
-                {% endif %}
-                    </div>
-                <div>
-                 {% if cand.skills %}
-                <span>Skills - </span>
-                <strong>{{cand.skills}}</strong>
-                {% endif %}
-                    </div>
-                <div>
-                {% if cand.designer %}
-                <span>Desiging skills - </span>
-                <strong>{{cand.designer}}</strong>
-                {% endif %}
-                    </div>
+                <h6>{{ cand.phone_number }}</h6>
             </div>
             <div class="col-6 dwd-button">
                 <button type="button" id="delete{{ cand.pk }}" href="{% url "Delete_result" cand.pk %}" class="btn btn-raised btn-danger" onclick="JSalert({{ cand.pk }})">Delete</button>

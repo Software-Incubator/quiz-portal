@@ -1,5 +1,4 @@
 {% load static%}
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -64,24 +63,26 @@
                     <nav id="nav" class="navbar">
                         {% for category in all_category %}
                             {% if category.category == category_name %}
-                                <ul class="nav nav-pills active">
+                        <ul class="nav nav-pills active">
                             {% else %}
-                                 <ul class="nav nav-pills">
+                            <ul class="nav nav-pills">
                             {% endif %}
-
                             <li id="nav-item">
-                                <a href={% url 'category' category.category 1 %}>
+                                <a href="{% url 'category' category.category 1 %}">
                                 {{ category.category }}
                                 </a>
                             </li>
                             </ul>
+                        </ul>
                         {% endfor %}
                         {% for add_obj in additional_objs %}
-                            <div class="nav-item algo">
-                                <a data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a>
-                            </div>
+                            <ul class="nav nav-pills">
+                                    <li id="nav-item">
+                                <a data-toggle="modal" data-target="#{{ add_obj.name }}">
+                                    {{ add_obj.name }}</a>
+                                </li>
+                            </ul>
                         {% endfor %}
-
                     </nav>
                     <hr class="nav-break">
                       {% for add_obj in additional_objs %}

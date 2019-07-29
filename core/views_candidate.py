@@ -15,6 +15,8 @@ class QuestionByCategory(generic.DetailView):
     def dispatch(self, request, *args, **kwargs):
         if "email" not in request.session:
             return redirect('signup')
+        if "test_name" not in request.session:
+            return redirect('get_test')
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def category_name_to_number(self, all_category):
@@ -44,7 +46,7 @@ class QuestionByCategory(generic.DetailView):
         test = Test.objects.get(test_name=test_name)
         duration = test.duration
         dif_time = (dt.datetime.utcnow() - candidate.time.replace(tzinfo=None)).total_seconds()
-        remain_time = duration*60 - round(dif_time)
+        remain_time = duration*60 - round(dif_time) + 30
         all_category = Category.objects.filter(test=test)
         category_name = kwargs["category_name"]
         question_seq = request.session["question_seq"][category_name]
@@ -73,7 +75,7 @@ class QuestionByCategory(generic.DetailView):
         # if first question of current category
         if id == 1:
             first_question = 1
-            prev_category = category_dict_by_number[(category_dict_by_name[category_name]-2+all_category.count())%all_category.count() + 1]
+            prev_category = category_dict_by_number[(category_dict_by_name[category_name]-2+all_category.count())%  all_category.count() + 1]
             context_dict["prev_category"] = prev_category
             prev_category_obj = Category.objects.get(test=test, category=prev_category)
             context_dict["prev_category_last_ques"] = Question.objects.filter(category=prev_category_obj).count()

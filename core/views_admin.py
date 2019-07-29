@@ -18,7 +18,7 @@ def CalculateMarks(pk):
     selects = SelectedAnswer.objects.filter(email=cand)
     score = 0
     for select in selects:
-        if select.question_text.negative == 1:
+        if select.question_text.negative:
             if select.selected_choice == select.question_text.correct_choice:
                 score += select.question_text.marks
             elif select.selected_choice == None or select.selected_choice <= 0 or select.selected_choice > 4:

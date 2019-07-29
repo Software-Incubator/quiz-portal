@@ -1,176 +1,170 @@
-{% extends 'candidate/base.html' %}
 {% load recaptcha2 %}
 {% load static %}
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+	<title>Login Page</title>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
+    <!-- Compiled and minified CSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
+      <link rel="stylesheet" href="{% static '/core/css/registration.css'%}">
+    {% recaptcha_init %}
+</head>
 
-{% block head%}
-<link rel="stylesheet" href="{% static 'core/css/signup_design.css' %}">
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-{% recaptcha_init %}
-{% endblock %}
+<body>
 
+    <canvas id="canvas" style="position: absolute; background-attachment: fixed;background-repeat: no-repeat; color: red; ">
+    <p>your browser doesn't support canvas.</p>
+</canvas>
+	<div class="z-depth-4 card">
 
-{% block content %}
-<main>
-    <div class="sign-up row">
-        <div class="col-4 bg-img">
-            <img src="{% static 'core/assets/images/student.png' %}" class="img">
-        </div>
-        <div class="col-8">
-            <form name="CandidateRegistration" id="candidate_form_id" method="post">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="nameInput1" class="bmd-label-floating">Name</label>
-                        <input type="text" name="name" class="form-control" id="nameInput1"
-                            value="{{ form.name.value|default_if_none:'' }}">
-                        <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
-                    </div>
-                    {% if test_obj.stu_no %}
-                    <div class="col-md-6">
-                        <label for="std_noInput" class="bmd-label-floating">Student no.</label>
-                        <input type="text" name="std_no" class="form-control" id="std_noInput"
-                            value="{{ form.std_no.value|default_if_none:'' }}">
-                        <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
-                    </div>
-                    {% endif %}
+		<div class="vector_img"><img src="{% static '/core/assets/images/art.png'%}">
+		</div>
+        <div class=" row form_body">
+            <h2 class="title">Registration Form</h2>
 
-
-                    <div class="col-md-6">
-                        <label for="emailInput" class="bmd-label-floating">Email Address</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1"
-                            value="{{ form.email.value|default_if_none:'' }}">
-                        <p id="email_err" class="text-danger">
+               <div class="row">
+                  <form class="col s12" method="post" name="form1" id="candidate_form_id">
+                   {% csrf_token %}
+                  	<div class="vl" style="position: absolute;height: 300px;margin: 1px 1px 1px -35px;"></div>
+                     <div class="row">
+                       <div class="input-field col s6">
+                          <i class="material-icons prefix icon_col">account_circle</i>
+                             <input id="nameInput1" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
+                              <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
+                               <label for="nameInput1">Name</label>
+                        </div>
+                        <div class="input-field col s6">
+                           <i class="material-icons prefix">email</i>
+                             <input id="exampleInputEmail1" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
+                               <label for="exampleInputEmail1">E-mail</label>
+                            <p id="email_err" class="text-danger">
                             <strong>{{ form.email.errors}}</strong>
+                            </p>
+                        </div>
+                     </div>
+      <div class="row">
+          {% if test_obj.university_roll_no %}
+        <div class="input-field col s6">
+          <i class="material-icons prefix">wc</i>
+          <input id="university_roll_noInput" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          <label for="university_roll_noInput">University Roll No.</label>
+            <p id="university_err" class="text-danger"><strong>{{ form.university_roll_no.errors }}</strong>
                         </p>
-                    </div>
-                    {% if test_obj.university_roll_no %}
-                    <div class="col-md-6">
-                        <label for="university_roll_noInput" class="bmd-label-floating">University Roll No.</label>
-                        <input type="text" name="university_roll_no" class="form-control" id="university_roll_noInput"
-                            value="{{ form.university_roll_no.value|default_if_none:'' }}">
-                        <p id="university_err" class="text-danger"><strong>{{ form.university_roll_no.errors }}</strong>
+        </div>
+          {% endif %}
+          {% if test_obj.father_name %}
+          <div class="input-field col s6">
+          <i class="material-icons prefix">wc</i>
+          <input id="nameInput2" type="text" name="father_name" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          <label for="nameInput2">Father's Name</label>
+            <p class="text-danger"><strong>{{ form.father_name.errors }}</strong>
                         </p>
-                    </div>
-                    {% endif %}
+        </div>
+          {% endif %}
+          {% if test_obj.phone_number %}
+        <div class="input-field col s6">
+          <i class="material-icons prefix">phone</i>
+          <input id="phoneInput" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
+          <label for="phoneInput">Mobile No.</label>
+            <p id="contactno_err" class="text-danger"><strong>{{ form.phone_number.errors}}</strong></p>
+        </div>
+          {% endif %}
+      </div>
+                      <div class="row">
+                          {% if test_obj.stu_no %}
+        <div class="input-field col s6">
+          <i class="material-icons prefix">wc</i>
+          <input id="std_noInput" type="text" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
+          <label for="std_noInput">Student No.</label>
+            <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
+        </div>
+                           {% endif %}
 
-                    {#                <div class="form-group">#}
-                    {#                    <label for="nameInput2" class="bmd-label-floating">Father's Name</label>#}
-                    {#                    <input type="text" name="father_name" class="form-control" id="nameInput2" value="{{ form.father_name.value|default_if_none:'' }}">#}
-                    {#                    <p><strong>{{ form.father_name.errors}}</strong></p>#}
-                    {#                </div>#}
-                    {% if test_obj.phone_number %}
-                    <div class="col-md-6">
-
-                        <label for="phoneInput" class="bmd-label-floating">Mobile Number</label>
-                        <input type="text" name="phone_number" class="form-control" id="phoneInput"
-                            value="{{ form.phone_number.value|default_if_none:'' }}">
-                        <p id="contactno_err" class="text-danger"><strong>{{ form.phone_number.errors}}</strong></p>
-                    </div>
-                    {% endif %}
-
-                    <div class="col-md-6">
-                        {% if test_obj.branch %}
-                        <div class="sel">
-                            <label for="branchInput" class="bmd-label-floating">Branch</label>
-
-                            <select class="form-control" id="branchInput" name='branch'>
-                                {% for b in form.branch %}
-                                {{b}}
-                                {% endfor %}
-                            </select>
-                            <p class="text-danger"><strong>{{ form.branch.errors}}</strong></p>
+      </div>
+      <div class="row">
+          {% if test_obj.branch %}
+        <div class="input-field col s6">
+          <i class="material-icons prefix">device_hub</i>
+           {{ form.branch }}
+          <label for="icon_prefix2">Branch</label>
+             <p class="text-danger"><strong>{{ form.branch.errors}}</strong></p>
+        </div>
+          {% endif %}
+          {% if test_obj.year %}
+        <div class="input-field col s6">
+          <i class="material-icons prefix">import_contacts</i>
+            {{ form.year }}
+          <label for="icon_telephone2">Year</label>
+        </div>
+          {% endif %}
+      </div>
+                       <div class="row">
+                           {% if test_obj.skills %}
+                           <div class="input-field col s12">
+                               <i class="material-icons prefix">device_hub</i>
+                                <input type="text" name="skills" maxlength="255" id="id_skills" value="{{ form.skills.value|default_if_none:'' }}">
+                               <label for="id_skills" class="bmd-label-floating">Mention your Technical skills(eg. HTML, CSS ,C,C++,Python)</label>
+                           </div>
+                           {% endif %}
+                       </div>
+<br>
+                       <div>
+                           {% if test_obj.hosteler %}
+                           {% for choice in form.hosteler.field.choices %}
+                          <label class=" check1" for="option_{{choice.0}}">
+                              {% if choice.1 == "DayScholar" %}
+                             <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"checked/>
+                              {% else %}
+                              <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"/>
+                              {% endif %}
+                              <span>{{ choice.1}}</span>
+                          </label>
+                           {% endfor %}
+                           {% endif %}
                         </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6">
-                        {% if test_obj.year %}
-                        <div class="sel">
-                            <label for="yearInput" class="bmd-label-floating">Year</label>
-
-                            <select class="form-control" id="yearInput" name='year'>
-                                {% for y in form.year %}
-                                {{y}}
-                                {% endfor %}
-                            </select>
-                            <p class="text-danger"><strong>{{ form.year.errors}}</strong></p>
-                        </div>
-                        {% endif %}
-                    </div>
-                        <!-- </div> -->
-                        <!-- <div class="col-6"> -->
-                    <div class="col-md-6">
-                        {% if test_obj.skills %}
-                        <div>
-                            <label for="skillInput" class="bmd-label-floating">Mention your Technical skills</label>
-                            <input type="text" name="skills" class="form-control" id="skillInput"
-                                value="{{ form.skills.value|default_if_none:'' }}">
-                            <span class="bmd-help">eg. HTML, CSS ,Python</span>
-                            <p><strong class="text-danger">{{ form.skills.errors}}</strong></p>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-md-6">
-                        {% if test_obj.designer %}
-                        <div>
-                            <label for="designerInput" class="bmd-label-floating">Familiar with any designing
+                      <br>
+                      <div class="row">
+                           {% if test_obj.designer  %}
+                           <div class="input-field col s12">
+                               <i class="material-icons prefix">device_hub</i>
+                                <input type="text" name="designer" maxlength="255" id="id_designer" value="{{ form.designer.value|default_if_none:'' }}">
+                               <label for="id_designer" class="bmd-label-floating">Familiar with any designing
                                 tool?</label>
-                            <input type="text" name="designer" class="form-control" id="designerInput"
-                                value="{{ form.designer.value|default_if_none:'' }}">
-                            <p><strong>{{ form.designer.errors}}</strong></p>
-                        </div>
-                        {% endif %}
-                      </div>
-                        {#                            <div class="form-group select-category">#}
-                        {#                                <label for="testInput" class="bmd-label-floating">Select a test</label>#}
-                        {##}
-                        {#                                <select class="form-control" id="testInput" name='test_name'>#}
-                        {#                                    {% for t in form.test_name %}#}
-                        {#                                    {{ t}}#}
-                        {#                                    {% endfor %}#}
-                        {#                                </select>#}
-                        {#                                <p><strong>{{ form.test_name.errors}}</strong></p>#}
-                        
-                        <div class="col-md-6">
-                        {% if test_obj.hosteler %}
-                        {% for choice in form.hosteler.field.choices %}
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="hosteler" id="option_{{ choice.0 }}" value="{{ choice.0 }}" checked>
-                            <label  for="option_{{ choice.0 }}" class="custom-control-label"></label>{{ choice.1}}</label>
-                        </div>
-                        {% endfor %}
-                        {{ form.hosteler.errors }}
-                        {% endif %}
-                        </div>
-                        <br>
-                      
+                           </div>
+                           {% endif %}
+                       </div>
                         {{ form.captcha }}
                         <p id="captcha_err" class="text-danger"><strong>{{ form.captcha.errors }}</strong></p>
-                        <!-- <div class="g-recaptcha" data-sitekey="6Lc7kWcUAAAAACYKfZlUsd5mFcS_ZgudHyOTm0Ij"></div> -->
-                    </div>
-
-                    <div class="btn-field col-12">
-                        <a class="btn btn-primary btn-block text-white" onclick="validateForm()">Submit<i
-                                class="fa fa-paper-plane-o ml-2"></i></a>
-                    </div>
-                    <!-- </div> -->
-
-            </form>
+        <div class="svg-wrapper">
+          <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+            <rect id="shape" height="40" width="150"  />
+              <div id="text">
+                <a onclick="validateForm()"><span class="spot"></span>Submit</a>
+              </div>
+          </svg>
         </div>
-    </div>
-</main>
-{% endblock %}
-{% block script %}
-
-<!-- <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script> -->
-<script>
+    </form>
+  </div>
+</div>
+</div>
+    <script type="text/javascript">
+        function submitform() {
+        document.form1.submit(); }
+   </script>
+    <script>
     function validateForm() {
         var name = document.getElementById('nameInput1').value;
         if (name == "") {
             document.getElementById('name_err').innerHTML = "Name cannot be empty";
             return false;
         }
-
+       try{
         var University = document.getElementById('university_roll_noInput').value;
         if (University == "") {
             document.getElementById('university_err').innerHTML = "University roll number cannot be empty";
@@ -194,9 +188,13 @@
             regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
             var re = new RegExp(regex_string);
             if (!re.test(University)) {
-                document.getElementById('university_err').innerHTML = "University roll number format invalid";
+                document.getElementById('university_err').innerHTML = "University Roll number format invalid";
                 return false;
             }
+        }
+        }
+        catch{
+        //do nothing.
         }
 
         var email = document.getElementById('exampleInputEmail1').value;
@@ -210,6 +208,7 @@
                 return false;
             }
         }
+        try{
 
         var Contact = document.getElementById('phoneInput').value;
         if (Contact == "") {
@@ -223,6 +222,11 @@
                 return false;
             }
         }
+        }
+        catch{
+        // do nothing
+
+        }
 
         var v = grecaptcha.getResponse();
         if (v.length == 0) {
@@ -232,4 +236,268 @@
         document.getElementById('candidate_form_id').submit();
     }
 </script>
-{% endblock %}
+    <script type="text/javascript">
+var ParticleEffect = {
+    ctx: null,
+    canvas: null,
+    particles: [],
+    mouseCoordinates: {
+        x: 0,
+        y: 0
+    },
+    config: {
+        count: 100,
+        radius: 5,
+        vxRange: [-1, 1],
+        vyRange: [-1, 1],
+        scaleRange: [.5, 1],
+        lineLenThreshold: 125,
+        color: '#aaaaaa'
+    },
+    init: function(newConfig) {
+
+        var _this = this;
+        this.canvas = document.getElementById('canvas');
+        this.ctx = this.canvas.getContext('2d');
+
+
+        if (this.ctx) {
+
+            Utils.updateWindowSize();
+            var windowSize = Utils.getWindowSize();
+
+
+            this.canvas.width = windowSize.width;
+            this.canvas.height = windowSize.height;
+
+            newConfig && Object.keys(newConfig).forEach(function(key) {
+                _this.config[key] = newConfig[key];
+            });
+
+
+            var times = this.config.count;
+            this.particles = [];
+            while (times--) {
+                this.particles.push(new Particle({
+                    x: Utils.rangeRandom(this.config.radius, windowSize.width - this.config.radius),
+                    y: Utils.rangeRandom(this.config.radius, windowSize.height - this.config.radius),
+                    vx: Utils.rangeRandom(this.config.vxRange[0], this.config.vxRange[1]),
+                    vy: Utils.rangeRandom(this.config.vyRange[0], this.config.vyRange[1]),
+                    color: this.config.color,
+                    scale: Utils.rangeRandom(this.config.scaleRange[0], this.config.scaleRange[1]),
+                    radius: this.config.radius
+                }));
+            }
+
+
+            window.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
+
+
+            window.addEventListener('resize', this.handleWindowResize.bind(this), false);
+
+            this.supportRequestAnimationFrame();
+        }
+    },
+    move: function() {
+
+        var windowSize = Utils.getWindowSize();
+
+        this.particles.forEach(function(item) {
+
+
+            item.x += item.vx;
+            item.y += item.vy;
+
+
+            if ((item.x - item.radius < 0) || (item.x + item.radius > windowSize.width)) {
+                item.vx *= -1;
+            }
+
+
+            if ((item.y - item.radius < 0) || (item.y + item.radius > windowSize.height)) {
+                item.vy *= -1;
+            }
+        });
+    },
+    draw: function() {
+
+        var _this = this;
+        var lineLenThreshold = this.config.lineLenThreshold;
+        var windowSize = Utils.getWindowSize();
+
+        this.ctx.clearRect(0, 0, windowSize.width, windowSize.height);
+
+
+        this.particles.forEach(function(item) {
+            item.draw(_this.ctx);
+        });
+
+
+        for (var i = 0; i < this.particles.length; i++) {
+            for (var j = i + 1; j < this.particles.length; j++) {
+                var distance = Math.sqrt(Math.pow(this.particles[i].x - this.particles[j].x, 2) + Math.pow(this.particles[i].y - this.particles[j].y, 2));
+                if (distance < lineLenThreshold) {
+
+                    this.ctx.strokeStyle = this.translateColors(this.config.color, (1 - distance / lineLenThreshold));
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+                    this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+                    this.ctx.closePath();
+                    this.ctx.stroke();
+                }
+            }
+        }
+
+
+        for (i = 0; i < this.particles.length; i++) {
+            distance = Math.sqrt(Math.pow(this.particles[i].x - this.mouseCoordinates.x, 2) + Math.pow(this.particles[i].y - this.mouseCoordinates.y, 2));
+            if (distance < lineLenThreshold) {
+                this.ctx.strokeStyle = this.translateColors(this.config.color, (1 - distance / lineLenThreshold));
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
+                this.ctx.lineTo(this.mouseCoordinates.x, this.mouseCoordinates.y);
+                this.ctx.closePath();
+                this.ctx.stroke();
+            }
+        }
+
+
+        this.move();
+
+
+        window.requestAnimationFrame(this.draw.bind(this));
+    },
+    handleMouseMove: function(event) {
+
+        var x, y;
+        event = event || window.event;
+
+        if (event.pageX || event.pageY) {
+            x = event.pageX;
+            y = event.pageY;
+        } else {
+            x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+            y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+
+        this.mouseCoordinates = {
+            x: x,
+            y: y
+        };
+    },
+    handleWindowResize: function() {
+        Utils.updateWindowSize();
+        var windowSize = Utils.getWindowSize();
+        this.canvas.width = windowSize.width;
+        this.canvas.height = windowSize.height;
+    },
+    translateColors: function(colorStr, ratio) {
+
+        var r, g, b, a = 1,
+            colorValues;
+
+        if (colorStr[0] === '#') {
+            r = parseInt(colorStr.slice(1, 3), 16);
+            g = parseInt(colorStr.slice(3, 5), 16);
+            b = parseInt(colorStr.slice(5, 7), 16);
+        } else if (colorStr.startsWith('rgb(')) {
+            colorStr = colorStr.slice(4, colorStr.length - 1);
+            colorValues = colorStr.split(',');
+            r = parseInt(colorValues[0].trim());
+            g = parseInt(colorValues[1].trim());
+            b = parseInt(colorValues[2].trim());
+        } else if (colorStr.startsWith('rgba(')) {
+            colorStr = colorStr.slice(5, colorStr.length - 1);
+            colorValues = colorStr.split(',');
+            r = parseInt(colorValues[0].trim());
+            g = parseInt(colorValues[1].trim());
+            b = parseInt(colorValues[2].trim());
+            a = parseFloat(colorValues[3].trim());
+        }
+
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + a * ratio + ')';
+    },
+    supportRequestAnimationFrame: function() {
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = (
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function(callback) {
+                    setInterval(callback, 1000 / 60)
+                }
+            );
+        }
+    },
+    run: function(config) {
+        this.init(config);
+        window.requestAnimationFrame(this.draw.bind(this));
+    }
+};
+
+
+function Particle(attr) {
+
+
+    this.x = attr.x;
+    this.y = attr.y;
+    this.vx = attr.vx;
+    this.vy = attr.vy;
+    this.color = attr.color;
+    this.scale = attr.scale;
+    this.radius = attr.radius;
+
+
+    if (typeof Particle.prototype.draw === 'undefined') {
+        Particle.prototype.draw = function(ctx) {
+
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.strokeStyle = this.color;
+            ctx.arc(this.x, this.y, this.radius * this.scale, 0, 2 * Math.PI, false);
+            ctx.closePath();
+            ctx.fill();
+        }
+    }
+}
+
+
+var Utils = {
+    _windowSize: {
+        width: 0,
+        height: 0
+    },
+    getWindowSize: function() {
+        return this._windowSize;
+    },
+    updateWindowSize: function() {
+        this._windowSize.width = this.getWindowWidth();
+        this._windowSize.height = this.getWindowHeight();
+    },
+    getWindowWidth: function() {
+        return window.innerWidth || document.documentElement.clientWidth;
+    },
+    getWindowHeight: function() {
+        return window.innerHeight || document.documentElement.clientHeight;
+    },
+    rangeRandom: function(min, max) {
+        const diff = max - min;
+        return min + Math.random() * diff;
+    }
+};
+
+ParticleEffect.run({
+    count: 50
+});
+</script>
+<script>
+(function($){
+  $(function(){
+    // Plugin initialization
+    $('select').not('.disabled').formSelect();
+  });
+})(jQuery); // end of jQuery name space
+</script>
+</body>
+</html>

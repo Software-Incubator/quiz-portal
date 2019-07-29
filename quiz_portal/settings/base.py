@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'pi6^-ib=xwu(a6hg7@*+#ozhh%q^qg(hafeg^hk=7k)bpp!&5l'
+SECRET_KEY = os.environ.get('QUIZ_PORTAL_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -135,6 +135,7 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_RESTRICT_BY_USER = True
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 
-RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
-RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+
 

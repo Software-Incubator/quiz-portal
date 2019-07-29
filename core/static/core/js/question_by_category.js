@@ -15,10 +15,6 @@ $(window).on("load", function () {
         }
     })
 });
-
-// this function save the status of question
-// 1->unattempted, 2->preview, 3->save
-
 $(document).ready(function () {
     $(".status_change").on('click', function () {
         var status = $(this).attr("data-id");

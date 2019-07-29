@@ -65,6 +65,10 @@
         {{ form.correct_choice }}
         <span><strong style="color: red;">{{ form.correct_choice.errors }}</strong></span>
         </div>
+        <div>
+            {{ form.negative.label_tag }}
+            {{ form.negative }}
+        </div>
         <br><button type="submit" class="btn btn-primary btn-raised">Submit</button>
     </form>
     </div>

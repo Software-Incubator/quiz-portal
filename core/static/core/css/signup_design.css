@@ -1,9 +1,5 @@
 body{
     background-image: url("../assets/images/recruitment_poster.png");
-    /* background-image: url("../assets/images/recruitment\ poster.png"); linear-gradient(to right, rgba(43, 44, 78, 0.95) 0%, rgba(43, 44, 47, 0.85) 100%)
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat; */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;

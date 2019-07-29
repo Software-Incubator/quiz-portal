@@ -1,41 +1,51 @@
-{% extends 'candidate/base.html' %}
 {% load static %}
-{% block head %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+<html>
+<head>
+	<title>Instructions Page</title>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'core/css/instruction.css' %}">
-    <script src="{% static 'core/js/back_button_disable.js' %}"></script>
-{% endblock %}
-{% block logout %}
-    {% block login %}
-        <h3>{{ test_name }}</h3>
-        <span>Hello {{ name }}!</span>
-    {% endblock %}
-    <script>
 
-    </script>
-{% endblock %} 
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-{% block content %}
-    <div class="instructions-container row">
-        <div class="col-4 bg-img">
-            <img src="{% static 'core/assets/images/instruction.png' %}" class="img">
-        </div>
-    <div class="col-8">
-        <div class="instructions">
-            <h6><ul>{% for instr in instruction %}
-                {% autoescape off %}
-                    <li>{{ instr.instruction }}</li>
-                {% endautoescape %}
-            {% endfor %}</ul>
-            </h6>
-            <div class="ok-btn">
-            <a href={% url 'category' category.category 1 %}>
-            <button type="button" class="btn btn-raised btn-primary">Proceed</button>
-            </a>
-            </div>
-        </div>
-    </div>
-    </div>
-{% endblock %}
+</head>
+
+<body>
+
+	<div class="z-depth-4 card">
+    <h2 class="title">Instructions</h2>
+
+        {% for ins in instruction %}
+                        {% autoescape off %}
+                               {{ ins.instruction|safe }}
+                        {% endautoescape %}
+        {% endfor %}
+    <div class="svg-wrapper">
+          <svg height="40" width="200" xmlns="http://www.w3.org/2000/svg">
+            <rect id="shape" height="40" width="200"  />
+              <div id="text">
+                <a style="text-decoration:none" href="{% url 'category' category.category 1 %}" >
+                    <span class="spot">Procced</span><i class=" material-icons forward">arrow_forward</i>
+                </a>
+              </div>
+          </svg>
+       </div>
+  </div>
+</div>
+
+<script>
+var list = document.getElementsByTagName('li');
+var listNum = list.length;
+for(var i=0; i<listNum; i++){
+list[i].setAttribute('class', 'flow-text');
+list[i].setAttribute('style', 'margin-left:10%;margin-right:10%;');
+list[i].setAttribute('id', 'points');
+}
+</script>
+
+</body>
+</html>

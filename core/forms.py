@@ -97,7 +97,7 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ['category', 'question_text', 'choice1', 'choice2', 'choice3', 'choice4', 'correct_choice']
+        fields = ['category', 'question_text', 'choice1', 'choice2', 'choice3', 'choice4', 'correct_choice','negative']
 
 
 class CandidateRegistration(forms.ModelForm):

@@ -89,7 +89,7 @@ class TestName(View):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
-    def post(self,request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         if request.POST['duration'] == '0':
             message = "Test duration cannot be zero"
             return render(request, 'admin/error.html', {'message': message})
@@ -133,7 +133,7 @@ class EditTest(View):
                 return render(request, 'admin/error.html', {'message': message})
             else:
                 Test.objects.filter(pk=test_id).update(duration=dur, test_name=test)
-                response = {'res':test_id}
+                response = {'res': test_id}
                 return HttpResponse(json.dumps(response), content_type='application/json')
 
 

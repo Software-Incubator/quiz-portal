@@ -180,3 +180,19 @@ a{
 .svg-wrapper:hover a{
   color:#34d160;
 }
+
+.validationerror{
+    color: white;
+}
+
+.select-dropdown{
+    color: white;
+}
+
+.errorlist{
+    color:white;
+}
+
+.dropdown-trigger{
+    color: white;
+}

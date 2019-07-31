@@ -16,7 +16,7 @@
     {% recaptcha_init %}
 </head>
 
-<body>
+<body class="keyboard-focused">
 
     <canvas id="canvas" style="position: absolute; background-attachment: fixed;background-repeat: no-repeat; color: red; ">
     <p>your browser doesn't support canvas.</p>
@@ -31,13 +31,13 @@
                <div class="row">
                   <form class="col s12" method="post" name="form1" id="candidate_form_id">
                    {% csrf_token %}
-                  	<div class="vl" style="position: absolute;height: 300px;margin: 1px 1px 1px -35px;"></div>
+                  	<div class="vl" style="position: absolute;height: 60%;margin: 5% 1px 1px -35px;"></div>
                      <div class="row">
                        <div class="input-field col s6">
-                          <i class="material-icons prefix icon_col">account_circle</i>
+                          <i class="material-icons prefix icon_col active">account_circle</i>
                              <input id="nameInput1" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
                               <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
-                               <label for="nameInput1">Name</label>
+                               <label for="nameInput1" class="active">Name</label>
                         </div>
                         <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
@@ -107,18 +107,27 @@
                        <div class="row">
                            {% if test_obj.skills %}
                            <div class="input-field col s12">
-                               <i class="material-icons prefix">device_hub</i>
-                                <input type="text" name="skills" maxlength="255" id="id_skills" value="{{ form.skills.value|default_if_none:'' }}">
+                               <i class="material-icons prefix">computer</i>
+                                <input class="validate" type="text" name="skills" maxlength="255" id="id_skills" value="{{ form.skills.value|default_if_none:'' }}">
                                <label for="id_skills" class="bmd-label-floating">Mention your Technical skills(eg. HTML, CSS ,C,C++,Python)</label>
                            </div>
                            {% endif %}
                        </div>
-<br>
+                      <div class="row">
+                           {% if test_obj.designer  %}
+                           <div class="input-field col s12">
+                               <i class="material-icons prefix">palette</i>
+                                <input class="validate" type="text" name="designer" maxlength="255" id="id_designer" value="{{ form.designer.value|default_if_none:'' }}">
+                               <label for="id_designer" class="bmd-label-floating">Familiar with any designing
+                                tool?</label>
+                           </div>
+                           {% endif %}
+                       </div>
                        <div>
                            {% if test_obj.hosteler %}
                            {% for choice in form.hosteler.field.choices %}
                           <label class=" check1" for="option_{{choice.0}}">
-                              {% if choice.1 == "DayScholar" %}
+                              {% if choice.1 == "Day Scholar" %}
                              <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"checked/>
                               {% else %}
                               <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"/>
@@ -129,23 +138,13 @@
                            {% endif %}
                         </div>
                       <br>
-                      <div class="row">
-                           {% if test_obj.designer  %}
-                           <div class="input-field col s12">
-                               <i class="material-icons prefix">device_hub</i>
-                                <input type="text" name="designer" maxlength="255" id="id_designer" value="{{ form.designer.value|default_if_none:'' }}">
-                               <label for="id_designer" class="bmd-label-floating">Familiar with any designing
-                                tool?</label>
-                           </div>
-                           {% endif %}
-                       </div>
                         {{ form.captcha }}
                         <p id="captcha_err" class="text-danger"><strong>{{ form.captcha.errors }}</strong></p>
         <div class="svg-wrapper">
           <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
             <rect id="shape" height="40" width="150"  />
               <div id="text">
-                <a onclick="validateForm()"><span class="spot"></span>Submit</a>
+                <a href="javascript:validateForm()"><span class="spot"></span>Submit</a>
               </div>
           </svg>
         </div>
@@ -235,261 +234,6 @@
         }
         document.getElementById('candidate_form_id').submit();
     }
-</script>
-    <script type="text/javascript">
-var ParticleEffect = {
-    ctx: null,
-    canvas: null,
-    particles: [],
-    mouseCoordinates: {
-        x: 0,
-        y: 0
-    },
-    config: {
-        count: 100,
-        radius: 5,
-        vxRange: [-1, 1],
-        vyRange: [-1, 1],
-        scaleRange: [.5, 1],
-        lineLenThreshold: 125,
-        color: '#aaaaaa'
-    },
-    init: function(newConfig) {
-
-        var _this = this;
-        this.canvas = document.getElementById('canvas');
-        this.ctx = this.canvas.getContext('2d');
-
-
-        if (this.ctx) {
-
-            Utils.updateWindowSize();
-            var windowSize = Utils.getWindowSize();
-
-
-            this.canvas.width = windowSize.width;
-            this.canvas.height = windowSize.height;
-
-            newConfig && Object.keys(newConfig).forEach(function(key) {
-                _this.config[key] = newConfig[key];
-            });
-
-
-            var times = this.config.count;
-            this.particles = [];
-            while (times--) {
-                this.particles.push(new Particle({
-                    x: Utils.rangeRandom(this.config.radius, windowSize.width - this.config.radius),
-                    y: Utils.rangeRandom(this.config.radius, windowSize.height - this.config.radius),
-                    vx: Utils.rangeRandom(this.config.vxRange[0], this.config.vxRange[1]),
-                    vy: Utils.rangeRandom(this.config.vyRange[0], this.config.vyRange[1]),
-                    color: this.config.color,
-                    scale: Utils.rangeRandom(this.config.scaleRange[0], this.config.scaleRange[1]),
-                    radius: this.config.radius
-                }));
-            }
-
-
-            window.addEventListener('mousemove', this.handleMouseMove.bind(this), false);
-
-
-            window.addEventListener('resize', this.handleWindowResize.bind(this), false);
-
-            this.supportRequestAnimationFrame();
-        }
-    },
-    move: function() {
-
-        var windowSize = Utils.getWindowSize();
-
-        this.particles.forEach(function(item) {
-
-
-            item.x += item.vx;
-            item.y += item.vy;
-
-
-            if ((item.x - item.radius < 0) || (item.x + item.radius > windowSize.width)) {
-                item.vx *= -1;
-            }
-
-
-            if ((item.y - item.radius < 0) || (item.y + item.radius > windowSize.height)) {
-                item.vy *= -1;
-            }
-        });
-    },
-    draw: function() {
-
-        var _this = this;
-        var lineLenThreshold = this.config.lineLenThreshold;
-        var windowSize = Utils.getWindowSize();
-
-        this.ctx.clearRect(0, 0, windowSize.width, windowSize.height);
-
-
-        this.particles.forEach(function(item) {
-            item.draw(_this.ctx);
-        });
-
-
-        for (var i = 0; i < this.particles.length; i++) {
-            for (var j = i + 1; j < this.particles.length; j++) {
-                var distance = Math.sqrt(Math.pow(this.particles[i].x - this.particles[j].x, 2) + Math.pow(this.particles[i].y - this.particles[j].y, 2));
-                if (distance < lineLenThreshold) {
-
-                    this.ctx.strokeStyle = this.translateColors(this.config.color, (1 - distance / lineLenThreshold));
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
-                    this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
-                    this.ctx.closePath();
-                    this.ctx.stroke();
-                }
-            }
-        }
-
-
-        for (i = 0; i < this.particles.length; i++) {
-            distance = Math.sqrt(Math.pow(this.particles[i].x - this.mouseCoordinates.x, 2) + Math.pow(this.particles[i].y - this.mouseCoordinates.y, 2));
-            if (distance < lineLenThreshold) {
-                this.ctx.strokeStyle = this.translateColors(this.config.color, (1 - distance / lineLenThreshold));
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
-                this.ctx.lineTo(this.mouseCoordinates.x, this.mouseCoordinates.y);
-                this.ctx.closePath();
-                this.ctx.stroke();
-            }
-        }
-
-
-        this.move();
-
-
-        window.requestAnimationFrame(this.draw.bind(this));
-    },
-    handleMouseMove: function(event) {
-
-        var x, y;
-        event = event || window.event;
-
-        if (event.pageX || event.pageY) {
-            x = event.pageX;
-            y = event.pageY;
-        } else {
-            x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-            y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-        }
-
-        this.mouseCoordinates = {
-            x: x,
-            y: y
-        };
-    },
-    handleWindowResize: function() {
-        Utils.updateWindowSize();
-        var windowSize = Utils.getWindowSize();
-        this.canvas.width = windowSize.width;
-        this.canvas.height = windowSize.height;
-    },
-    translateColors: function(colorStr, ratio) {
-
-        var r, g, b, a = 1,
-            colorValues;
-
-        if (colorStr[0] === '#') {
-            r = parseInt(colorStr.slice(1, 3), 16);
-            g = parseInt(colorStr.slice(3, 5), 16);
-            b = parseInt(colorStr.slice(5, 7), 16);
-        } else if (colorStr.startsWith('rgb(')) {
-            colorStr = colorStr.slice(4, colorStr.length - 1);
-            colorValues = colorStr.split(',');
-            r = parseInt(colorValues[0].trim());
-            g = parseInt(colorValues[1].trim());
-            b = parseInt(colorValues[2].trim());
-        } else if (colorStr.startsWith('rgba(')) {
-            colorStr = colorStr.slice(5, colorStr.length - 1);
-            colorValues = colorStr.split(',');
-            r = parseInt(colorValues[0].trim());
-            g = parseInt(colorValues[1].trim());
-            b = parseInt(colorValues[2].trim());
-            a = parseFloat(colorValues[3].trim());
-        }
-
-        return 'rgba(' + r + ',' + g + ',' + b + ',' + a * ratio + ')';
-    },
-    supportRequestAnimationFrame: function() {
-        if (!window.requestAnimationFrame) {
-            window.requestAnimationFrame = (
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                window.oRequestAnimationFrame ||
-                window.msRequestAnimationFrame ||
-                function(callback) {
-                    setInterval(callback, 1000 / 60)
-                }
-            );
-        }
-    },
-    run: function(config) {
-        this.init(config);
-        window.requestAnimationFrame(this.draw.bind(this));
-    }
-};
-
-
-function Particle(attr) {
-
-
-    this.x = attr.x;
-    this.y = attr.y;
-    this.vx = attr.vx;
-    this.vy = attr.vy;
-    this.color = attr.color;
-    this.scale = attr.scale;
-    this.radius = attr.radius;
-
-
-    if (typeof Particle.prototype.draw === 'undefined') {
-        Particle.prototype.draw = function(ctx) {
-
-            ctx.beginPath();
-            ctx.fillStyle = this.color;
-            ctx.strokeStyle = this.color;
-            ctx.arc(this.x, this.y, this.radius * this.scale, 0, 2 * Math.PI, false);
-            ctx.closePath();
-            ctx.fill();
-        }
-    }
-}
-
-
-var Utils = {
-    _windowSize: {
-        width: 0,
-        height: 0
-    },
-    getWindowSize: function() {
-        return this._windowSize;
-    },
-    updateWindowSize: function() {
-        this._windowSize.width = this.getWindowWidth();
-        this._windowSize.height = this.getWindowHeight();
-    },
-    getWindowWidth: function() {
-        return window.innerWidth || document.documentElement.clientWidth;
-    },
-    getWindowHeight: function() {
-        return window.innerHeight || document.documentElement.clientHeight;
-    },
-    rangeRandom: function(min, max) {
-        const diff = max - min;
-        return min + Math.random() * diff;
-    }
-};
-
-ParticleEffect.run({
-    count: 50
-});
 </script>
 <script>
 (function($){

@@ -8,7 +8,7 @@ background: url(new1.png);
 background-repeat: no-repeat;
   background-attachment: fixed;
   background: url('../assets/images/new1.png');
-height: 100%;
+
 }
 
 /*#vertical_line{
@@ -21,16 +21,16 @@ height: 100%;
 .title{
   font-size: 36px;
   font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
-  color: #08d342;
+  color: black;
 }
 .card{
   position: absolute;
   width:80%;
-  height:100%;
   margin-left:8%;
-  background:#132f38de;
-  margin-top:1%;
+  background:white;
+  margin-top:.5%;
   border-radius: 7px;
+  margin-bottom:0;
 }
 
 .vector_img{
@@ -41,11 +41,11 @@ height: 100%;
 
 }
 .vl {
-  border-left: 2px solid #e36161;
+  border-left: 2px solid #a5adab;
 }
 
 img{
-  margin:20px 1px 8px 16px;
+  margin:152% 1px 8px 16px;
 }
 
 
@@ -53,7 +53,7 @@ img{
   width: 50%;
   margin-left: 45%;
   background: transparent;
-  margin-top:-5.5%;
+  margin-top:-8.5%;
   border-radius: 5px;
 }
 
@@ -66,20 +66,20 @@ img{
 
 
 .input-field>label {
-  color:#d7d7d7;
+  color:black;
 }
 
 /* label focus color */
  .input-field input:focus + label {
-   color: #08d342 !important;
+   color: black !important;
  }
  /* label underline focus color */
  .row .input-field input:focus {
-   border-bottom: 1px solid #08d342 !important;
+   border-bottom: 1px solid black !important;
 
  }
  .validate{
-  color: white;
+  color: black;
  }
 
 i.prefix{
@@ -98,7 +98,7 @@ i.prefix{
 .check1{
   padding:6px;
   margin-right:8px;
-  color: #d7d7d7;
+  color: black;
 }
 .check2{
  color: #d7d7d7;
@@ -145,8 +145,8 @@ body {
 
 #shape {
   stroke-width: 8px;
-  fill: #34d160;
-  stroke: #34d160;
+  fill: #08a034;
+  stroke: #08a034;
   stroke-dasharray: 85 400;
   stroke-dashoffset: -220;
   transition: 1s all ease;
@@ -156,9 +156,10 @@ body {
 
 
 #text {
-  margin-top: -40px;
+  margin-top: -38px;
   text-align: center;
   border-radius: 4px;
+  margin-left:-18px ;
 }
 
 .svg-wrapper:hover #shape {
@@ -179,4 +180,35 @@ a{
 
 .svg-wrapper:hover a{
   color:#34d160;
+}
+
+div.input-field.col.s6{
+margin:10px 0px;
+}
+.select-dropdown{
+color:black;
+}
+.select-dropdown .dropdown-trigger{
+color:white;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after{
+border:2px solid black;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after{
+border:2px solid black;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
+    background-color: black;
+}
+input[type=text]:not(.browser-default):focus:not(readonly){
+box-shadow:black;
+border-bottom:black;
+}
+.active{
+box-shadow:black;
+border-bottom:black;
+}
+keyboard-focused{
+box-shadow:black;
+border-bottom:black;
 }

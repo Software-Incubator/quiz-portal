@@ -60,8 +60,8 @@ class Question(models.Model):
     choice3 = RichTextUploadingField()
     choice4 = RichTextUploadingField()
     correct_choice = models.PositiveIntegerField(blank=False)
-    negative = models.BooleanField(default=False)
-    negative_marks = models.IntegerField(null=True, blank=True, default=-1)
+    negative = models.BooleanField(default=True)
+    negative_marks = models.IntegerField(default=-1)
     marks = models.IntegerField(null=True, default=4)
 
     def __str__(self):
@@ -72,8 +72,8 @@ class Candidate(models.Model):
     name = models.CharField(max_length=100, blank=False)
     std_no_regex = RegexValidator(regex=r"^\d{7}$", message="Invalid Student Number", code="400")
     std_no = models.CharField(validators=[std_no_regex], blank=True, max_length=7, null=True)
-    university_roll_no = models.CharField(max_length=10, blank=True, unique=True, null=True)
-    email = models.EmailField(unique=True, blank=False)
+    university_roll_no = models.CharField(max_length=10, blank=False, unique=True, null=False)
+    email = models.EmailField(unique=True, null=False, blank=False)
     father = models.CharField(max_length=255, blank=True, null=True)
     phone_regex = RegexValidator(regex=r"^[56789]\d{9}$")
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)

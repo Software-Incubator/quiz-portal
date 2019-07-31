@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Software Incubator</title>
     <link rel="icon" href="{% static "core/assets/images/logo.png" %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
         integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -30,15 +31,24 @@
 </head>
 <body>
     <header>
-        <div class="navbar">
-            <div class="logo">
-                <img id="check" src="{% static 'core/assets/images/silogo.png' %}">
-            </div>
-            <div class="heading">
-                <h3>{{ test_name }}</h3>
-            </div>
-            <div>Hello {{ candidate_name }}!</div>
-        </div>
+<!--        <div class="navbar">-->
+<!--            <div class="logo">-->
+<!--                <img id="check" src="{% static 'core/assets/images/silogo.png' %}">-->
+<!--            </div>-->
+<!--            <div class="heading">-->
+<!--                <h3>{{ test_name }}</h3>-->
+<!--            </div>-->
+<!--            <div>Hello {{ candidate_name }}!</div>-->
+<!--        </div>-->
+         <nav>
+         <div class="nav-wrapper">
+      <a href="#"><img  class="brand-logo si-logo" src="{% static 'core/assets/images/silogo.svg' %}"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li class="test_name">{{ test_name }}</li>
+            <li class="candidate-name">Hello {{ candidate_name }}</li>
+      </ul>
+    </div>
+  </nav>
     </header>
     <div class="timer">
         <div id="clockdiv" class="clockdiv">
@@ -60,30 +70,24 @@
         <div class="container question-area card">
             <div class="row">
                 <div class="col-9">
-                    <nav id="nav" class="navbar">
-                        {% for category in all_category %}
-                            {% if category.category == category_name %}
-                        <ul class="nav nav-pills active">
-                            {% else %}
-                            <ul class="nav nav-pills">
-                            {% endif %}
-                            <li id="nav-item">
-                                <a href="{% url 'category' category.category 1 %}">
-                                {{ category.category }}
-                                </a>
-                            </li>
-                            </ul>
-                        </ul>
-                        {% endfor %}
-                        {% for add_obj in additional_objs %}
-                            <ul class="nav nav-pills">
-                                    <li id="nav-item">
-                                <a data-toggle="modal" data-target="#{{ add_obj.name }}">
-                                    {{ add_obj.name }}</a>
-                                </li>
-                            </ul>
-                        {% endfor %}
-                    </nav>
+                    <nav>
+    <div class="nav-wrapper">
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+        {% for category in all_category %}
+        {% if category.category == category_name %}
+        <li class="active nav-item">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+            <a href="{% url 'category' category.category 1 %}">{{ category.category }}</a>
+        </li>
+           {% endfor %}
+            {% for add_obj in additional_objs %}
+        <li class="nav-item"><a data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a></li>
+            {% endfor %}
+      </ul>
+    </div>
+  </nav>
                     <hr class="nav-break">
                       {% for add_obj in additional_objs %}
                           <div class="modal fade" id={{ add_obj.name }} tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">
@@ -142,7 +146,7 @@
 {#                    </div>#}
 {#                    </div>#}
                     <div class="ques-scroll">
-                        <div class="row qna">
+                        <div class="qna">
                             <div class="col-12 question">
                                 <h5>
                                 <div class="question-no">

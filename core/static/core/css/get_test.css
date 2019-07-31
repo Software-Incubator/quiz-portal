@@ -5,14 +5,14 @@ height: 100%;
 .title{
   font-size: 38px;
   font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
-  color: #08d342;
+  color:#08a034;
   margin: 8px 1px 1px 40px;
 }
 
 .title1{
   font-size: 36px;
   font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
-  color: #08d342;
+  color: #08a034;
   margin: -20px 1px 1px 40px;
 }
 .card{
@@ -97,8 +97,8 @@ img{
 
 #shape {
   stroke-width: 8px;
-  fill: #34d160;
-  stroke: #34d160;
+  fill: #08a034;
+  stroke: #08a034;
   stroke-dasharray: 85 400;
   stroke-dashoffset: -220;
   transition: 1s all ease;

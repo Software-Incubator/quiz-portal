@@ -36,14 +36,14 @@
                        <div class="input-field col s6">
                           <i class="material-icons prefix icon_col">account_circle</i>
                              <input id="nameInput1" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
-                              <p id="name_err" class="text-danger"><strong>{{ form.name.errors }}</strong></p>
+                              <p id="name_err" class="text-danger validationerror"><strong>{{ form.name.errors }}</strong></p>
                                <label for="nameInput1">Name</label>
                         </div>
                         <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
                              <input id="exampleInputEmail1" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
                                <label for="exampleInputEmail1">E-mail</label>
-                            <p id="email_err" class="text-danger">
+                            <p id="email_err" class="text-danger validationerror">
                             <strong>{{ form.email.errors}}</strong>
                             </p>
                         </div>
@@ -54,7 +54,7 @@
           <i class="material-icons prefix">wc</i>
           <input id="university_roll_noInput" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
           <label for="university_roll_noInput">University Roll No.</label>
-            <p id="university_err" class="text-danger"><strong>{{ form.university_roll_no.errors }}</strong>
+            <p id="university_err" class="text-danger validationerror"><strong>{{ form.university_roll_no.errors }}</strong>
                         </p>
         </div>
           {% endif %}
@@ -72,7 +72,7 @@
           <i class="material-icons prefix">phone</i>
           <input id="phoneInput" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
           <label for="phoneInput">Mobile No.</label>
-            <p id="contactno_err" class="text-danger"><strong>{{ form.phone_number.errors}}</strong></p>
+            <p id="contactno_err" class="text-danger validationerror"><strong>{{ form.phone_number.errors}}</strong></p>
         </div>
           {% endif %}
       </div>
@@ -145,7 +145,7 @@
           <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
             <rect id="shape" height="40" width="150"  />
               <div id="text">
-                <a onclick="validateForm()"><span class="spot"></span>Submit</a>
+                <a onclick="validateForm()" id="id_submit"><span class="spot"></span>Submit</a>
               </div>
           </svg>
         </div>
@@ -158,75 +158,238 @@
         document.form1.submit(); }
    </script>
     <script>
-    function validateForm() {
-        var name = document.getElementById('nameInput1').value;
-        if (name == "") {
-            document.getElementById('name_err').innerHTML = "Name cannot be empty";
-            return false;
-        }
-       try{
-        var University = document.getElementById('university_roll_noInput').value;
-        if (University == "") {
-            document.getElementById('university_err').innerHTML = "University roll number cannot be empty";
-            return false;
-        }
-        else {
-            var obj = new Date();
-            var year = obj.getFullYear();
-            var i;
-            var false_i;
-            var end = "";
-            var start = "";
-            for (i = year; i > (year - 5); --i) {
+    var submit = false;
+    console.log($("#name_err").val(),"hi")
+    if ($("#name_err").val() == "")
+    {
+        console.log("0")
+    }
+    $(document).ready(function () {
+        $(".validationerror").hide();
+        $("#nameInput1").focusout(function (event) {
+            if (event.charCode!=0) {
+                var regex = new RegExp("^[a-zA-Z ]{2,40}$");
+                if (!regex.test($(this).val())) {
+                    document.getElementById('name_err').innerHTML = "Invalid Name";
+                    $( "#name_err" ).show();
+                    submit = false;
+                }
+            }
+            if ( $(this).val() == "") {
+                    document.getElementById('name_err').innerHTML = "Name cannot be empty";
+                    $( "#name_err" ).show();
+                    submit = false;
+                }
+        });
+
+        $("#nameInput1").focusin(function (event) {
+            if (event.charCode!=0) {
+                $( "#name_err" ).hide();
+                document.getElementById('name_err').innerHTML == "";
+                submit = true;
+            }
+        });
+
+        $("#exampleInputEmail1").focusout(function (event) {
+            if (event.charCode!=0) {
+                var regex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+                if (!regex.test($(this).val())) {
+                    document.getElementById('email_err').innerHTML = "Invalid Email Id";
+                    $( "#email_err" ).show();
+                    submit = false;
+                }
+            }
+            if ( $(this).val() == "") {
+                    document.getElementById('email_err').innerHTML = "Email cannot be empty";
+                    $( "#email_err" ).show();
+                    submit = false;
+                }
+        });
+
+        $("#exampleInputEmail1").focusin(function (event) {
+            if (event.charCode!=0) {
+                $( "#email_err" ).hide();
+                document.getElementById('email_err').innerHTML == "";
+                submit = true;
+            }
+        });
+
+
+        $("#phoneInput").focusout(function (event) {
+            if (event.charCode!=0) {
+                var regex = new RegExp(/^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/);
+                if (!regex.test($(this).val())) {
+                    document.getElementById('contactno_err').innerHTML = "Invalid Contact number";
+                    $( "#contactno_err" ).show();
+                    submit = false;
+                }
+            }
+            if ( $(this).val() == "") {
+                    document.getElementById('contactno_err').innerHTML = "Contact number cannot be empty";
+                    $( "#contactno_err" ).show();
+                    submit = false;
+                    document.getElementById('contactno_err').innerHTML == "";
+                }
+        });
+        $("#phoneInput").attr('maxlength','10');
+
+        $("#phoneInput").focusin(function (event) {
+            if (event.charCode!=0) {
+                $( "#contactno_err" ).hide();
+                submit = true;
+            }
+        });
+
+        $("#university_roll_noInput").focusout(function (event) {
+            if (event.charCode!=0) {
+                var obj = new Date();
+                var year = obj.getFullYear();
+                var i;
+                var false_i;
+                var end = "";
+                var start = "";
+                for (i = year-1; i > (year - 2); --i) {
                 false_i = i;
                 end = end + String(false_i % 10)
                 false_i = false_i - 5;
                 false_i = false_i / 10;
                 false_i = false_i.toFixed(0);
                 start += String(false_i % 10);
+                }
+                regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
+                var regex = new RegExp(regex_string);
+                if (!regex.test($(this).val())) {
+                    document.getElementById('university_err').innerHTML = "Invalid University roll";
+                    $( "#university_err" ).show();
+                    submit = false;
+                }
             }
-            regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
-            var re = new RegExp(regex_string);
-            if (!re.test(University)) {
-                document.getElementById('university_err').innerHTML = "University Roll number format invalid";
-                return false;
-            }
-        }
-        }
-        catch{
-        //do nothing.
-        }
+            if ( $(this).val() == "") {
+                    console.log("hi")
+                    document.getElementById('university_err').innerHTML = "University roll cannot be empty";
+                    $( "#university_err" ).show();
+                    submit = false;
+                }
+        });
 
-        var email = document.getElementById('exampleInputEmail1').value;
-        if (email == "") {
-            document.getElementById('email_err').innerHTML = "Email cannot be empty";
-            return false;
-        } else {
-            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (!re.test(email)) {
-                document.getElementById('email_err').innerHTML = "Email format invalid";
-                return false;
+        $("#university_roll_noInput").focusin(function (event) {
+            if (event.charCode!=0) {
+                $( "#university_err" ).hide();
+                submit = true;
+                document.getElementById('university_err').innerHTML == "";
             }
-        }
-        try{
+        });
 
-        var Contact = document.getElementById('phoneInput').value;
-        if (Contact == "") {
-            document.getElementById('contactno_err').innerHTML = "Contact cannot be empty";
-            return false;
-        }
-        else {
-            var re = /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/;
-            if (!re.test(Contact)) {
-                document.getElementById('contactno_err').innerHTML = "Contact number format invalid";
-                return false;
-            }
-        }
-        }
-        catch{
-        // do nothing
+        $("#id_submit").click(function (e) {
+             if(submit==false ||
+                ($("#name_err").val() != "") ||
+                ($("#email_err").val() != "") ||
+                ($("#contactno_err").val() != "") ||
+                ($("#university_err").val() != "") ||
+                ($("#nameInput1").val() == "") ||
+                ($("#exampleInputEmail1").val() == "") ||
+                ($("#phoneInput").val() == "") ||
+                ($("#university_roll_noInput").val() == "")
+             ){
+                e.preventDefault();
+                console.log("working")
+                $("#id_submit").css('cursor', 'not-allowed');
+             }
+             else{
+                $("#id_submit").css('cursor', 'pointer');
+             }
+             });
 
-        }
+        $("#id_submit").hover(function (e) {
+             if(submit==false ||
+                ($("#name_err").val() != "") ||
+                ($("#email_err").val() != "") ||
+                ($("#contactno_err").val() != "") ||
+                ($("#university_err").val() != "") ||
+                ($("#nameInput1").val() == "") ||
+                ($("#exampleInputEmail1").val() == "") ||
+                ($("#phoneInput").val() == "") ||
+                ($("#university_roll_noInput").val() == "")
+             ){
+                e.preventDefault();
+                console.log("working")
+                $("#id_submit").css('cursor', 'not-allowed');
+             }
+             else{
+                $("#id_submit").css('cursor', 'pointer');
+             }
+             });
+
+    });
+    function validateForm() {
+<!--        var name = document.getElementById('nameInput1').value;-->
+<!--        if (name == "") {-->
+<!--            document.getElementById('name_err').innerHTML = "Name cannot be empty";-->
+<!--            return false;-->
+<!--        }-->
+<!--       try{-->
+<!--        var University = document.getElementById('university_roll_noInput').value;-->
+<!--        if (University == "") {-->
+<!--            document.getElementById('university_err').innerHTML = "University roll number cannot be empty";-->
+<!--            return false;-->
+<!--        }-->
+<!--        else {-->
+<!--            var obj = new Date();-->
+<!--            var year = obj.getFullYear();-->
+<!--            var i;-->
+<!--            var false_i;-->
+<!--            var end = "";-->
+<!--            var start = "";-->
+<!--            for (i = year; i > (year - 5); &#45;&#45;i) {-->
+<!--                false_i = i;-->
+<!--                end = end + String(false_i % 10)-->
+<!--                false_i = false_i - 5;-->
+<!--                false_i = false_i / 10;-->
+<!--                false_i = false_i.toFixed(0);-->
+<!--                start += String(false_i % 10);-->
+<!--            }-->
+<!--            regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";-->
+<!--            var re = new RegExp(regex_string);-->
+<!--            if (!re.test(University)) {-->
+<!--                document.getElementById('university_err').innerHTML = "University Roll number format invalid";-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--        }-->
+<!--        catch{-->
+<!--        //do nothing.-->
+<!--        }-->
+
+<!--        var email = document.getElementById('exampleInputEmail1').value;-->
+<!--        if (email == "") {-->
+<!--            document.getElementById('email_err').innerHTML = "Email cannot be empty";-->
+<!--            return false;-->
+<!--        } else {-->
+<!--            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;-->
+<!--            if (!re.test(email)) {-->
+<!--                document.getElementById('email_err').innerHTML = "Email format invalid";-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--        try{-->
+
+<!--        var Contact = document.getElementById('phoneInput').value;-->
+<!--        if (Contact == "") {-->
+<!--            document.getElementById('contactno_err').innerHTML = "Contact cannot be empty";-->
+<!--            return false;-->
+<!--        }-->
+<!--        else {-->
+<!--            var re = /^(?:(?:\+|0{0,2})91(\s*[\ -]\s*)?|[0]?)?[6789]\d{9}|(\d[ -]?){10}\d$/;-->
+<!--            if (!re.test(Contact)) {-->
+<!--                document.getElementById('contactno_err').innerHTML = "Contact number format invalid";-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--        }-->
+<!--        catch{-->
+<!--        // do nothing-->
+
+<!--        }-->
 
         var v = grecaptcha.getResponse();
         if (v.length == 0) {

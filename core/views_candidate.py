@@ -124,6 +124,11 @@ class InstructionView(generic.ListView):
             for key in list(request.session.keys()):
                 del request.session[key]
             return redirect('signup')
+        candidate = Candidate.objects.filter(email=request.session["email"])
+        if not candidate:
+            for key in list(request.session.keys()):
+                del request.session[key]
+            return redirect('get_test')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):

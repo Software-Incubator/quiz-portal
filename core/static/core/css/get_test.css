@@ -140,7 +140,6 @@ img{
   stroke: #310e8bf5;
   fill: transparent;
   color:#310e8bf5;
-
 }
 
 a{
@@ -156,7 +155,6 @@ a{
 .svg-wrapper:hover a{
   color:#310e8bf5;
 }
-
 
 .dropdown-content li>a, .dropdown-content li>span{
 color:#310e8bf5 !important;

@@ -100,6 +100,7 @@ class QuestionForm(forms.ModelForm):
         fields = ['category', 'question_text', 'choice1', 'choice2', 'choice3', 'choice4', 'correct_choice']
 
 
+
 class CandidateRegistration(forms.ModelForm):
     name = forms.CharField(max_length=100, required=True)
     std_no_regex = RegexValidator(regex=r"^\d{7}$")

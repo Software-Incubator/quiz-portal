@@ -61,7 +61,7 @@ class Question(models.Model):
     choice4 = RichTextUploadingField()
     correct_choice = models.PositiveIntegerField(blank=False)
     negative = models.BooleanField(default=True)
-    negative_marks = models.IntegerField(default=-1)
+    negative_marks = models.IntegerField(default=1)
     marks = models.IntegerField(null=True, default=4)
 
     def __str__(self):

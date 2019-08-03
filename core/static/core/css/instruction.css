@@ -4,10 +4,9 @@ html{
 }
 
 body{
-background: url(new1.png);
+background: url('../assets/images/newbkg0.png');
 background-repeat: no-repeat;
 background-attachment: fixed;
-background: url('../assets/images/new1.png');
 height: 100%;
 }
 
@@ -22,14 +21,14 @@ height: 100%;
 .title{
   font-size: 38px;
   font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
-  color: #08a034;
+  color: black;
   margin:23px 5px 1px 40%;
 }
 .card{
   position: absolute;
   width:80%;
   margin-left:10%;
-  background:#132f38de;
+  background:white;
   margin-top:5%;
   border-radius: 7px;
 }
@@ -142,11 +141,10 @@ body {
 
 }
 
-
 #shape {
   stroke-width: 8px;
-  fill: #08a034;
-  stroke:  #08a034;
+  fill: #310e8bf5;
+  stroke: #310e8bf5;
   stroke-dasharray: 85 400;
   stroke-dashoffset: -220;
   transition: 1s all ease;
@@ -165,9 +163,9 @@ body {
   stroke-dasharray: 50 0;
   stroke-width: 3px;
   stroke-dashoffset: 0;
-  stroke: #06D6A0;
+  stroke: #310e8bf5;
   fill: transparent;
-  color:#34d160;
+  color:#310e8bf5;
 
 }
 
@@ -178,7 +176,7 @@ a{
 }
 
 .svg-wrapper:hover a{
-  color:#34d160;
+  color:#310e8bf5;
 }
 
 .points_container{
@@ -187,7 +185,6 @@ a{
   padding-right: 6px;
 }
 #points{
-  border-color: #009688;
-  color: white;
+  color: black;
   font-size: 20px;
 }

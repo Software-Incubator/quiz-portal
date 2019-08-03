@@ -7,16 +7,18 @@ import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
 import random
+from core.views_admin import CalculateMarks;
+from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks
 
 
 class QuestionByCategory(generic.DetailView):
     template_name = 'candidate/question_by_category.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if "email" not in request.session:
+        if "email" not in request.session or "test_name" not in request.session:
             return redirect('signup')
-        if "test_name" not in request.session:
-            return redirect('get_test')
+        # if "test_name" not in request.session:
+        #     return redirect('get_test')
         return super(QuestionByCategory, self).dispatch(request, *args, **kwargs)
 
     def category_name_to_number(self, all_category):
@@ -115,13 +117,13 @@ class InstructionView(generic.ListView):
     template_name = 'candidate/instructions.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if "email" not in request.session:
+        if "email" not in request.session or "test_name" not in request.session:
             return redirect('signup')
         candidate = Candidate.objects.filter(email=request.session["email"])
         if not candidate:
             for key in list(request.session.keys()):
                 del request.session[key]
-            return redirect('get_test')
+            return redirect('signup')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -154,8 +156,8 @@ class CandidateRegistration(generic.ListView):
     def dispatch(self, request, *args, **kwargs):
         if "email" in request.session:
             return redirect('instruction')
-        if "test_name" not in request.session:
-            return redirect('get_test')
+        # if "test_name" not in request.session:
+        #     return redirect('get_test')
         return super(CandidateRegistration, self).dispatch(request, *args, **kwargs)
 
     def default_result(self, question_seq, candidate):
@@ -166,7 +168,10 @@ class CandidateRegistration(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        test_obj = Test.objects.get(test_name=self.request.session["test_name"])
+        test_name_on = Test.objects.filter(on_or_off=True)[0]
+        print(test_name_on.test_name)
+        self.request.session['test_name'] = test_name_on.test_name
+        test_obj = Test.objects.get(test_name=test_name_on.test_name)
         return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
 
     def post(self, request,*args, **kwargs):
@@ -331,6 +336,14 @@ class SaveStatus(generic.ListView):
 
 
 def logout(request):
+    tests = Test.objects.all()
+    if len(tests) != 0:
+        cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
+        for cand in cands:
+            try:
+                Marks.objects.get(test_name=tests[0], candidate=cand)
+            except:
+                CalculateMarks(cand.pk)
     for key in list(request.session.keys()):
         del request.session[key]
     return render(request, 'candidate/end.html')

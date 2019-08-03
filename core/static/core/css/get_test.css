@@ -1,11 +1,11 @@
 body{
-background: url('../assets/images/new1.png');
+background: url('../assets/images/newbkg0.png');
 height: 100%;
 }
 .title{
   font-size: 38px;
   font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
-  color:#08a034;
+  color:black;
   margin: 8px 1px 1px 40px;
 }
 
@@ -20,7 +20,7 @@ height: 100%;
   width:65%;
   height:65%;
   margin-left:18%;
-  background:#132f38de;
+  background:white;
   margin-top:8%;
   border-radius: 7px;
 }
@@ -33,7 +33,7 @@ height: 100%;
 
 }
 .vl {
-  border-left: 2px solid #e36161;
+  border-left: 2px solid black;
 }
 
 img{
@@ -74,7 +74,7 @@ img{
     display: block;
     user-select: none;
     z-index: 1;
-    color: white;
+    color:black;
 }
 
 .select-wrapper .caret {
@@ -84,7 +84,7 @@ img{
     bottom: 0;
     margin: auto 0;
     z-index: 0;
-    fill: #08d342;
+    fill: #310e8bf5;
 }
 
 .svg-wrapper {
@@ -97,8 +97,8 @@ img{
 
 #shape {
   stroke-width: 8px;
-  fill: #08a034;
-  stroke: #08a034;
+  fill:#310e8bf5;
+  stroke: #310e8bf5;
   stroke-dasharray: 85 400;
   stroke-dashoffset: -220;
   transition: 1s all ease;
@@ -137,9 +137,9 @@ img{
   stroke-dasharray: 50 0;
   stroke-width: 3px;
   stroke-dashoffset: 0;
-  stroke: #06D6A0;
+  stroke: #310e8bf5;
   fill: transparent;
-  color:#34d160;
+  color:#310e8bf5;
 
 }
 
@@ -154,5 +154,10 @@ a{
 }
 
 .svg-wrapper:hover a{
-  color:#34d160;
+  color:#310e8bf5;
+}
+
+
+.dropdown-content li>a, .dropdown-content li>span{
+color:#310e8bf5 !important;
 }

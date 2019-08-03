@@ -42,12 +42,15 @@
 <!--        </div>-->
          <nav>
          <div class="nav-wrapper">
-      <a href="#"><img  class="brand-logo si-logo" src="{% static 'core/assets/images/silogo.svg' %}"></a>
+      <a href="#"><img  class="brand-logo si-logo" src="{% static 'core/assets/images/silogo.png' %}"></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li class="test_name">{{ test_name }}</li>
-            <li class="candidate-name">Hello {{ candidate_name }}</li>
+          <div class="test_name_test">
+             <li class="candidate-name">Hello {{ candidate_name }} !</li></div>
       </ul>
     </div>
+             <ul>
+             <li class="test_name" id="test_n">{{ test_name }}</li>
+         </ul>
   </nav>
     </header>
     <div class="timer">
@@ -83,8 +86,9 @@
         </li>
            {% endfor %}
             {% for add_obj in additional_objs %}
-        <li class="nav-item"><a data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a></li>
+        <li class="nav-item"><a id="add_ques" data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a></li>
             {% endfor %}
+
       </ul>
     </div>
   </nav>
@@ -94,7 +98,7 @@
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="AlgoModalTitle">{{ add_obj.name }}</h5>
+                                <h3 class="modal-title" id="AlgoModalTitle">{{ add_obj.name }}</h3>
                                 <hr>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -102,7 +106,7 @@
                             </div>
                             <div class="modal-body">
                                 {% for quest in add_obj.additional_question.all %}
-                                    {{ forloop.counter }}. {{ quest.question_text|safe|escape }}<br>
+                                    <span style="font-size:18px;">{{ forloop.counter }}</span> . {{ quest.question_text|safe|escape }}<br> <br>
                                 {% endfor %}
                             </div>
                             <hr>
@@ -114,11 +118,6 @@
                     </div>
                     </div>
                       {% endfor %}
-
-
-
-
-
 
 {#                    <div class="modal fade" id="design" tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">#}
 {#                        <div class="modal-dialog" role="document">#}
@@ -151,16 +150,16 @@
                                 <h5>
                                 <div class="question-no">
 
-                                    {% if question.negative %}
-                                        <sup style="font-size:larger;"><strong>*</strong></sup>
-                                    {% endif %}
+<!--                                    {% if question.negative %}-->
+<!--                                        <sup style="font-size:larger;"><strong>*</strong></sup>-->
+<!--                                    {% endif %}-->
                                 {{ id|safe|escape }}
                                 </div>
                                     {{ question.question_text|safe|escape }}
                                 </h5>
                             </div>
                             <div class="col-12 answers options" id={{ question.id }}>
-                                <div class="radio " >
+                                <div class="radio" >
                                     <label>
                                         <input type="radio" name="optionsRadios" id="optionsRadios1" value="1">{{ question.choice1|safe|escape }}
                                     </label>
@@ -180,8 +179,8 @@
                                         <input type="radio" name="optionsRadios" id="optionsRadios4" value="4">{{ question.choice4|safe|escape }}
                                     </label>
                                 </div>
+
                             </div>
-                        <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>
                         </div>
                     </div>
                     <div class="col-12 action" id="opt-btn">

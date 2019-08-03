@@ -364,7 +364,7 @@ class ShowCandidateListView(View):
                     Marks.objects.get(test_name=tests[0], candidate=cand)
                 except:
                     CalculateMarks(cand.pk)
-            return render(request, self.template_name, {'cands': cands, 'form':form, 'test':tests[0]})
+            return render(request, self.template_name, {'cands': cands, 'form': form, 'test': tests[0]})
         else:
             message = 'No Test Present'
             return render(request, 'admin/error.html', {'message': message})

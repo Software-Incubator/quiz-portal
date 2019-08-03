@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:700');
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 body{
-    background-image: url("../assets/images/recruitment_poster.png");
+    background: url('../assets/images/newbkg0.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom;
@@ -28,26 +29,13 @@ body{
 	background-color: #3b95ed;
 }
 
-header .navbar{
-    height: 50px;
-    background-color: #fff;
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0);
-}
-
-header .navbar .logo img{
-    width: 40px;
-    height: auto;
-}
-
-header .navbar .heading{
-
-}
 
 .timer {
     height: 80px;
     padding: 10px;
     font-family: sans-serif;
     font-weight: 100;
+    padding:12px 160px 0 0;
 }
 
 .timer .btn{
@@ -66,7 +54,7 @@ header .navbar .heading{
 
 .clockdiv > div{
     padding: 2px 5px 0px 5px;
-	border-radius: 3px;
+	border-radius: 10px;
 	display: inline-block;
 }
 
@@ -81,7 +69,7 @@ header .navbar .heading{
 }
 
 main{
-    margin: auto;
+    margin: 10px 0 0 0;
 }
 
 body.stop-scrolling {
@@ -89,9 +77,8 @@ body.stop-scrolling {
 }
 main .question-area{
     minwidth: 1000px;
-    height: 500px;
     margin: auto;
-    border-radius: 0.45rem;
+    border-radius: 0rem;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 0 2px 5px 0 rgba(0,0,0,.65);
 }
 
@@ -104,7 +91,7 @@ main .question-area .navbar{
     justify-content: unset !important;
     padding: 0px;
     transition: 1s;
-    height: 10%;
+    height: 50px;
 }
 
 main .question-area .navbar a:hover{
@@ -114,36 +101,34 @@ main .question-area .navbar a:hover{
 main .question-area .navbar ul{
     padding: 10;
     margin-left:10px;
+    margin-top: -12px;
 }
 
-main .question-area .navbar ul li{
-    padding: 5px 20px 0 10px;
-    font-size: 18px;
-    font-family:Raleway;
-    font-display: bold;
-    
-}
-#nav-item::after{
+
+.nav-item::after{
     content:' ';
     display:block;
     width:0;
     height:2px;
+    color:white !important;
     background:#000;
     transition:width .3s;
-   
+
 }
-#nav-item:hover::after
+.nav-item:hover::after
 {
     width:100%;
 }
+.nav-item:hover{
+color:white !important;
+}
  main .question-area .navbar .active {
-    background-color:#d3d3d3;
+
     cursor: pointer;
     border-radius: 5px;
 }
 
 main .question-area .navbar .nav:hover {
-    background-color: #eee;
     cursor: pointer;
     border-radius: 5px;
 }
@@ -187,7 +172,7 @@ main .question-area .response{
 }
 
 main .question-area .inst-response .end{
-    padding: 10px;
+    padding:31px 12px 0px 12px;
 }
 
 main .question-area .inst-response .end button{
@@ -259,6 +244,7 @@ main .question-area .question{
 
 main .question-area .question div, p{
     display: inline;
+    font-size:20px;
 }
 
 main .question-area .question .question-no{
@@ -276,4 +262,141 @@ main .question-area .answers{
 
 .checkbox-inline, .checkbox label, .is-focused .checkbox-inline, .is-focused .checkbox label, .is-focused .radio-inline, .is-focused .radio label, .is-focused .switch label, .radio-inline, .radio label, .switch label {
     color: #000;
+}
+nav ul li {
+ -webkit-transition: background-color .3s;
+   transition: background-color .3s;
+     float: left;
+    padding: 0;
+}
+nav ul a {
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    font-size: 1rem;
+    color: black;
+    padding: 0 15px;
+    cursor: pointer;
+    font-family:poppins;
+}
+nav ul li a:hover{
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    font-size: 1rem;
+    color: #310e8bf5;
+    padding: 0 15px;
+    cursor: pointer;
+    font-family:poppins;
+}
+
+.modal {
+    background-color: transparent;
+    padding: 0;
+    overflow-y: auto;
+    border-radius: 2px;
+    will-change: top, opacity;
+}
+.si-logo {
+    height: 3.5rem;
+    width: 3rem;
+    margin: 5px 0 0 44px;
+    }
+
+.test_name{
+float:center;
+margin:0 23rem 0 0;
+font-family:poppins;
+font-size:32px;
+}
+.candidate-name{
+margin:0 5rem 0 0;
+font-family:poppins;
+font-size:21px;
+}
+a:hover {
+text-decoration:none;
+}
+.container{
+padding:0 0 0 0;
+}
+.qna{
+padding:2.5%;
+}
+nav{
+background-color:#ffffff00;
+color:white;
+}
+.bg-danger{
+background-color:#e64f4f !important;
+}
+.btn.btn-raised.btn-danger{
+background-color:#e54343 !important;
+}
+.nav ul a:hover{
+color:white;
+}
+.test_name{
+color:white !important;
+margin:-4.5% 0px 0 40%;
+}
+.test_name_test{
+margin:0 0rem 0 0;
+}
+#add_ques{
+color:black;
+}
+#add_ques:hover{
+color:#310e8bf5;
+}
+
+.modal-dialog {
+    margin: 1.75rem auto;
+    width:100%;
+}
+.radio label input[type=radio]:checked~.bmd-radio:after, label.radio-inline input[type=radio]:checked~.bmd-radio:after {
+border-color:black !important;
+}
+span.bmd-radio::after{
+margin:17px 0 0 -5px;
+padding:0 0 0 0 !important;
+background:#310e8bf5 !important;
+}
+
+span.bmd-radio::before{
+margin:5px 0 0 0;
+background:transparent !important;
+}
+
+[type="radio"]:not(:checked){
+border-color:red !important;
+}
+
+.radio label .bmd-radio:before, label.radio-inline .bmd-radio:before {
+    position: absolute;
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    content: "";
+    background-color: #009688;
+    border-radius: 50%;
+    transition: transform .28s ease;
+    transform: none;
+    margin:17px 0 0 -5px;
+}
+
+
+@media (min-width: 576px)
+.modal-dialog {
+    max-width: 0px !important;
+    margin: 0rem auto !important;
+}
+
+.modal-dialog {
+    position: relative !important;
+    width:100% !important;
+    margin: 0rem !important;
+    pointer-events: none !important;
+}
+.modal .modal-content {
+    padding: 24px !important;
+    width: 155% !important;
 }

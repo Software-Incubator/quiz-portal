@@ -26,7 +26,7 @@ year_choices = (('I', 'I'),
     ('IV', 'IV'))
 
 YES_OR_NO = (
-             ('no', 'DayScholar'),('yes' ,'Hosteler'))
+             ('no', 'Day Scholar'),('yes' ,'Hosteler'))
 
 
 def category_name_list():
@@ -97,7 +97,8 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ['category', 'question_text', 'choice1', 'choice2', 'choice3', 'choice4', 'correct_choice','negative']
+        fields = ['category', 'question_text', 'choice1', 'choice2', 'choice3', 'choice4', 'correct_choice']
+
 
 
 class CandidateRegistration(forms.ModelForm):

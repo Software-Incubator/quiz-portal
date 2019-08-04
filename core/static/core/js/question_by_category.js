@@ -15,6 +15,7 @@ $(window).on("load", function () {
         }
     })
 });
+
 $(document).ready(function () {
     $(".status_change").on('click', function () {
         var status = $(this).attr("data-id");

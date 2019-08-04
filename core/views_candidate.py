@@ -46,6 +46,20 @@ class QuestionByCategory(generic.DetailView):
         candidate = Candidate.objects.get(email=email)
         test_name = candidate.test_name
         test = Test.objects.get(test_name=test_name)
+        categories = Category.objects.filter(test=test)
+        my_question_seq = []
+        for category in categories:
+            total_question = list(Question.objects.filter(category=category))
+            print(len(total_question))
+            random.shuffle(total_question)
+            my_question_seq += total_question
+        # print(my_question_seq)
+        length = len(my_question_seq)
+        print(length)
+
+
+
+
         duration = test.duration
         dif_time = (dt.datetime.utcnow() - candidate.time.replace(tzinfo=None)).total_seconds()
         remain_time = duration*60 - round(dif_time) + 30
@@ -97,6 +111,8 @@ class QuestionByCategory(generic.DetailView):
         context_dict['category'] = category
         context_dict["id"] = id
         context_dict["all_category"] = Category.objects.filter(test=test)
+        context_dict['my_sq'] = my_question_seq
+        context_dict['length'] = length
         status_dict = {}
         for i in range(1, required_question+1):
             question_number = question_seq[i%required_question]
@@ -107,6 +123,7 @@ class QuestionByCategory(generic.DetailView):
                 obj = SelectedAnswer.objects.create(email=candidate, question_text=question_number, selected_choice=-1)
                 status_dict[i] = 1
         context_dict["status_dict"] = status_dict
+        # print(context_dict)
         return render(self.request, self.template_name, context_dict)
 
 

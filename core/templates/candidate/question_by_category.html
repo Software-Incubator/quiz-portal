@@ -16,30 +16,50 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-     <script type="text/javascript" src="{% static 'core/js/question_by_category.js' %}"></script>
+     <!-- <script type="text/javascript" src="{% static 'core/js/question_by_category.js' %}"></script> -->
     <script>
-        var question_id = "{{ question.id }}";
+        // var question_id = "{{ question.id }}";
         var remain_time = "{{ remain_time }}";
         var session_out =  "{% url 'session_out' %}";
-        var prev_user_answer = "{% url 'user_answer' %}";
-        var save_status = "{% url 'save_status' %}";
-        {#var save_user_answer = "{% url 'answer' %}";#}
+        // var prev_user_answer = "{% url 'user_answer' %}";
+        // var save_status = "{% url 'save_status' %}";
+        // {#var save_user_answer = "{% url 'answer' %}";#}
+    </script>
+    <script>
+        function next(id){
+            var next_id = 0;
+            if(id == {{length}})
+            next_id = 1;
+            else
+            next_id = id + 1;
+            
+            document.getElementById("question_"+id).style.display = "none";
+            document.getElementById("question_"+next_id).style.display = "block";
+            document.getElementById("res_"+id).style.backgroundColor = "green";
+        }
+
+        function previous(id){
+            document.getElementById("question_"+id).style.display = "none";
+            document.getElementById("question_"+(id-1)).style.display = "block";
+        }
+
+        function mark_for_review(id){
+            var next_id = 0;
+            if(id == {{length}})
+            next_id = 1;
+            else
+            next_id = id + 1;
+            document.getElementById("question_"+id).style.display = "none";
+            document.getElementById("res_"+id).style.backgroundColor = "red";
+            document.getElementById("question_"+next_id).style.display = "block";
+        }
+
     </script>
 {#    <script src="{% static 'core/js/back_button_disable.js' %}"></script>#}
     <script src="{% static 'core/js/sweet_alert.js' %}"></script>
-
 </head>
-<body>
+<body >
     <header>
-<!--        <div class="navbar">-->
-<!--            <div class="logo">-->
-<!--                <img id="check" src="{% static 'core/assets/images/silogo.png' %}">-->
-<!--            </div>-->
-<!--            <div class="heading">-->
-<!--                <h3>{{ test_name }}</h3>-->
-<!--            </div>-->
-<!--            <div>Hello {{ candidate_name }}!</div>-->
-<!--        </div>-->
          <nav>
          <div class="nav-wrapper">
       <a href="#"><img  class="brand-logo si-logo" src="{% static 'core/assets/images/silogo.png' %}"></a>
@@ -72,78 +92,37 @@
     <main>
         <div class="container question-area card">
             <div class="row">
-                <div class="col-9">
+
+
+
+
+
+
+
+
+                {% for question in my_sq %}
+                {% if forloop.counter == 1 %}
+                <div id="question_{{forloop.counter}}" class="col-9" style="display: block;">
                     <nav>
-    <div class="nav-wrapper">
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-        {% for category in all_category %}
-        {% if category.category == category_name %}
-        <li class="active nav-item">
-            {% else %}
-            <li class="nav-item">
-            {% endif %}
-            <a href="{% url 'category' category.category 1 %}">{{ category.category }}</a>
-        </li>
-           {% endfor %}
-            {% for add_obj in additional_objs %}
-        <li class="nav-item"><a id="add_ques" data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a></li>
-            {% endfor %}
-
-      </ul>
-    </div>
-  </nav>
-                    <hr class="nav-break">
-                      {% for add_obj in additional_objs %}
-                          <div class="modal fade" id={{ add_obj.name }} tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" id="AlgoModalTitle">{{ add_obj.name }}</h3>
-                                <hr>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                {% for quest in add_obj.additional_question.all %}
-                                    <span style="font-size:18px;">{{ forloop.counter }}</span> . {{ quest.question_text|safe|escape }}<br> <br>
+                        <div class="nav-wrapper">
+                            <ul id="nav-mobile" class="left hide-on-med-and-down">
+                            {% for category in all_category %}
+                            {% if category == question.category %}
+                            <li class="active nav-item">
+                                {% else %}
+                                <li class="nav-item">
+                                {% endif %}
+                                <a href="{% url 'category' category.category 1 %}">{{ category.category }}</a>
+                            </li>
+                               {% endfor %}
+                                {% for add_obj in additional_objs %}
+                            <li class="nav-item"><a id="add_ques" data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a></li>
                                 {% endfor %}
-                            </div>
-                            <hr>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                            </div>
+                          </ul>
                         </div>
-                    </div>
-                    </div>
-                      {% endfor %}
+                    </nav>
+                    <hr class="nav-break">
 
-{#                    <div class="modal fade" id="design" tabindex="-1" role="dialog" aria-labelledby="algo" aria-hidden="true">#}
-{#                        <div class="modal-dialog" role="document">#}
-{#                        <div class="modal-content">#}
-{#                            <div class="modal-header">#}
-{#                                <h5 class="modal-title" id="DesignModalTitle">Design</h5>#}
-{#                                <hr>#}
-{#                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
-{#                                    <span aria-hidden="true">&times;</span>#}
-{#                                </button>#}
-{#                            </div>#}
-{#                            <div class="modal-body">#}
-{#                                <div class="modal-body">#}
-{#                                {% for design_ques in all_design_ques %}#}
-{#                                    <li>{{ forloop.counter }}. {{ design_ques.question_text|safe|escape }}</li>#}
-{#                                {% endfor %}#}
-{#                            </div>#}
-{#                            </div>#}
-{#                            <hr>#}
-{#                            <div class="modal-footer">#}
-{#                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
-{##}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    </div>#}
                     <div class="ques-scroll">
                         <div class="qna">
                             <div class="col-12 question">
@@ -153,7 +132,7 @@
 <!--                                    {% if question.negative %}-->
 <!--                                        <sup style="font-size:larger;"><strong>*</strong></sup>-->
 <!--                                    {% endif %}-->
-                                {{ id|safe|escape }}
+                                {{ forloop.counter }}
                                 </div>
                                     {{ question.question_text|safe|escape }}
                                 </h5>
@@ -184,33 +163,97 @@
                         </div>
                     </div>
                     <div class="col-12 action" id="opt-btn">
-                        {% if first_question == 0 %}
-                            <a href={% url 'category' category.category id|add:"-1" %}>
-                                <button type="button" class="btn btn-raised btn-primary no_status_change" data-id="1">Previous</button>
-                            </a>
-                            {% else %}
-                            <a href={% url 'category' prev_category prev_category_last_ques %}>
-                                <button type="button" class="btn btn-raised btn-primary no_status_change" data-id="1">Previous</button>
-                            </a>
+                            {% if forloop.counter != 1 %}
+                                    <button type="button" onclick="previous({{forloop.counter}})" class="btn btn-raised btn-primary no_status_change" data-id="1">Previous</button>
                             {% endif %}
-                            {% if last_question == 0 %}
-{#                            <a href={% url 'category' category.category id|add:"1" %}>#}
-                                <button type="button" class="btn btn-raised btn-warning status_change" data-id="2" data-url={% url 'category' category.category id|add:"1" %}>Mark for review & next</button>
-{#                            </a>#}
-{#                            <a href={% url 'category' category.category id|add:"1" %}>#}
-                                <button type="button" class="btn btn-raised btn-success status_change" data-id="3" data-url={% url 'category' category.category id|add:"1" %}>Save and next</button>
-{#                            </a>#}
-                            {% else %}
-{#                                <a href={% url 'category' next_category 1 %}>#}
-                                <button type="button" class="btn btn-raised btn-warning status_change" data-id="2" data-url={% url 'category' next_category 1 %}>Mark for review & next</button>
-{#                                 </a>#}
-{#                            <a href={% url 'category' next_category 1 %}>#}
-                                <button type="button" class="btn btn-raised btn-success status_change" data-id="3" data-url={% url 'category' next_category 1 %}>Save and next</button>
-{#                            </a>#}
-                            {% endif %}
-{#                    <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>#}
-                    </div>
+                                    <button type="button" onclick="mark_for_review({{forloop.counter}})" class="btn btn-raised btn-warning status_change" data-id="2" data-url={% url 'category' category.category id|add:"1" %}>Mark for review & next</button>
+                                    <button type="button" onclick="next({{forloop.counter}})" class="btn btn-raised btn-success status_change" data-id="3" data-url={% url 'category' category.category id|add:"1" %}>Save and next</button>
+    {#                    <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>#}
+                        </div>
                 </div>
+                {% else %}
+                <div class="col-9" id="question_{{forloop.counter}}" style="display: none;">
+                        <nav>
+                            <div class="nav-wrapper">
+                                <ul id="nav-mobile" class="left hide-on-med-and-down">
+                                {% for category in all_category %}
+                                {% if category == question.category %}
+                                <li class="active nav-item">
+                                    {% else %}
+                                    <li class="nav-item">
+                                    {% endif %}
+                                    <a href="{% url 'category' category.category 1 %}">{{ category.category }}</a>
+                                </li>
+                                   {% endfor %}
+                                    {% for add_obj in additional_objs %}
+                                <li class="nav-item"><a id="add_ques" data-toggle="modal" data-target="#{{ add_obj.name }}">{{ add_obj.name }}</a></li>
+                                    {% endfor %}
+                              </ul>
+                            </div>
+                          </nav>
+                        <hr class="nav-break">
+    
+                        <div class="ques-scroll">
+                            <div class="qna">
+                                <div class="col-12 question">
+                                    <h5>
+                                    <div class="question-no">
+    
+    <!--                                    {% if question.negative %}-->
+    <!--                                        <sup style="font-size:larger;"><strong>*</strong></sup>-->
+    <!--                                    {% endif %}-->
+                                    {{ forloop.counter }}
+                                    </div>
+                                        {{ question.question_text|safe|escape }}
+                                    </h5>
+                                </div>
+                                <div class="col-12 answers options" id={{ question.id }}>
+                                    <div class="radio" >
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="1">{{ question.choice1|safe|escape }}
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="2">{{ question.choice2|safe|escape }}
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="3">{{ question.choice3|safe|escape }}
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optionsRadios" id="optionsRadios4" value="4">{{ question.choice4|safe|escape }}
+                                        </label>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 action" id="opt-btn">
+                                {% if forloop.counter != 1 %}
+                                        <button type="button" onclick="previous({{forloop.counter}})" class="btn btn-raised btn-primary no_status_change" data-id="1">Previous</button>
+                                {% endif %}
+                                        <button type="button" onclick="mark_for_review({{forloop.counter}})" class="btn btn-raised btn-warning status_change" data-id="2" data-url={% url 'category' category.category id|add:"1" %}>Mark for review & next</button>
+                                    <button type="button" onclick="next({{forloop.counter}})" class="btn btn-raised btn-success status_change" data-id="3" data-url={% url 'category' category.category id|add:"1" %}>Save and next</button>
+        {#                    <span><sup style="font-size: larger;">*</sup> represents negative marking.</span>#}
+                            </div>
+                    </div>
+                {% endif %}
+                {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
                 <div class="col-3 inst-response">
                     <div class="response">
                         <div class="inst-button">
@@ -238,17 +281,9 @@
                         </div>
                         <div class="ques-response">
                             <div class="row">
-                                {% for i, value in status_dict.items %}
+                                {% for count in my_sq %}
                                     <div class="col-3">
-                                    <a href={% url 'category' category.category i %}>
-                                    {% if value == 1 %}
-                                         <button type="button" class="btn btn-raised btn-primary status1" style="background-color: white">{{i }}</button>
-                                    {% elif value == 2 %}
-                                         <button type="button" class="btn btn-raised btn-primary status2" style="background-color: #ff5722">{{i }}</button>
-                                    {% elif value == 3 %}
-                                         <button type="button" class="btn btn-raised btn-primary status3" style="background-color: #4caf50">{{i }}</button>
-                                    {% endif %}
-                                    </a>
+                                         <button id="res_{{forloop.counter}}" type="button" class="btn btn-raised btn-primary status1" style="background-color: white">{{ forloop.counter }}</button>
                                     </div>
                                 {% endfor %}
                             </div>

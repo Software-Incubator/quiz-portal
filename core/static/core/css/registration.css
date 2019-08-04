@@ -1,8 +1,6 @@
-
-
-
-
-
+html {
+    color: red !important;
+}
 body{
 background: url('../assets/images/newbkg0.png');
 background-repeat: no-repeat;

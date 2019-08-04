@@ -25,14 +25,13 @@
                         {% endautoescape %}
         {% endfor %}
     <div class="svg-wrapper">
-          <svg height="40" width="200" xmlns="http://www.w3.org/2000/svg">
+           <svg height="40" width="200" xmlns="http://www.w3.org/2000/svg">
+              <a href="{% url 'category' category.category 1 %}" >
             <rect id="shape" height="40" width="200"  />
               <div id="text">
-                <a href="{% url 'category' category.category 1 %}" >
-                    <span class="spot">Procced</span>
-
-                </a>
+                  <a href="{% url 'category' category.category 1 %}"><span class="spot">Procced</span></a>
               </div>
+                     </a>
           </svg>
        </div>
   </div>

@@ -34,14 +34,14 @@
                      <div class="row">
                        <div class="input-field col s6">
                           <i class="material-icons prefix icon_col active">account_circle</i>
-                             <input autocomplete="off" id="nameInput1" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
+                             <input  id="nameInput1" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
                               <p id="name_err" class="text-danger validationerror"><strong>{{ form.name.errors }}</strong></p>
                                <label for="nameInput1" class="active">Name</label>
                         </div>
                           {% if test_obj.university_roll_no %}
         <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input autocomplete="off" id="university_roll_noInput" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          <input id="university_roll_noInput" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
           <label for="university_roll_noInput">University Roll No.</label>
             <p id="university_err" class="text-danger validationerror"><strong>{{ form.university_roll_no.errors }}</strong>
                         </p>
@@ -51,7 +51,7 @@
       <div class="row">
          <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
-                             <input autocomplete="off"  id="exampleInputEmail1" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
+                             <input id="exampleInputEmail1" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
                                <label for="exampleInputEmail1">E-mail</label>
                             <p id="email_err" class="text-danger validationerror">
                             <strong>{{ form.email.errors}}</strong>
@@ -60,7 +60,7 @@
           {% if test_obj.father_name %}
           <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input autocomplete="off"  id="nameInput2" type="text" name="father_name" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          <input id="nameInput2" type="text" name="father_name" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
           <label for="nameInput2">Father's Name</label>
             <p class="text-danger"><strong>{{ form.father_name.errors }}</strong>
                         </p>
@@ -69,7 +69,7 @@
           {% if test_obj.phone_number %}
         <div class="input-field col s6">
           <i class="material-icons prefix">phone</i>
-          <input autocomplete="off"  id="phoneInput" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
+          <input id="phoneInput" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
           <label for="phoneInput">Mobile No.</label>
             <p id="contactno_err" class="text-danger validationerror"><strong>{{ form.phone_number.errors}}</strong></p>
         </div>
@@ -79,7 +79,7 @@
                           {% if test_obj.stu_no %}
         <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input autocomplete="off" id="std_noInput" type="text" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
+          <input id="std_noInput" type="text" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
           <label for="std_noInput">Student No.</label>
             <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
         </div>
@@ -102,7 +102,7 @@
                               {% if choice.1 == "Day Scholar" %}
                              <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"checked/>
                               {% else %}
-                              <input  class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"/>
+                              <input class="with-gap" id="option_{{choice.0}}" name="hosteler" type="radio" value="{{choice.0}}"/>
                               {% endif %}
                               <span>{{ choice.1}}</span>
                           </label>
@@ -121,7 +121,7 @@
                            {% if test_obj.skills %}
                            <div class="input-field col s12">
                                <i class="material-icons prefix">computer</i>
-                                <input autocomplete="off"  class="validate" type="text" name="skills" maxlength="255" id="id_skills" value="{{ form.skills.value|default_if_none:'' }}">
+                                <input class="validate" type="text" name="skills" maxlength="255" id="id_skills" value="{{ form.skills.value|default_if_none:'' }}">
                                <label for="id_skills" class="bmd-label-floating">Mention your Technical skills(eg. HTML, CSS ,C,C++,Python)</label>
                            </div>
                            {% endif %}
@@ -130,7 +130,7 @@
                            {% if test_obj.designer  %}
                            <div class="input-field col s12">
                                <i class="material-icons prefix">palette</i>
-                                <input autocomplete="off"  class="validate" type="text" name="designer" maxlength="255" id="id_designer" value="{{ form.designer.value|default_if_none:'' }}">
+                                <input class="validate" type="text" name="designer" maxlength="255" id="id_designer" value="{{ form.designer.value|default_if_none:'' }}">
                                <label for="id_designer" class="bmd-label-floating">Familiar with any designing
                                 tool?</label>
                            </div>

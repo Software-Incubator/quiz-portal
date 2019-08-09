@@ -12,9 +12,11 @@ def export_xls(modeladmin, request, queryset):
     row_num = 0
     
     columns = [
-        (u"STUDENT NUMBER", 1000),
         (u"CANDIDATE", 1000),
         (u"TESTNAME", 1000),
+        (u"UNIVERSITY ROLL.", 1000),
+        (u"CONTACT", 1000),
+        (u"EMAIL", 1000),
         (u"MARKS", 1000),
     ]
 
@@ -31,9 +33,11 @@ def export_xls(modeladmin, request, queryset):
     for obj in queryset:
         row_num += 1
         row = [
-            obj.candidate.std_no,
             obj.candidate.name,
             obj.test_name.test_name,
+            obj.candidate.university_roll_no,
+            obj.candidate.phone_number,
+            obj.candidate.email,
             obj.marks,
         ]
         for col_num in range(len(row)):

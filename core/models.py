@@ -73,7 +73,7 @@ class Candidate(models.Model):
     std_no_regex = RegexValidator(regex=r"^\d{7}$", message="Invalid Student Number", code="400")
     std_no = models.CharField(validators=[std_no_regex], blank=True, max_length=7, null=True)
     university_roll_no = models.CharField(max_length=10, blank=False, unique=True, null=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
+    email = models.CharField(unique=True,max_length=40, null=False, blank=False)
     father = models.CharField(max_length=255, blank=True, null=True)
     phone_regex = RegexValidator(regex=r"^[56789]\d{9}$")
     phone_number = models.CharField(validators=[phone_regex], max_length=10, blank=True, null=True)

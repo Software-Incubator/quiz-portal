@@ -5,8 +5,8 @@ from django.urls import path, include
 from core import views_admin
 
 urlpatterns = [
-    path('superadmin/', admin.site.urls),
-    path('admin/', include('core.urls_admin')),
+    path('letme/', admin.site.urls),
+    path('letothers/', include('core.urls_admin')),
     path('', include('core.urls_candidate')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('secret/', admin.site.urls),

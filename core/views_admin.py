@@ -194,7 +194,7 @@ class AddQuestionView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            if request.POST['choice1'].lower() != request.POST['choice2'].lower() != request.POST['choice3'].lower() != request.POST['choice4'].lower():
+            if request.POST['choice1'] != request.POST['choice2'] != request.POST['choice3'] != request.POST['choice4']:
                 form.save()
                 return redirect('control_operation')
             else:
@@ -222,7 +222,7 @@ class EditQuestionView(View):
         question = Question.objects.get(pk=pk)
         form = self.form_class(request.POST, instance=question)
         if form.is_valid():
-            if request.POST['choice1'].lower() != request.POST['choice2'].lower() != request.POST['choice3'].lower() != request.POST['choice4'].lower():
+            if request.POST['choice1'] != request.POST['choice2'] != request.POST['choice3'] != request.POST['choice4']:
                 form.save()
                 return redirect('Show_Category')
             else:
@@ -359,11 +359,11 @@ class ShowCandidateListView(View):
         tests = Test.objects.all()
         if len(tests) != 0:
             cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
-            for cand in cands:
-                try:
-                    Marks.objects.get(test_name=tests[0], candidate=cand)
-                except:
-                    CalculateMarks(cand.pk)
+            # for cand in cands:
+            #     try:
+            #         Marks.objects.get(test_name=tests[0], candidate=cand)
+            #     except:
+            #         CalculateMarks(cand.pk)
             return render(request, self.template_name, {'cands': cands, 'form': form, 'test': tests[0]})
         else:
             message = 'No Test Present'

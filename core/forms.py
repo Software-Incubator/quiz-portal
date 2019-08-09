@@ -107,7 +107,7 @@ class CandidateRegistration(forms.ModelForm):
     std_no = forms.CharField(validators=[std_no_regex], max_length=7, required=False)
     email = forms.EmailField(required=True)
     father = forms.CharField(max_length=255, required=False)
-    phone_regex = RegexValidator(regex=r"^[789]\d{9}$")
+    phone_regex = RegexValidator(regex=r"^[56789]\d{9}$")
     phone_number = forms.CharField(validators=[phone_regex], max_length=10, required=False)
     branch = forms.ChoiceField(choices=BRANCH_CHOICES, required=False)
     skills = forms.CharField(max_length=255, required=False)
@@ -145,7 +145,7 @@ class CandidateRegistration(forms.ModelForm):
             start += str(i % 10)
 
         regex_student = "^[" + start + "][" + end + "](12|14|10|13|00|31|21|32|40)[0-2][0-9][0-9][-]?[mdlMDL]?$"
-        regex_university = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$"
+        regex_university = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$"
         pattern_student = re.compile(regex_student)
         pattern_university = re.compile(regex_university)
 

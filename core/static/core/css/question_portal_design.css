@@ -184,7 +184,7 @@ main .question-area .response .inst-button{
 }
 
 main .question-area .response .inst-button div{
-    padding-left: 10px;
+    padding: 12px;
 }
 
 main .question-area .response .inst-button hr{
@@ -211,6 +211,7 @@ main .question-area .response .btn-primary{
     background-color: #fff;
     padding: 7px 10px 10px 10px;
     color: #000;
+    font-weight:bold;
 }
 
 main .question-area .response span h6{
@@ -403,3 +404,42 @@ border-color:red !important;
 .modal-open .modal{
 margin-right:23% !important;
 }
+.ripple-container{
+display:none !important;
+}
+
+#circle1 {
+      width: 30px;
+      height: 30px;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      background: white;
+      float:left;
+      margin:-8px 0 0 0;
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    }
+
+#circle2 {
+      width: 30px;
+      height: 30px;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      background: #ff5722;
+      margin:-8px 0 0 0;
+      float:left;
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    }
+
+#circle3 {
+      width: 30px;
+      height: 30px;
+      -webkit-border-radius: 25px;
+      -moz-border-radius: 25px;
+      border-radius: 25px;
+      background: #4caf50;
+      margin:-8px 0 0 0;
+      float:left;
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    }

@@ -192,3 +192,6 @@ p{
 margin:10px 0 0 30px !important;
 }
 
+ul:not(.browser-default)>li {
+list-style-type: circle !important;
+}

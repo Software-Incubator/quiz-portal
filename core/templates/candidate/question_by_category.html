@@ -153,7 +153,7 @@
 <!--                                    {% if question.negative %}-->
 <!--                                        <sup style="font-size:larger;"><strong>*</strong></sup>-->
 <!--                                    {% endif %}-->
-                                {{ id|safe|escape }}
+                                {{ id|safe|escape }}. 
                                 </div>
                                     {{ question.question_text|safe|escape }}
                                 </h5>
@@ -215,21 +215,21 @@
                     <div class="response">
                         <div class="inst-button">
                             <div>
-                                <button type="button" class="btn btn-raised btn-primary"></button>
+                                <div id="circle1"></div>
                                 <span>
                                     <h6>Unattempted</h6>
                                 </span>
                             </div>
                             <hr>
                             <div>
-                                <button type="button" class="btn btn-raised btn-warning"></button>
+                                <div id="circle2"></div>
                                 <span>
                                     <h6>Marked for review</h6>
                                 </span>
                             </div>
                             <hr>
                             <div>
-                                <button type="button" class="btn btn-raised btn-success"></button>
+                                <div id="circle3"></div>
                                 <span>
                                     <h6>Answered</h6>
                                 </span>

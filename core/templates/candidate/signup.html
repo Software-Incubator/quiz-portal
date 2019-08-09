@@ -35,7 +35,7 @@
                        <div class="input-field col s6">
                           <i class="material-icons prefix icon_col active">account_circle</i>
                              <input autocomplete="off" id="nameInput1" type="text" name="name" class="validate" value="{{ form.name.value|default_if_none:'' }}">
-                              <p id="name_err" class="text-danger validationerror"><strong>{{ form.name.errors }}</strong></p>
+                              <span id="name_err" style="margin:0 0 0 38px;">{{ form.name.errors }}</span>
                                <label for="nameInput1" class="active">Name</label>
                         </div>
                           {% if test_obj.university_roll_no %}
@@ -43,27 +43,27 @@
           <i class="material-icons prefix">wc</i>
           <input autocomplete="off" id="university_roll_noInput" type="text" name="university_roll_no" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
           <label for="university_roll_noInput">University Roll No.</label>
-            <p id="university_err" class="text-danger validationerror"><strong>{{ form.university_roll_no.errors }}</strong>
-                        </p>
+            <span id="university_err" style="margin:0 0 0 38px;">{{ form.university_roll_no.errors }}
+                        </span>
         </div>
           {% endif %}
                      </div>
       <div class="row">
          <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
-                             <input autocomplete="off"  id="exampleInputEmail1" name="email" type="tel"class="validate" value="{{ form.email.value|default_if_none:'' }}">
+                             <input autocomplete="off"  id="exampleInputEmail1" name="email" class="validate" value="{{ form.email.value|default_if_none:'' }}">
                                <label for="exampleInputEmail1">E-mail</label>
-                            <p id="email_err" class="text-danger validationerror">
-                            <strong>{{ form.email.errors}}</strong>
-                            </p>
+                            <span id="email_err" style="margin:0 0 0 38px;">
+                            {{ form.email.errors}}
+                            </span>
                         </div>
           {% if test_obj.father_name %}
           <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
           <input autocomplete="off"  id="nameInput2" type="text" name="father_name" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
           <label for="nameInput2">Father's Name</label>
-            <p class="text-danger"><strong>{{ form.father_name.errors }}</strong>
-                        </p>
+             <span style="margin:0 0 0 38px;" class="text-danger">{{ form.father_name.errors }}
+                        </span>
         </div>
           {% endif %}
           {% if test_obj.phone_number %}
@@ -71,7 +71,7 @@
           <i class="material-icons prefix">phone</i>
           <input autocomplete="off"  id="phoneInput" type="tel" name="phone_number" class="validate" value="{{ form.phone_number.value|default_if_none:'' }}">
           <label for="phoneInput">Mobile No.</label>
-            <p id="contactno_err" class="text-danger validationerror"><strong>{{ form.phone_number.errors}}</strong></p>
+            <span id="contactno_err" style="margin:0 0 0 38px;">{{ form.phone_number.errors}}</span>
         </div>
           {% endif %}
       </div>
@@ -81,7 +81,7 @@
           <i class="material-icons prefix">wc</i>
           <input autocomplete="off" id="std_noInput" type="text" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
           <label for="std_noInput">Student No.</label>
-            <p><strong class="text-danger">{{ form.std_no.errors }}</strong></p>
+            <span id="studentno_err" style="margin:0 0 0 38px;">{{ form.std_no.errors }}</span>
         </div>
                            {% endif %}
 
@@ -92,7 +92,7 @@
           <i class="material-icons prefix">device_hub</i>
            {{ form.branch }}
           <label for="icon_prefix2">Branch</label>
-             <p class="text-danger"><strong>{{ form.branch.errors}}</strong></p>
+              <span class="text-danger" style="margin:0 0 0 38px;">{{ form.branch.errors}}</span>
         </div>
           {% endif %}
           <div class="col s6 hosteller">
@@ -131,8 +131,7 @@
                            <div class="input-field col s12">
                                <i class="material-icons prefix">palette</i>
                                 <input autocomplete="off"  class="validate" type="text" name="designer" maxlength="255" id="id_designer" value="{{ form.designer.value|default_if_none:'' }}">
-                               <label for="id_designer" class="bmd-label-floating">Familiar with any designing
-                                tool?</label>
+                               <label for="id_designer" class="bmd-label-floating">Familiar with any designing tool? If yes please mention the name</label>
                            </div>
                            {% endif %}
                        </div>
@@ -140,7 +139,7 @@
                       <div class="captcha">
                         {{ form.captcha }}
                           </div>
-                        <p id="captcha_err" class="text-danger"><strong>{{ form.captcha.errors }}</strong></p>
+                        <span id="captcha_err"style="margin:0 0 0 35px;">{{ form.captcha.errors }}</span>
         <div class="svg-wrapper">
            <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
               <a  href="javascript:validateForm()" class="id_submit">
@@ -187,7 +186,7 @@
                 false_i = false_i.toFixed(0);
                 start += String(false_i % 10);
             }
-            regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
+            regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$";
             var re = new RegExp(regex_string);
             if (!re.test(University)) {
                 document.getElementById('university_err').innerHTML = "University Roll number format invalid";
@@ -333,7 +332,7 @@
                 false_i = false_i.toFixed(0);
                 start += String(false_i % 10);
                 }
-                regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40)[0-9][0-9][0-9]$";
+                regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$";
                 var regex = new RegExp(regex_string);
                 if (!regex.test($(this).val())) {
                     document.getElementById('university_err').innerHTML = "Invalid University roll";
@@ -357,7 +356,7 @@
             }
         });
 
-        $("#id_submit").click(function (e) {
+        $(".id_submit").click(function (e) {
              if(submit==false ||
                 ($("#name_err").val() != "") ||
                 ($("#email_err").val() != "") ||
@@ -369,14 +368,14 @@
                 ($("#university_roll_noInput").val() == "")
              ){
                 e.preventDefault();
-                $("#id_submit").css('cursor', 'not-allowed');
+                $(".id_submit").css('cursor', 'not-allowed');
              }
              else{
-                $("#id_submit").css('cursor', 'pointer');
+                $(".id_submit").css('cursor', 'pointer');
              }
              });
 
-        $("#id_submit").hover(function (e) {
+        $(".id_submit").hover(function (e) {
              if(submit==false ||
                 ($("#name_err").val() != "") ||
                 ($("#email_err").val() != "") ||
@@ -388,10 +387,10 @@
                 ($("#university_roll_noInput").val() == "")
              ){
                 e.preventDefault();
-                $("#id_submit").css('cursor', 'not-allowed');
+                $(".id_submit").css('cursor', 'not-allowed');
              }
              else{
-                $("#id_submit").css('cursor', 'pointer');
+                $(".id_submit").css('cursor', 'pointer');
              }
              });
 

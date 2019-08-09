@@ -35,7 +35,7 @@ class QuestionByCategory(generic.DetailView):
         for i in range(1, all_category_count + 1):
             category_dict[i] = all_category[i - 1].category
         return category_dict
-
+    
     def get(self, request, *args, **kwargs):
         """
         status=1 (not attempted)
@@ -124,11 +124,6 @@ class InstructionView(generic.ListView):
             for key in list(request.session.keys()):
                 del request.session[key]
             return redirect('signup')
-        candidate = Candidate.objects.filter(email=request.session["email"])
-        if not candidate:
-            for key in list(request.session.keys()):
-                del request.session[key]
-            return redirect('get_test')
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -339,16 +334,18 @@ class SaveStatus(generic.ListView):
         else:
             raise Http404
 
-
 def logout(request):
     tests = Test.objects.all()
     if len(tests) != 0:
-        cands = Candidate.objects.filter(test_name=tests[0]).order_by("-time")
-        for cand in cands:
+        if "email" in request.session:
+            cands = Candidate.objects.filter(email=request.session['email'])[0]
+            print(cands)
             try:
-                Marks.objects.get(test_name=tests[0], candidate=cand)
+                Marks.objects.get(test_name=tests[0], candidate=cands)
             except:
-                CalculateMarks(cand.pk)
+                CalculateMarks(cands.id)
+        else:
+            return redirect('signup')
     for key in list(request.session.keys()):
         del request.session[key]
     return render(request, 'candidate/end.html')

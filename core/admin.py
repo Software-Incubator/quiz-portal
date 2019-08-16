@@ -3,6 +3,14 @@ from import_export.admin import ImportExportModelAdmin
 from core.models import Category, Question, Test, Instruction, Candidate,\
     SelectedAnswer, Marks, Additional, AdditionalQuestion
 from core.export import export_xls
+from core.models import CategoryMarks
+
+
+class CandidateAdmin(admin.ModelAdmin):
+    actions = [export_xls]
+
+    class Meta:
+        model = Candidate
 
 
 class QuestionInLine(admin.TabularInline):
@@ -88,8 +96,9 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Test, TestAdmin)
 admin.site.register(Instruction)
-admin.site.register(Candidate)
+admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(SelectedAnswer)
 admin.site.register(AdditionalQuestion, AdditionalQuestionAdmin)
 admin.site.register(Additional, AdditionalAdmin)
 admin.site.register(Marks, MarksAdmin)
+admin.site.register(CategoryMarks)

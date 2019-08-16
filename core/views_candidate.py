@@ -9,6 +9,7 @@ import datetime as dt
 import random
 from core.views_admin import CalculateMarks;
 from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks
+from django.core.exceptions import PermissionDenied
 
 
 class QuestionByCategory(generic.DetailView):
@@ -168,13 +169,18 @@ class CandidateRegistration(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        test_name_on = Test.objects.filter(on_or_off=True)[0]
-        print(test_name_on.test_name)
-        self.request.session['test_name'] = test_name_on.test_name
-        test_obj = Test.objects.get(test_name=test_name_on.test_name)
-        return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
+        try:
+            test_name_on = Test.objects.filter(on_or_off=True)[0]
+        except IndexError:
+            test_name_on = 0
+        if test_name_on:
+            self.request.session['test_name'] = test_name_on.test_name
+            test_obj = Test.objects.get(test_name=test_name_on.test_name)
+            return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
+        else:
+            raise PermissionDenied
 
-    def post(self, request,*args, **kwargs):
+    def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST)
         test_name = self.request.session["test_name"]
         test_obj = Test.objects.get(test_name=test_name)

@@ -5,10 +5,9 @@ from django.views import generic, View
 from . import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
-from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks
+from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks,CategoryMarks
 
 import json
-
 
 def CalculateMarks(pk):
 
@@ -16,20 +15,39 @@ def CalculateMarks(pk):
     test = Test.objects.get(test_name=cand.test_name)
     cats = Category.objects.filter(test=test)
     selects = SelectedAnswer.objects.filter(email=cand)
-    score = 0
-    for select in selects:
-        if select.question_text.negative:
-            if select.selected_choice == select.question_text.correct_choice:
-                score += select.question_text.marks
-            elif select.selected_choice == None or select.selected_choice <= 0 or select.selected_choice > 4:
-                pass
+    score_total = 0
+    for categor in cats:
+        score=0
+        correct = 0
+        incorrect = 0
+        unanswered=0
+        for select in selects:
+            ques = select.question_text
+            ques_cat = ques.category
+            if categor == ques_cat:
+                if select.question_text.negative:
+                    if select.selected_choice == select.question_text.correct_choice:
+                        score += select.question_text.marks
+                        score_total+=select.question_text.marks
+                        correct += 1
+                    elif select.selected_choice == None or select.selected_choice <= 0 or select.selected_choice > 4:
+                        unanswered += 1
+                        pass
+                    else:
+                        score -= select.question_text.negative_marks
+                        score_total -= select.question_text.negative_marks
+                        incorrect += 1
+                else:
+                    if select.selected_choice == select.question_text.correct_choice:
+                        score += select.question_text.marks
+                        score_total += select.question_text.marks
             else:
-                score -= select.question_text.negative_marks
-        else:
-            if select.selected_choice == select.question_text.correct_choice:
-                score += select.question_text.marks
+                pass
+        CategoryMarks.objects.create(test=test, candidate=cand, category=categor,
+                                     marks=score, correct=correct,incorrect=incorrect, unanswered=unanswered)
+
     # percentage = (score/total_marks)*100
-    Marks.objects.create(test_name=test, candidate=cand, marks=score)
+    Marks.objects.create(test_name=test, candidate=cand, marks=score_total)
     return 1
 
 

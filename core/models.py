@@ -119,3 +119,17 @@ class Additional(models.Model):
     name = models.CharField(max_length=100,blank=False)
     on_or_off = models.BooleanField(blank=False)
     additional_question = models.ManyToManyField(AdditionalQuestion)
+
+
+class CategoryMarks(models.Model):
+    test = models.ForeignKey(Test,on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    correct = models.IntegerField(default=0)
+    incorrect = models.IntegerField(default=0)
+    unanswered = models.IntegerField(default=0)
+    marks = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('candidate', 'category')
+

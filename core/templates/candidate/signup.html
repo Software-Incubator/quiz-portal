@@ -51,7 +51,7 @@
       <div class="row">
          <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
-                             <input autocomplete="off"  id="exampleInputEmail1" name="email" class="validate" value="{{ form.email.value|default_if_none:'' }}">
+                             <input autocomplete="off" type="text"  id="exampleInputEmail1" name="email" class="validate" value="{{ form.email.value|default_if_none:'' }}">
                                <label for="exampleInputEmail1">E-mail</label>
                             <span id="email_err" style="margin:0 0 0 38px;">
                             {{ form.email.errors}}
@@ -178,7 +178,7 @@
             var false_i;
             var end = "";
             var start = "";
-            for (i = year-1; i > (year - 2); --i) {
+            for (i = year-1; i > (year - 5); --i) {
                 false_i = i;
                 end = end + String(false_i % 10)
                 false_i = false_i - 5;
@@ -324,7 +324,7 @@
                 var false_i;
                 var end = "";
                 var start = "";
-                for (i = year-1; i > (year - 2); --i) {
+                for (i = year-1; i > (year - 5); --i) {
                 false_i = i;
                 end = end + String(false_i % 10)
                 false_i = false_i - 5;

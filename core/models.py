@@ -101,14 +101,21 @@ class SelectedAnswer(models.Model):
 
 
 class Marks(models.Model):
-    test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     marks = models.IntegerField(blank=False)
-
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    correct = models.IntegerField(default=0)
+    incorrect = models.IntegerField(default=0)
+    unanswered = models.IntegerField(default=0)
+    marks = models.IntegerField(default=0)
+                        
+    class Meta:
+        unique_together = ('candidate','category')
+                                    
     def __str__(self):
-        st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)
-        return st
-
+        return str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test)
+   
 
 class AdditionalQuestion(models.Model):
     question_text = RichTextUploadingField()
@@ -121,15 +128,17 @@ class Additional(models.Model):
     additional_question = models.ManyToManyField(AdditionalQuestion)
 
 
-class CategoryMarks(models.Model):
-    test = models.ForeignKey(Test,on_delete=models.CASCADE)
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    correct = models.IntegerField(default=0)
-    incorrect = models.IntegerField(default=0)
-    unanswered = models.IntegerField(default=0)
-    marks = models.IntegerField(default=0)
-
-    class Meta:
-        unique_together = ('candidate', 'category')
-
+#class CatMarks(models.Model):
+#    test = models.ForeignKey(Test,on_delete=models.CASCADE)
+#    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+#    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+#    correct = models.IntegerField(default=0)
+#    incorrect = models.IntegerField(default=0)
+#    unanswered = models.IntegerField(default=0)
+#    marks = models.IntegerField(default=0)
+    
+#    class Meta:
+#        unique_together = ('candidate','category')
+        
+#    def __str__(self):
+#        return "marks of"+ str(self.candidate.name)+ "of" + str(self.category.category)

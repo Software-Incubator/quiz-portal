@@ -10,7 +10,7 @@ django-js-asset==1.1.0
 django-recaptcha2==1.0.3
 et-xmlfile==1.0.1
 html5lib==1.0.1
-httplib2==0.11.3
+httplib2==0.18.0
 idna==2.7
 jdcal==1.4
 odfpy==1.3.6

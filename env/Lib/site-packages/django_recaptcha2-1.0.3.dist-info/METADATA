@@ -1,0 +1,31 @@
+Metadata-Version: 2.0
+Name: django-recaptcha2
+Version: 1.0.3
+Summary: Django reCaptcha v2 field/widget
+Home-page: https://github.com/kbytesys/django-recaptcha2
+Author: Andrea Briganti
+Author-email: kbytesys@gmail.com
+License: GNU LGPL v2
+Download-URL: https://github.com/kbytesys/django-recaptcha2/tarball/v1.0.3
+Keywords: django,recaptcha,recaptcha2
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)
+Classifier: Natural Language :: Italian
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 1.7
+Classifier: Framework :: Django :: 1.8
+Classifier: Framework :: Django :: 1.9
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: Django (>=1.7)
+Requires-Dist: requests
+
+This integration app implements a recaptcha field for Google reCaptcha v2 with explicit rendering and multiple recaptcha support.
+
+

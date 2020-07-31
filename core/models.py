@@ -10,7 +10,6 @@ from django.db import models
 from django.contrib.sessions.models import Session
 
 
-
 class Test(models.Model):
     test_name = models.CharField(max_length=100, blank=False, unique=True)
     duration = models.PositiveIntegerField(blank=False)
@@ -26,10 +25,9 @@ class Test(models.Model):
     year = models.BooleanField(default=False)
     university_roll_no = models.BooleanField(default=False)
 
-    practice=models.BooleanField(default=False)
-
     def __str__(self):
         return self.test_name
+
 
 class Instruction(models.Model):
     test = models.OneToOneField(Test, on_delete=models.CASCADE)
@@ -74,7 +72,7 @@ class Candidate(models.Model):
     name = models.CharField(max_length=100, blank=False)
     std_no_regex = RegexValidator(regex=r"^\d{7}$", message="Invalid Student Number", code="400")
     std_no = models.CharField(validators=[std_no_regex], blank=True, max_length=7, null=True)
-    university_roll_no = models.CharField(max_length=13, blank=False, unique=True, null=False)
+    university_roll_no = models.CharField(max_length=10, blank=False, unique=True, null=False)
     email = models.CharField(unique=True,max_length=40, null=False, blank=False)
     father = models.CharField(max_length=255, blank=True, null=True)
     phone_regex = RegexValidator(regex=r"^[56789]\d{9}$")
@@ -90,6 +88,7 @@ class Candidate(models.Model):
     def __str__(self):
         return self.name + ' - ' + self.email
 
+
 class SelectedAnswer(models.Model):
     email = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     question_text = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -102,16 +101,21 @@ class SelectedAnswer(models.Model):
 
 
 class Marks(models.Model):
-    test_name = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     marks = models.IntegerField(blank=False)
-
-    def __str__(self):
-        st = str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test_name)
-        return st
-
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    correct = models.IntegerField(default=0)
+    incorrect = models.IntegerField(default=0)
+    unanswered = models.IntegerField(default=0)
+    marks = models.IntegerField(default=0)
+                        
     class Meta:
-        verbose_name_plural='Marks'
+        unique_together = ('candidate','category')
+                                    
+    def __str__(self):
+        return str(self.candidate) + ' - ' + str(self.marks) + ' - ' + str(self.test)
+   
 
 class AdditionalQuestion(models.Model):
     question_text = RichTextUploadingField()
@@ -124,46 +128,17 @@ class Additional(models.Model):
     additional_question = models.ManyToManyField(AdditionalQuestion)
 
 
-class CategoryMarks(models.Model):
-    test = models.ForeignKey(Test,on_delete=models.CASCADE)
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    correct = models.IntegerField(default=0)
-    incorrect = models.IntegerField(default=0)
-    unanswered = models.IntegerField(default=0)
-    marks = models.IntegerField(default=0)
-
-    class Meta:
-        unique_together = ('candidate', 'category')
-        verbose_name_plural='Cateogory Marks'
-
-
-
-
-class Practice_Candidate(models.Model):
-    key=models.CharField(max_length=10,default="")
-    test_name=models.CharField(max_length=50,default="",blank=True,null=True)
-    time = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural="Practice-Candidates"
-
-    def __str__(self):
-        return self.key    
-
-
-class Practice_SelectedAnswer(models.Model):
-    key = models.ForeignKey(Practice_Candidate, on_delete=models.CASCADE,related_name='candidate')
-    question_text = models.ForeignKey(Question, on_delete=models.CASCADE,related_name='question')
-    selected_choice = models.IntegerField(blank=True, null=True)
-    status = models.PositiveIntegerField(default=1)
-
-    def __str__(self):
-        st = str(self.question_text) + ' - ' + str(self.selected_choice)
-        return st
-
-class Unique_ID(models.Model):
-    key=models.CharField(max_length=10,default="")
-
-    def __str__(self):
-        return self.key
+#class CatMarks(models.Model):
+#    test = models.ForeignKey(Test,on_delete=models.CASCADE)
+#    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+#    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+#    correct = models.IntegerField(default=0)
+#    incorrect = models.IntegerField(default=0)
+#    unanswered = models.IntegerField(default=0)
+#    marks = models.IntegerField(default=0)
+    
+#    class Meta:
+#        unique_together = ('candidate','category')
+        
+#    def __str__(self):
+#        return "marks of"+ str(self.candidate.name)+ "of" + str(self.category.category)

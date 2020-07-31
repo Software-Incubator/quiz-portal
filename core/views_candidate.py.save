@@ -169,18 +169,12 @@ class CandidateRegistration(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        try:
-            test_name_on = Test.objects.filter(on_or_off=True)[0]
-        except IndexError:
-            test_name_on = 0
-        if test_name_on:
-            self.request.session['test_name'] = test_name_on.test_name
-            test_obj = Test.objects.get(test_name=test_name_on.test_name)
-            return render(request, self.template_name, {'form': form, 'test_obj': test_obj})
-        else:
-            raise PermissionDenied
+        test_name_on = Test.objects.get(on_or_off=True)[0]
+        self.request.session['test_name'] = test_name_on.test_name
+        test_obj = Test.objects.get(test_name=test_name_on.test_name)
+        return render(request, self.template_name, {'form': form, 'test_obj': test_
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request,*args, **kwargs):
         form = self.form_class(self.request.POST)
         test_name = self.request.session["test_name"]
         test_obj = Test.objects.get(test_name=test_name)
@@ -341,8 +335,17 @@ class SaveStatus(generic.ListView):
             raise Http404
 
 def logout(request):
-    if "email" not in request.session:
-        return redirect('signup')
+    tests = Test.objects.all()
+    if len(tests) != 0:
+        if "email" in request.session:
+            cands = Candidate.objects.filter(email=request.session['email'])[0]
+            print(cands)
+            try:
+                Marks.objects.get(test_name=tests[0], candidate=cands)
+            except:
+                CalculateMarks(cands.id)
+        else:
+            return redirect('signup')
     for key in list(request.session.keys()):
         del request.session[key]
     return render(request, 'candidate/end.html')

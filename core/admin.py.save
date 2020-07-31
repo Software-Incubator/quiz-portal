@@ -67,12 +67,12 @@ class TestAdmin(admin.ModelAdmin):
         model = Test
 
 
-#class MarksAdmin(admin.ModelAdmin):
-#    list_display = ('test_name', 'candidate', 'marks')
-#   actions = [export_xls]
+class MarksAdmin(admin.ModelAdmin):
+    list_display = ('test_name', 'candidate', 'marks')
+    actions = [export_xls]
 
-#    class Meta:
-#        model = Marks
+    class Meta:
+        model = Marks
 
 
 class AdditionalAdmin(admin.ModelAdmin):
@@ -99,5 +99,4 @@ admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(SelectedAnswer)
 admin.site.register(AdditionalQuestion, AdditionalQuestionAdmin)
 admin.site.register(Additional, AdditionalAdmin)
-admin.site.register(Marks)
-#admin.site.register(CatMarks)
+admin.site.register(Marks, MarksAdmin)

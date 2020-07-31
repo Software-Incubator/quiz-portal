@@ -5,7 +5,7 @@ from django.views import generic, View
 from . import forms
 from django.contrib import messages
 from django.contrib.auth.models import User
-from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks
+from core.models import Candidate, Instruction, Category, Test, Question, SelectedAnswer, Marks, CategoryMarks
 
 import json
 
@@ -43,11 +43,11 @@ def CalculateMarks(pk):
                         score_total += select.question_text.marks
             else:
                 pass
-        Marks.objects.create(test=test, candidate=cand, category=categor,
+        CategoryMarks.objects.create(test=test, candidate=cand, category=categor,
                                      marks=score, correct=correct,incorrect=incorrect, unanswered=unanswered)
 
     # percentage = (score/total_marks)*100
-    #Marks.objects.create(test_name=test, candidate=cand, marks=score_total)
+    Marks.objects.create(test_name=test, candidate=cand, marks=score_total)
     return 1
 
 

@@ -1,0 +1,65 @@
+{% load static %}
+<html>
+<head>
+	<title>Quiz Portal</title>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'core/css/instruction.css' %}">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+
+<body>
+
+	<div class="z-depth-4 card">
+    <h2 class="title">Select Test Type</h2>
+
+        <!-- {% for ins in instruction %}
+                        {% autoescape off %}
+                               {{ ins.instruction|safe }}
+                        {% endautoescape %}
+        {% endfor %} -->
+         <div class="svg-wrapper">
+           <svg height="40" width="200" xmlns="http://www.w3.org/2000/svg">
+            <rect id="shape" height="40" width="200"  />
+                <div id="text">
+                  <a href="/register"><span class="spot">Real Test</span></a>
+                </div>
+                    </a>
+
+          </svg>
+        </div>
+
+        <div class="svg-wrapper">
+            <svg height="40" width="200" xmlns="http://www.w3.org/2000/svg">
+            <rect id="shape" height="40" width="200"  />
+                <div id="text">
+                <a href="/practice"><span class="spot">Practice Test</span></a>
+                </div>
+                </a>
+            </svg>
+        </div>
+
+  </div>
+
+
+
+</div>
+
+<script>
+var list = document.getElementsByTagName('li');
+var listNum = list.length;
+for(var i=0; i<listNum; i++){
+list[i].setAttribute('class', 'flow-text');
+list[i].setAttribute('style', 'margin-left:10%;margin-right:10%;');
+list[i].setAttribute('id', 'points');
+}
+</script>
+
+</body>
+</html>

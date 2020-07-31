@@ -68,9 +68,12 @@ class TestForm(forms.ModelForm):
     on_or_off = forms.ChoiceField(choices=TRUE_FALSE_CHOICES, label="Status",
                               initial='', widget=forms.RadioSelect(), required=True)
 
+    practice = forms.ChoiceField(choices=TRUE_FALSE_CHOICES,label="Test Type",
+                              initial='', widget=forms.RadioSelect(), required=True  )
+
     class Meta:
         model = Test
-        fields = ['test_name', 'duration', 'on_or_off']
+        fields = ['test_name', 'duration', 'on_or_off','practice']
 
 
 class InstructionForm(forms.ModelForm):
@@ -118,13 +121,13 @@ class CandidateRegistration(forms.ModelForm):
 
     class Meta:
         model = Candidate
-        fields = ['name', 'email', 'std_no', 'phone_number', 'branch', 'year', 'hosteler', 'skills', 'designer', 'test_name', 'father', 'captcha', 'university_roll_no']
+        fields = ['name', 'email', 'std_no', 'phone_number', 'branch', 'year', 'hosteler', 'skills', 'designer', 'test_name', 'father', 'university_roll_no','captcha']
 
     def clean(self):
         cleaned_data = super(CandidateRegistration, self).clean()
 
         university_roll_no = None
-
+        
         try:
             student_number = cleaned_data['std_no']
         except KeyError:
@@ -143,9 +146,8 @@ class CandidateRegistration(forms.ModelForm):
             end += str(i % 10)
             i = int(i / 10)
             start += str(i % 10)
-
         regex_student = "^[" + start + "][" + end + "](12|14|10|13|00|31|21|32|40)[0-2][0-9][0-9][-]?[mdlMDL]?$"
-        regex_university = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$"
+        regex_university = "^[" + start + "][" + end + "][0][0][2][7][0](12|14|10|13|00|31|21|32|40|43|20)[0][0-9][0-9][0-9]$"
         pattern_student = re.compile(regex_student)
         pattern_university = re.compile(regex_university)
 
@@ -154,10 +156,10 @@ class CandidateRegistration(forms.ModelForm):
                 raise ValidationError("Invalid Student Number")
 
         if university_roll_no:
-            if not pattern_university.match(str(university_roll_no)) or (len(university_roll_no) != 10):
+            if not pattern_university.match(str(university_roll_no)) or (len(university_roll_no) != 13):
                 raise ValidationError("Invalid University Roll Number")
 
-        return cleaned_data
+        return cleaned_data 
 
 
 class ChooseTestForm(forms.Form):
@@ -180,4 +182,3 @@ class GetTestNameForm(forms.Form):
 
     class Meta:
         fields = ['test_name']
-

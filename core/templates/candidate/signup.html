@@ -51,8 +51,9 @@
       <div class="row">
          <div class="input-field col s6">
                            <i class="material-icons prefix">email</i>
-                             <input autocomplete="off" type="text"  id="exampleInputEmail1" name="email" class="validate" value="{{ form.email.value|default_if_none:'' }}">
-                               <label for="exampleInputEmail1">E-mail</label>
+                             <!-- <input autocomplete="off"  id="exampleInputEmail1" name="email" class="validate" value="{{ form.email.value|default_if_none:'' }}"> -->
+                             <input autocomplete="off"  id="exampleInputEmail1" type="text" name="email" class="validate" value="{{ form.email.value|default_if_none:'' }}">
+                             <label for="exampleInputEmail1">E-mail</label>
                             <span id="email_err" style="margin:0 0 0 38px;">
                             {{ form.email.errors}}
                             </span>
@@ -60,9 +61,12 @@
           {% if test_obj.father_name %}
           <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input autocomplete="off"  id="nameInput2" type="text" name="father_name" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}">
+          
+          <!-- <input autocomplete="off"  id="nameInput2" type="text" name="father_name" class="validate" value="{{ form.university_roll_no.value|default_if_none:'' }}"> -->
+          
+          <input autocomplete="off"  id="nameInput2" type="text" name="father" class="validate" value="{{ form.father.value|default_if_none:'' }}">
           <label for="nameInput2">Father's Name</label>
-             <span style="margin:0 0 0 38px;" class="text-danger">{{ form.father_name.errors }}
+             <span style="margin:0 0 0 38px;" class="text-danger">{{ form.father.errors }}
                         </span>
         </div>
           {% endif %}
@@ -75,17 +79,22 @@
         </div>
           {% endif %}
       </div>
-                      <div class="row">
-                          {% if test_obj.stu_no %}
+
+    
+      <div class="row">
+                          {% if test_obj.std_no %}              
         <div class="input-field col s6">
           <i class="material-icons prefix">wc</i>
-          <input autocomplete="off" id="std_noInput" type="text" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
+          <input autocomplete="off" id="std_noInput" type="text" name="std_no" class="validate" value="{{ form.std_no.value|default_if_none:'' }}">
           <label for="std_noInput">Student No.</label>
             <span id="studentno_err" style="margin:0 0 0 38px;">{{ form.std_no.errors }}</span>
         </div>
                            {% endif %}
-
       </div>
+
+
+
+
       <div class="row">
           {% if test_obj.branch %}
         <div class="input-field col s6">
@@ -109,6 +118,8 @@
                            {% endfor %}
                            {% endif %}
           </div>
+
+
           {% if test_obj.year %}
         <div class="input-field col s6">
           <i class="material-icons prefix">import_contacts</i>
@@ -117,6 +128,9 @@
         </div>
           {% endif %}
       </div>
+
+
+
                        <div class="row">
                            {% if test_obj.skills %}
                            <div class="input-field col s12">
@@ -136,10 +150,21 @@
                            {% endif %}
                        </div>
                       <br>
+                      
+                      
+
                       <div class="captcha">
                         {{ form.captcha }}
                           </div>
                         <span id="captcha_err"style="margin:0 0 0 35px;">{{ form.captcha.errors }}</span>
+
+
+                      
+                        <!-- <div class="text-center py-4">
+                            <a class="btn btn-primary" onclick="validateForm()">Submit<i class="fa fa-paper-plane-o ml-2"></i></a>
+                        </div> -->
+                        
+
         <div class="svg-wrapper">
            <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
               <a  href="javascript:validateForm()" class="id_submit">
@@ -147,17 +172,24 @@
               <div id="text">
                 <a href="javascript:validateForm()" class="id_submit"><span class="spot"></span>Submit</a>
               </div>
-                  </a>
+                 </a>
           </svg>
         </div>
     </form>
   </div>
 </div>
 </div>
+
+
+
+
+
+
     <script type="text/javascript">
         function submitform() {
         document.form1.submit(); }
    </script>
+
     <script>
     function validateForm() {
         var name = document.getElementById('nameInput1').value;
@@ -165,6 +197,40 @@
             document.getElementById('name_err').innerHTML = "Name cannot be empty";
             return false;
         }
+
+        try{
+        var University = document.getElementById('std_noInput').value;
+        if (University == "") {
+            document.getElementById('studentno_err').innerHTML = "Student Number cannot be empty";
+            return false;
+        }
+        else {
+            var obj = new Date();
+            var year = obj.getFullYear();
+            var i;
+            var false_i;
+            var end = "";
+            var start = "";
+            for (i = year-1; i > (year - 2); --i) {
+                false_i = i;
+                end = end + String(false_i % 10)
+                false_i = false_i - 5;
+                false_i = false_i / 10;
+                false_i = false_i.toFixed(0);
+                start += String(false_i % 10);
+            }
+            regex_string = "^[" + start + "][" + end + "](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$";
+            var re = new RegExp(regex_string);
+            if (!re.test(University)) {
+                document.getElementById('studentno_err').innerHTML = "Student number format invalid";
+                return false;
+            }
+        }
+        }
+        catch{
+        //do nothing.
+        }
+
        try{
         var University = document.getElementById('university_roll_noInput').value;
         if (University == "") {
@@ -178,7 +244,7 @@
             var false_i;
             var end = "";
             var start = "";
-            for (i = year-1; i > (year - 5); --i) {
+            for (i = year-1; i > (year - 2); --i) {
                 false_i = i;
                 end = end + String(false_i % 10)
                 false_i = false_i - 5;
@@ -186,7 +252,7 @@
                 false_i = false_i.toFixed(0);
                 start += String(false_i % 10);
             }
-            regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$";
+            regex_string = "^[" + start + "][" + end + "][0][0][2][7][0](12|14|10|13|00|31|21|32|40|43|20)[0][0-9][0-9][0-9]$";
             var re = new RegExp(regex_string);
             if (!re.test(University)) {
                 document.getElementById('university_err').innerHTML = "University Roll number format invalid";
@@ -198,6 +264,8 @@
         //do nothing.
         }
 
+
+        
         var email = document.getElementById('exampleInputEmail1').value;
         if (email == "") {
             document.getElementById('email_err').innerHTML = "Email cannot be empty";
@@ -209,6 +277,8 @@
                 return false;
             }
         }
+
+
         try{
 
         var Contact = document.getElementById('phoneInput').value;
@@ -237,6 +307,8 @@
         document.getElementById('candidate_form_id').submit();
     }
 </script>
+
+
 <script>
     var submit = false;
     $(document).ready(function () {
@@ -315,7 +387,50 @@
             }
         });
 
-        $("#university_roll_noInput").attr('maxlength','10');
+
+        $("#std_noInput").attr('maxlength','7');
+        $("#std_noInput").focusout(function (event) {
+            if (event.charCode!=0) {
+                var obj = new Date();
+                var year = obj.getFullYear();
+                var i;
+                var false_i;
+                var end = "";
+                var start = "";
+                for (i = year-1; i > (year - 2); --i) {
+                false_i = i;
+                end = end + String(false_i % 10)
+                false_i = false_i - 5;
+                false_i = false_i / 10;
+                false_i = false_i.toFixed(0);
+                start += String(false_i % 10);
+                }
+                regex_string = "^[" + start + "][" + end + "](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$";
+                var regex = new RegExp(regex_string);
+                if (!regex.test($(this).val())) {
+                    document.getElementById('studentno_err').innerHTML = "Invalid Student Number";
+                    $( "#studentno_err" ).show();
+                    submit = false;
+                }
+            }
+            if ( $(this).val() == "") {
+                    console.log("hi")
+                    document.getElementById('studentno_err').innerHTML = "Student Number cannot be empty";
+                    $( "#studentno_err" ).show();
+                    submit = false;
+                }
+        });
+
+        $("#std_noInput").focusin(function (event) {
+            if (event.charCode!=0) {
+                $( "#studentno_err" ).hide();
+                submit = true;
+                document.getElementById('studentno_err').innerHTML == "";
+            }
+        });
+
+
+        $("#university_roll_noInput").attr('maxlength','13');
         $("#university_roll_noInput").focusout(function (event) {
             if (event.charCode!=0) {
                 var obj = new Date();
@@ -324,7 +439,7 @@
                 var false_i;
                 var end = "";
                 var start = "";
-                for (i = year-1; i > (year - 5); --i) {
+                for (i = year-1; i > (year - 2); --i) {
                 false_i = i;
                 end = end + String(false_i % 10)
                 false_i = false_i - 5;
@@ -332,7 +447,7 @@
                 false_i = false_i.toFixed(0);
                 start += String(false_i % 10);
                 }
-                regex_string = "^[" + start + "][" + end + "][0][2][7](12|14|10|13|00|31|21|32|40|43|20)[0-9][0-9][0-9]$";
+                regex_string = "^[" + start + "][" + end + "][0][0][2][7][0](12|14|10|13|00|31|21|32|40|43|20)[0][0-9][0-9][0-9]$";
                 var regex = new RegExp(regex_string);
                 if (!regex.test($(this).val())) {
                     document.getElementById('university_err').innerHTML = "Invalid University roll";
@@ -363,6 +478,7 @@
                 ($("#contactno_err").val() != "") ||
                 ($("#university_err").val() != "") ||
                 ($("#nameInput1").val() == "") ||
+                ($("std_noInput").val()=="") ||
                 ($("#exampleInputEmail1").val() == "") ||
                 ($("#phoneInput").val() == "") ||
                 ($("#university_roll_noInput").val() == "")
@@ -382,6 +498,7 @@
                 ($("#contactno_err").val() != "") ||
                 ($("#university_err").val() != "") ||
                 ($("#nameInput1").val() == "") ||
+                ($("std_noInput").val()=="") ||
                 ($("#exampleInputEmail1").val() == "") ||
                 ($("#phoneInput").val() == "") ||
                 ($("#university_roll_noInput").val() == "")

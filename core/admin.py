@@ -1,8 +1,12 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from core.models import Category, Question, Test, Instruction, Candidate,\
-    SelectedAnswer, Marks, Additional, AdditionalQuestion
+    SelectedAnswer, Marks, Additional, AdditionalQuestion, \
+    Practice_Candidate,Practice_SelectedAnswer, Unique_ID
+    # Practice_Test,Practice_Category,Practice_Question, Practice_Test_Instructions,\
+    
 from core.export import export_xls
+from core.models import CategoryMarks
 
 
 class CandidateAdmin(admin.ModelAdmin):
@@ -67,12 +71,12 @@ class TestAdmin(admin.ModelAdmin):
         model = Test
 
 
-#class MarksAdmin(admin.ModelAdmin):
-#    list_display = ('test_name', 'candidate', 'marks')
-#   actions = [export_xls]
+class MarksAdmin(admin.ModelAdmin):
+    list_display = ('test_name', 'candidate', 'marks')
+    actions = [export_xls]
 
-#    class Meta:
-#        model = Marks
+    class Meta:
+        model = Marks
 
 
 class AdditionalAdmin(admin.ModelAdmin):
@@ -99,5 +103,9 @@ admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(SelectedAnswer)
 admin.site.register(AdditionalQuestion, AdditionalQuestionAdmin)
 admin.site.register(Additional, AdditionalAdmin)
-admin.site.register(Marks)
-#admin.site.register(CatMarks)
+admin.site.register(Marks, MarksAdmin)
+admin.site.register(CategoryMarks)
+
+admin.site.register(Practice_Candidate)
+admin.site.register(Practice_SelectedAnswer)
+admin.site.register(Unique_ID)

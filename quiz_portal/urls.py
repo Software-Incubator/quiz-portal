@@ -4,10 +4,10 @@ from django.conf import settings
 from django.urls import path, include
 from core import views_admin
 
-urlpatterns = [
-    path('letme/', admin.site.urls),                                       # admin-panel
+urlpatterns = [                                      # admin-panel
     path('letothers/', include('core.urls_admin')),                        # for including the urls_admin
-    path('', include('core.urls_candidate')),                              # for including the urls_candidate
+    path('', include('core.urls_candidate')),   
+    path('letme/', admin.site.urls),                            # for including the urls_candidate
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
     # path('secret/', admin.site.urls),                                    

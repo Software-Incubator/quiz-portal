@@ -8,9 +8,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('QUIZ_PORTAL_SECRET_KEY')
-
-
+# SECRET_KEY = os.environ.get('QUIZ_PORTAL_SECRET_KEY')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -32,7 +31,8 @@ INSTALLED_APPS = [
     'import_export',
     'admin_honeypot',
     'snowpenguin.django.recaptcha2',
-    'blacklist',
+    # 'blacklist',
+    # 'ratelimit',
 ]
 
 MIDDLEWARE = [
@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'blacklist.middleware.blacklist_middleware',
+    # 'blacklist.middleware.blacklist_middleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

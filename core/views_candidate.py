@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from . import forms
-from core.models import Category, Question, Instruction, Test,\
-    SelectedAnswer, Candidate, Additional, AdditionalQuestion
+from core.models import Category, Question, Instruction, Test,SelectedAnswer, Candidate, Additional, AdditionalQuestion,Practice_Candidate,Practice_SelectedAnswer
 import itertools
 from django.http import JsonResponse, Http404
 import datetime as dt
@@ -14,8 +13,8 @@ from django.core.exceptions import PermissionDenied
 from django.utils.crypto import get_random_string
 
 from datetime import timedelta
-from ratelimit.decorators import ratelimit
-from blacklist.ratelimit import blacklist_ratelimited
+# from ratelimit.decorators import ratelimit
+# from blacklist.ratelimit import blacklist_ratelimited
 
 
 
@@ -48,7 +47,6 @@ class QuestionByCategory(generic.DetailView):
             category_dict[i] = all_category[i - 1].category
         return category_dict
     
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
     def get(self, request ,*args, **kwargs):
         """
         status=1 (not attempted)
@@ -188,7 +186,7 @@ class InstructionView(generic.ListView):
         return super(InstructionView, self).dispatch(request, *args, **kwargs)
     #----------------------------------------------------------------------------------------------#
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
+
     def get(self, request,*args, **kwargs):
 
     #----------------------------------For real Test-----------------------------------------------#
@@ -256,7 +254,6 @@ class CandidateRegistration(generic.ListView):
         SelectedAnswer.objects.bulk_create(selected_answer)
 
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
     def get(self, request, *args, **kwargs):
         form = self.form_class
         try:
@@ -270,7 +267,6 @@ class CandidateRegistration(generic.ListView):
         else:
             raise PermissionDenied
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='POST')
     def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST)
         test_name = self.request.session["test_name"]
@@ -325,12 +321,10 @@ class GetTestView(generic.ListView):
 
         return super(GetTestView, self).dispatch(request, *args, **kwargs)
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
     def get(self, request, *args, **kwargs):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='POST')
     def post(self, request):
         form = self.form_class(self.request.POST)
         if form.is_valid():
@@ -377,7 +371,6 @@ class GetTestView(generic.ListView):
 
 class DefaultOption(generic.ListView):
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
 
@@ -431,7 +424,6 @@ class DefaultOption(generic.ListView):
 
 class SaveStatus(generic.ListView):
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
 
@@ -521,8 +513,6 @@ class SaveStatus(generic.ListView):
             raise Http404
 
 
-
-@ratelimit(key='ip', rate='5/m', block=True)
 def logout(request):
 
     tests = Test.objects.all()
@@ -611,7 +601,6 @@ def logout(request):
 class ThankYou(generic.ListView):
     template_name='candidate/end.html'
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='POST')
     def get(self,request,*args,**kwargs):
         return render(self.request,self.template_name)
 
@@ -624,7 +613,6 @@ class Practice_Test_View(generic.ListView):
     """
     template_name = 'candidate/practice_test_first_page.html'
     
-    @ratelimit(key='ip', rate='50/m', method='GET', block=True)
     def get(self, request, *args, **kwargs):
         
         if "key" in request.session:
@@ -652,7 +640,6 @@ class Start_Test(generic.ListView):
             selected_answer.append(Practice_SelectedAnswer(key=key, question_text=question, selected_choice=-1))
         Practice_SelectedAnswer.objects.bulk_create(selected_answer)
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
     def get(self,request,*args,**kwargs):
         test_name = self.request.session["test_name"]
         test_obj = Test.objects.get(test_name=test_name)
@@ -701,12 +688,10 @@ class GetPracticeTestView(generic.ListView):
     template_name = 'candidate/get_test.html'
     form_class = forms.GetTestNameForm
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='GET')
     def get(self, request, *args, **kwargs):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
 
-    @ratelimit(key='user_or_ip', rate='50/m',block=True,method='POST')
     def post(self, request):
         form = self.form_class(self.request.POST)
         if form.is_valid():

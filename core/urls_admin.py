@@ -27,5 +27,5 @@ urlpatterns = [
     path('deletecategory/<int:pk>', views_admin.DeleteCategoryView.as_view(), name='Delete_Category'),
     path('viewresult/<int:pk>', views_admin.ViewResultView.as_view(), name='View_result'),
     path('deleteresult/<int:pk>', views_admin.DeleteResultView.as_view(), name='Delete_result'),
-    path('logout', built_views.LogoutView.as_view(), {'next_page': 'admin_auth'}, name='logout'),    # Problem here #
+    path('logout', views_admin.LogoutView.as_view(), name='logout'),    # Problem here #
 ]

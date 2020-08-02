@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import auth
+from django.contrib.auth import logout
 from django.views import generic, View
 from . import forms
 from django.contrib import messages
@@ -542,6 +543,11 @@ class DeleteInstructionView(View):
         Instruction.objects.filter(pk=pk).delete()
         return redirect('Show_Instruction')
 
+class LogoutView(View):
+
+    def get(self,request,*args,**kwargs):
+        logout(request)
+        return redirect('admin_auth')
 
 def error404(request, exception):
     message = 'Error 404 \n Page not found'

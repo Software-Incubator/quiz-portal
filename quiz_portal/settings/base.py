@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get('QUIZ_PORTAL_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['silive.in', 'www.silive.in', 'localhost', '*']
+ALLOWED_HOSTS = ['silive.in', 'www.silive.in', 'localhost', '*',]
 
 
 # Application definition

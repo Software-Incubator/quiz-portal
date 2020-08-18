@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'core/css/instruction.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -16,21 +17,30 @@
 
 <body>
 
-	<div class="z-depth-40 card">
+	<div class="z-depth-40  margin">
+        <div class="card">
     <h2 class="title">Score Page</h2>
 
-    <div class="svg-wrapper">
-        
-        <h3>Correct answers:{{ correct }}</h3>
-        <h3>Negative:{{ negative }}</h3>
-        <h3>Unanswered Questions:{{ unanswered }}</h3>
-        <h3>Total Score:{{ score }}</h3>
-        <h3><a href="/thank-you/">Continue</a></h3>
+        <div class="center " >
+        <h3 style="font-family: 'Montserrat', sans-serif; letter-spacing:1px;">Correct answers:{{ correct }}</h3>
+        <h3 style="font-family: 'Montserrat', sans-serif;letter-spacing:1px">Negative:{{ negative }}</h3>
+        <h3 style="font-family: 'Montserrat', sans-serif;letter-spacing:1px">Unanswered Questions:{{ unanswered }}</h3>
+        <h3 style="font-family: 'Montserrat', sans-serif;letter-spacing:1px">Total Score:{{ score }}</h3>
+        <!-- <h3><a href="/thank-you/">Continue</a></h3> -->
        </div>
+    </div>
+    <div class="svg-wrapper" id="absolute"  >
+        <svg height="40" width="200" xmlns="http://www.w3.org/2000/svg">
+         <rect id="shape" height="40" width="200"  />
+             <div id="text">
+               <a href="/thank-you"><span class="spot">Continue</span></a>
+             </div>
+                 </a>
+        </svg>
+    </div>
+	</div>
+    
 
-       
-  </div>
-</div>
 
 <script>
 var list = document.getElementsByTagName('li');

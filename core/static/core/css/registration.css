@@ -20,6 +20,7 @@ background-repeat: no-repeat;
   font-size: 36px;
   font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
   color: black;
+  text-align:center;
 }
 .card{
   position: absolute;
@@ -102,6 +103,11 @@ i.prefix{
   margin-right:8px;
   color: black;
 }
+.insrtuction-margin
+{
+  margin-top:30vh;
+  margin-left:9vw
+}
 .check2{
  color: #d7d7d7;
 }
@@ -156,7 +162,7 @@ body {
 }
 .boy_img {
     margin: 10rem 0 0 5rem;
-    height: 30rem;
+    height: 30vw;
 }
 
 
@@ -207,7 +213,7 @@ border:2px solid black;
 }
 input[type=text]:not(.browser-default):focus:not(readonly){
 box-shadow:black;
-border-bottom:black;
+border-bottom:black;-
 }
 .active{
 box-shadow:black;
@@ -222,6 +228,7 @@ margin:1.5rem 0 0 0;
 }
 .captcha{
 margin:-5% 0 0 6%;
+padding-left: 13vw;
 }
 h2 {
     font-size: 3.56rem;

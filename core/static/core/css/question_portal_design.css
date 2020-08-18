@@ -304,12 +304,11 @@ nav ul li a:hover{
 
 .test_name{
 float:center;
-margin:0 23rem 0 0;
 font-family:poppins;
 font-size:32px;
 }
 .candidate-name{
-margin:0 5rem 0 0;
+
 font-family:poppins;
 font-size:21px;
 }
@@ -337,7 +336,7 @@ color:white;
 }
 .test_name{
 color:white !important;
-margin:-4.5% 0px 0 40%;
+
 }
 .test_name_test{
 margin:0 0rem 0 0;

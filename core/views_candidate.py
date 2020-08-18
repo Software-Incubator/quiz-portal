@@ -15,7 +15,7 @@ from django.utils.crypto import get_random_string
 from datetime import timedelta
 # from ratelimit.decorators import ratelimit
 # from blacklist.ratelimit import blacklist_ratelimited
-
+# from django.views.decorators.cache import cache_control
 
 
 class QuestionByCategory(generic.DetailView):
@@ -47,6 +47,7 @@ class QuestionByCategory(generic.DetailView):
             category_dict[i] = all_category[i - 1].category
         return category_dict
     
+    # @cache_control(no_cache=True, must_revalidate=True, no_store=True)
     def get(self, request ,*args, **kwargs):
         """
         status=1 (not attempted)
@@ -265,7 +266,8 @@ class CandidateRegistration(generic.ListView):
             test_obj = Test.objects.get(test_name=test_name_on.test_name)
             return render(request, self.template_name, {'form': form,'test_obj': test_obj})
         else:
-            raise PermissionDenied
+            return render(request,'candidate/extra.html')
+            # raise PermissionDenied
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST)

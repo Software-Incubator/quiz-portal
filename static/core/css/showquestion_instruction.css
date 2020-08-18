@@ -1,0 +1,50 @@
+main .questions-list,.instruction-list,.result {
+    width: 100%;
+    min-height: 600px;
+    background-color: #fff;
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
+    border-radius: 0.225rem;
+    padding: 60px !important;
+    margin: 10px auto;
+    margin-top: 65px !important;
+}
+
+main .questions-list .heading{
+    text-align: center;
+}
+
+
+main .instruction-list .heading{
+    text-align: center;
+}
+
+main .result .heading{
+    text-align: center;
+}
+
+main .result .candidate-details {
+    margin: 8px 0px;
+     
+}
+
+main .result .dwd-button{
+    margin-top: 20px;   
+}
+
+main .result .dwd-button .btn{
+    margin: 8px 0px;
+    float: right;     
+}
+
+main .result .table-head th{
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
+    color: #fff !important;
+}
+
+main .questions-list,.instruction-list .list{
+    padding: 25px;
+}
+
+main .questions-list,.instruction-list table tr td{
+    padding: 25px;
+}

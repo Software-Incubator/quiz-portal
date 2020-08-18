@@ -1,0 +1,44 @@
+
+header .navbar .button-field #back-btn {
+    display: none;
+}
+
+
+main .control-options{
+    margin: 50px;
+}
+
+main .control-options .control-option{
+    width: 225px;
+    height: 200px;
+    background-color: #fff;
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
+    border-radius: 0.225rem;
+    text-align: center;
+    padding-top: 40px;
+    margin: 40px auto;
+}
+
+main .control-options .control-option:hover{
+    box-shadow: 2px 4px 8px 0 rgba(46,61,73,.2);
+}
+
+main .control-options .control-option .icon{
+    font-size: 300%;
+    margin: 10px;
+}
+
+main .control-options a:hover{
+    color: #3b95ed;
+    text-decoration: none;
+}
+
+main .control-options .control-option .txt{
+    font-size: 125%;
+}
+
+
+canvas{
+    height: 100% ;
+    display: block;
+}

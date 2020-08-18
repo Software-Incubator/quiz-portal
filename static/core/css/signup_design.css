@@ -1,0 +1,179 @@
+body{
+    background-image: url("../assets/images/recruitment_poster.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    height: 93vh;
+}
+
+header .navbar{
+    height: 50px;
+    background-color: rgba(255,255,255,0.9);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 0 5px 5px 0 rgba(0,0,0,.2);
+    border-bottom: 1px solid #eee;
+}
+
+header .navbar .logo img{
+    width: 40px;
+    height: auto;
+}
+
+main .sign-up{
+    width: 1000px;
+    height: auto;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.5), 5px 5px 13px 0 rgba(0,0,0,.31);
+    margin: auto;
+    margin-top: 50px;
+    background-color: #fff;
+}
+
+main .sign-up .bg-img{
+    background-image: url('../assets/images/recruitment_poster.png');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+main .sign-up .img{
+    width: 250px;
+    height: auto;
+    margin-top: 80px;
+    transition: 3s;
+    margin-left: 25px;
+}
+
+main .sign-up .img:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+main .sign-up .bg-img .btn{
+    position: absolute !important;
+}
+
+main .sign-up .heading{
+    padding: 10px;
+    text-align: center;
+    /* background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed); */
+    border-top-left-radius: 0.125rem;
+    border-top-right-radius: 0.125rem;
+    color: #fff;
+    /* border-bottom: 2px solid #eee; */
+}
+
+main .sign-up label{
+    font-family: 'FontAwesome', 'Roboto',  sans-serif;
+}
+
+main .sign-up form{
+    padding: 25px 25px 15px 25px;
+}
+
+/* main .sign-up .sel {
+    font-size: 1rem;
+    display: inline-block;
+    margin: 3em 2em;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+  }
+
+  main .sign-up .sel::before {
+    position: absolute;
+    content: '\f063';
+    font-family: 'FontAwesome';
+    font-size: 2em;
+    color: #FFF;
+    right: 20px;
+    top: calc(50% - 0.5em);
+  }
+
+  main .sign-up .sel.active::before {
+    transform: rotateX(-180deg);
+  }
+
+  main .sign-up .sel__placeholder {
+    display: block;
+    font-family: 'Quicksand';
+    font-size: 2.3em;
+    color: #838e95;
+    padding: 0.2em 0.5em;
+    text-align: left;
+    pointer-events: none;
+    user-select: none;
+    visibility: visible;
+  }
+
+  main .sign-up .sel.active .sel__placeholder {
+    visibility: hidden;
+  }
+
+  main .sign-up .sel__placeholder::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.2em 0.5em;
+    content: attr(data-placeholder);
+    visibility: hidden;
+  }
+
+  main .sign-up .sel.active .sel__placeholder::before {
+    visibility: visible;
+  }
+
+  main .sign-up .sel__box {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: -4px;
+    display: none;
+    list-style-type: none;
+    text-align: left;
+    font-size: 1em;
+    background-color: #FFF;
+    width: calc(100% + 8px);
+    box-sizing: border-box;
+  }
+
+  main .sign-up .sel.active .sel__box {
+    display: block;
+    animation: fadeInUp 500ms;
+  }
+
+  main .sign-up .sel__box__options {
+    display: list-item;
+    font-family: 'Quicksand';
+    font-size: 1.5em;
+    color: #838e95;
+    padding: 0.5em 1em;
+    user-select: none;
+  }
+
+  main .sign-up .sel__box__options::after {
+    content: '\f00c';
+    font-family: 'FontAwesome';
+    font-size: 0.5em;
+    margin-left: 5px;
+    display: none;
+  }
+
+  main .sign-up .sel__box__options.selected::after {
+    display: inline;
+  }
+
+  main .sign-up .sel__box__options:hover {
+    background-color: #ebedef;
+  } */
+
+/* main .sign-up .form-group{
+    padding: 15px;
+} */
+
+/*  */
+.btn-field{
+  margin-top: 3%;
+}

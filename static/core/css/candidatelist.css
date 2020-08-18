@@ -1,0 +1,45 @@
+main .candidate-list{
+    width: 100%;
+    min-height: 600px;
+    background-color: #fff;
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
+    border-radius: 0.225rem;
+    padding: 40px;
+    margin: 10px auto;
+    margin-top: 60px;
+}
+
+main .candidate-list .heading{
+    text-align: center;
+}
+
+main .candidate-list .table-head th{
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
+    color: #fff !important;
+    margin-bottom: 2px;
+}
+
+main .candidate-list .table-head th:nth-child(1){
+    width: 20px !important;
+}
+
+main ol{
+    padding: 0px 0px 0px 25px;
+}
+
+main ol li{
+    padding: 0px;
+}
+
+main ol li table{
+    width: 100%;
+    margin: 10px;
+}
+
+main ol li table td{
+    padding: 10px;
+}
+
+main ol li table tbody td:nth-child(1){
+    width: 680px !important;
+}

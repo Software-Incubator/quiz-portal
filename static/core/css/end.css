@@ -1,0 +1,14 @@
+body{
+    margin: 0;
+    padding: 0;;
+}
+
+.background{
+    background-image: url('../assets/images/newbkg0.png');
+    width: 100vw;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    overflow: hidden;
+}

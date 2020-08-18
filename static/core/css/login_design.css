@@ -1,0 +1,70 @@
+header .navbar .button-field{
+    display: none;
+}
+
+main .sign-in-container{
+    padding-top: 150px;
+}
+
+main .sign-in{
+    width: 400px;
+    min-height: 320px;
+    background-color: #fff;
+    border-radius: 0.125rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    margin: auto;
+    position: relative;
+}
+
+main .sign-in .heading{
+    padding: 10px;
+    text-align: center;
+    /* background: linear-gradient(to right, #007bff, #0076f5, #0071eb, #006de2, #0068d8); */
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
+    color: #fff;
+    border-top-left-radius: 0.125rem;
+    border-top-right-radius: 0.125rem;
+    /* border-bottom: 2px solid #eee; */
+}
+
+main .sign-in .input-fields{
+    padding: 30px 25px 10px 25px;
+}
+
+main .sign-in .input-group{
+    padding: 10px;
+}
+
+input{
+    font-family: 'FontAwesome', 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}
+
+main .sign-in .input-group #passwordSelect + .glyphicon{
+cursor: pointer;
+   pointer-events: all;
+}
+
+main .btn-field{
+    padding: 10px 40px 20px;
+}
+
+main .btn-field .btn{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    border-radius: 0.125rem;
+}
+
+
+canvas{
+    height: 100% !important;
+    display: block;
+}
+
+
+li {
+    list-style: none; 
+}

@@ -1,0 +1,32 @@
+main .editquestion-area, .instruction-area{
+    padding: 60px;
+    position: relative;
+}
+
+main .editquestion, .instruction {
+    width: 100%;
+    min-height: 600px;
+    background-color: #fff;
+    box-shadow: 5px 5px 25px 0 rgba(46,61,73,.2);
+    border-radius: 0.225rem;
+    padding: 40px;
+    margin: 10px auto;
+    margin-top: 65px !important;
+    text-align: center;
+}
+
+main .editquestion,.instruction .heading{
+    margin: 25px;
+}
+
+main .editquestion form .select-category{
+    padding: 20px;
+}
+
+main .editquestion,.instruction form .select-category h5,h6 {
+    margin: 10px;
+}
+
+li {
+    list-style: none; 
+}

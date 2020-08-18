@@ -1,0 +1,31 @@
+main .test-container{
+    padding-top: 150px;
+}
+
+main .test-name{
+    width: 400px;
+    height: auto;
+    background-color: #fff;
+    border-radius: 0.125rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    margin: auto;
+}
+
+main .test-name .heading{
+    padding: 10px;
+    text-align: center;
+    background: linear-gradient(to right top, #3b95ed, #3190ed, #268aed, #1b85ed, #0f7fed);
+    border-top-left-radius: 0.125rem;
+    border-top-right-radius: 0.125rem;
+    color: #fff; 
+    /* border-bottom: 2px solid #eee; */
+}
+
+main .test-name form{
+    padding: 25px 25px 15px 25px;
+}
+
+main .test-name form .btn{
+    width: 100%;
+    margin: 25px 0;
+}

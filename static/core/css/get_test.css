@@ -1,0 +1,161 @@
+body{
+background: url('../assets/images/newbkg0.png');
+height: 100%;
+}
+.title{
+  font-size: 38px;
+  font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
+  color:black;
+  margin: 8px 1px 1px 40px;
+}
+
+.title1{
+  font-size: 36px;
+  font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
+  color: #08a034;
+  margin: -20px 1px 1px 40px;
+}
+.card{
+  position: absolute;
+  width:65%;
+  height:65%;
+  margin-left:18%;
+  background:white;
+  margin-top:8%;
+  border-radius: 7px;
+}
+
+.vector_img{
+  height: 100px;
+  width: 100px;
+  background-repeat: no-repeat;
+  margin: -28px 0px 0px -70px;
+
+}
+.vl {
+  border-left: 2px solid black;
+}
+
+img{
+  margin:30px 1px 8px 95px;
+  height: 63vh;
+  width: 60vh;
+}
+
+
+.form_body{
+  width: 50%;
+  margin-left: 50%;
+  background: transparent;
+  margin-top:-4%;
+  border-radius: 5px;
+}
+
+.row {
+
+  flex-wrap: wrap;
+  margin-bottom:0px;
+
+}
+
+.select-wrapper input.select-dropdown {
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #9e9e9e;
+    outline: none;
+    height: 4rem;
+    line-height: 3rem;
+    width: 104%;
+    font-size: 18px;
+    margin: 10px 0 8px -20px;
+    padding: 0;
+    display: block;
+    user-select: none;
+    z-index: 1;
+    color:black;
+}
+
+.select-wrapper .caret {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    z-index: 0;
+    fill: #310e8bf5;
+}
+
+.svg-wrapper {
+  position: relative;
+  width: 150px;
+  height: 50px;
+
+}
+
+
+#shape {
+  stroke-width: 8px;
+  fill:#310e8bf5;
+  stroke: #310e8bf5;
+  stroke-dasharray: 85 400;
+  stroke-dashoffset: -220;
+  transition: 1s all ease;
+}
+
+
+
+#text {
+  margin-top: -40px;
+  text-align: center;
+  border-radius: 4px;
+  margin-left:-18px ;
+}
+
+.material-icons {
+	position: absolute;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    margin: 1px 1px 1px 1px;
+    color: white;
+}
+
+.forward{
+	margin: 4px 1px 1px 4px;
+}
+
+.svg-wrapper:hover #shape {
+  stroke-dasharray: 50 0;
+  stroke-width: 3px;
+  stroke-dashoffset: 0;
+  stroke: #310e8bf5;
+  fill: transparent;
+  color:#310e8bf5;
+}
+
+a{
+  color: #FCFFFC;
+  font-size: 20px;
+
+}
+
+.spot{
+	margin:1px 1px 1px 1px ;
+}
+
+.svg-wrapper:hover a{
+  color:#310e8bf5;
+}
+
+.dropdown-content li>a, .dropdown-content li>span{
+color:#310e8bf5 !important;
+}

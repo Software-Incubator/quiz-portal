@@ -32,7 +32,7 @@ python-decouple==3.1
 pytz==2018.4
 PyYAML==3.13
 reportlab==3.4.0
-requests==2.19.1
+requests==2.20.0
 six==1.15.0
 sqlparse==0.3.1
 tablib==2.0.0

@@ -5,7 +5,9 @@ html{
 
 body{
 background: url('../assets/images/newbkg0.png');
-background-repeat: no-repeat;
+background-repeat:no-repeat;
+background-position: center;
+background-size: cover;
 background-attachment: fixed;
 height: 100%;
 }
@@ -22,17 +24,50 @@ height: 100%;
   font-size: 38px;
   font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif;
   color: black;
-  margin:23px 5px 1px 40%;
+  margin-top:23px;
+  margin-bottom:1px;
+  text-align: center;
+
 }
+.text
+{
+  font-size: 32px;
+  /* font-family:"Poppins", "Arial", "Helvetica Neue", sans-serif; */
+  font-family: 'Roboto', sans-serif;
+  color: black;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
 .card {
     position: absolute;
     width: 65%;
-    margin-left: 17%;
     background: white;
-    margin-top: 5%;
     border-radius: 7px;
+   
 }
+.insrtuction-margin
+{
+  margin-top:30vh;
+  margin-left:17vw
+}
+.letter-space
+{
+  letter-spacing: 0.5px;
+}
+.margin
+{
+  margin-top:25vh;
+  margin-left: 17vw;
+}
+#absolute
+{
+  
+  top:33rem;
+  left: -10rem;
+  
 
+}
 .vector_img{
   height: 100px;
   width: 100px;
@@ -194,4 +229,16 @@ margin:10px 0 0 30px !important;
 
 ul:not(.browser-default)>li {
 list-style-type: circle !important;
+}
+@media  (max-width: 900px) {
+  .cart
+  {
+    width: 100% !important;
+  }
+  .margin
+{
+  margin-top:25vh !important;
+  margin-left: 0vw !important;
+}
+  
 }

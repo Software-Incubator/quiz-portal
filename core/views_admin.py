@@ -115,6 +115,10 @@ class TestName(View):
         else:
             form = self.form_class(request.POST)
             if form.is_valid():
+                instance=form.save(commit=False)
+                if instance.practice:
+                    instance.test_name=instance.test_name+" - Practice"
+                    instance.save()
                 form.save()
                 return redirect('control_operation')
             else:

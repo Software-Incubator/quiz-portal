@@ -1,0 +1,24 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Software Incubator</title>
+    <link rel="icon" href="{% static "core/assets/images/logo.png" %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'core/css/instruction.css' %}" />
+</head>
+<body>
+    <div class="background">
+        <div style="text-align: center;padding-top: 13vh;">
+            <div><img style="height: 350px;margin-left:0px;margin-top: 0px;" src="{% static '/core/assets/images/notest.svg'%}"></div>
+            <P class="text">Sorry, No test is active as of now!!</P>
+            <p class="text">Meanwhile ,you can practice <a href="/practice" style="color: blue;text-decoration: none;" class="text">here</a></p>
+        </div>
+    </div>
+    <script src="{% static 'core/js/back_button_disable.js' %}"></script>
+</body>
+</html>

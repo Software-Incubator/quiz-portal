@@ -40,17 +40,27 @@
 <!--            </div>-->
 <!--            <div>Hello {{ candidate_name }}!</div>-->
 <!--        </div>-->
-         <nav>
-         <div class="nav-wrapper">
-      <a href="#"><img  class="brand-logo si-logo" src="{% static 'core/assets/images/silogo.png' %}"></a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <div class="test_name_test">
-             <li class="candidate-name">Hello {{ candidate_name }} !</li></div>
-      </ul>
-    </div>
-             <ul>
-             <li class="test_name" id="test_n">{{ test_name }}</li>
-         </ul>
+     <nav>
+         
+      <!-- <ul id="nav-mobile" class="">
+      <li><a href="#"><img  class=" si-logo" src="{% static 'core/assets/images/silogo.png' %}"></a></li>
+      <li class="test_name" id="test_n">{{ test_name }}</li>
+      <li class="candidate-name">Hello {{ candidate_name }} !</li>
+      </ul> -->
+      <div class="row">
+          <div class="col s4">
+            <a href="#"><img  class=" si-logo" src="{% static 'core/assets/images/silogo.png' %}"></a>
+          </div>
+          <div class="col s4 center test_name">
+            {{ test_name }}
+        </div>
+        <div class="col s4 center candidate-name">
+            Hello {{ candidate_name }} !
+        </div>
+      </div>
+             
+             
+         
   </nav>
     </header>
     <div class="timer">

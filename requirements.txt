@@ -30,7 +30,7 @@ pylint-plugin-utils==0.6
 PyPDF2==1.26.0
 python-decouple==3.1
 pytz==2018.4
-PyYAML==3.13
+PyYAML==5.4
 reportlab==3.4.0
 requests==2.19.1
 six==1.15.0
